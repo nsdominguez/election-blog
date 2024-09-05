@@ -14,7 +14,7 @@ permalinks:
 menu:
   main:
     - name: Home
-      url: ""
+      url: "https://nsdominguez.github.io/election-blog"
       weight: 1
 
 params:
