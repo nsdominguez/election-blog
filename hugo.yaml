@@ -1,6 +1,6 @@
 baseurl: "https://nsdominguez.github.io/election-blog/"
 languageCode: "en-us"
-title: "A minimal Hugo website"
+title: "Nick's Election Forecast"
 theme: "hugo-xmin"
 googleAnalytics: ""
 disqusShortname: ""
@@ -21,7 +21,7 @@ menu:
       weight: 2
 
 params:
-  description: "A website built through Hugo and blogdown."
+  description: "My forecasting model for the 2024 Presidential Election"
 
 markup:
   highlight:
