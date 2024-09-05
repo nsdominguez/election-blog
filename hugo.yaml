@@ -1,6 +1,6 @@
 baseurl: "https://nsdominguez.github.io/election-blog/"
 languageCode: "en-us"
-title: "Nick's Election Forecast"
+title: "Predict with Nick"
 theme: "hugo-xmin"
 googleAnalytics: ""
 disqusShortname: ""
