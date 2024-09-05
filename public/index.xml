@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Home on A minimal Hugo website</title>
-    <link>https://example.org/</link>
+    <link>https://nsdominguez.github.io/election-blog/</link>
     <description>Recent content in Home on A minimal Hugo website</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 05 Sep 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://example.org/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://nsdominguez.github.io/election-blog/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>2024 Election Prediction 1 - September 9, 2024</title>
-      <link>https://example.org/post/2024/09/05/prediction-1/</link>
+      <title>Blog 1</title>
+      <link>https://nsdominguez.github.io/election-blog/post/2024/09/05/prediction-1/</link>
       <pubDate>Thu, 05 Sep 2024 00:00:00 +0000</pubDate>
-      <guid>https://example.org/post/2024/09/05/prediction-1/</guid>
+      <guid>https://nsdominguez.github.io/election-blog/post/2024/09/05/prediction-1/</guid>
       <description>&lt;p&gt;this is my prediction&lt;/p&gt;</description>
     </item>
   </channel>
