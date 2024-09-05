@@ -16,9 +16,6 @@ menu:
     - name: Home
       url: ""
       weight: 1
-    - name: About
-      url: "about/"
-      weight: 2
 
 params:
   description: "My forecasting model for the 2024 Presidential Election"
