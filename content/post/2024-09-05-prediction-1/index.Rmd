@@ -92,7 +92,7 @@ ggplot(data = d_pvstate_wide, mapping = aes(long, lat, group = group)) +
 
 Looking more closely at the two most recent presidential elections, we see that many of these states that have swung between parties in the past few election cycles, were decided by extremely narrow margins. We can see that in 2020, Joe Biden narrowly won the states of Arizona, Georgia, Michigan, Pennsylvania, and Wisconsin, all of which were states narrowly won by Trump in 2016. However, the remainder of the 50 states voted consistently for Republicans or Democrats over these two elections. Therefore, in order to predict the outcome of the 2024 election, it is a good idea to look at historical election data of this time period. 
 
-```{r, echo = FALSE, message = FALSE}
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
 # create 2016 and 2020 maps 
 
 pv_map <- d_pvstate_wide %>%
@@ -105,7 +105,9 @@ abbreviations2 <- abbreviations %>%
 pv_win_map <- pv_map %>% 
   mutate(winner = ifelse(R_pv2p > D_pv2p, "Republican", "Democrat"))
 
+```
 
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 ggplot(data = pv_win_map, mapping = aes(long, lat, group = group)) + 
   geom_polygon(aes(fill = winner), color = "black") + 
   geom_text(data = abbreviations2, aes(label = abbr), size = 2, color = "black") +
@@ -113,11 +115,15 @@ ggplot(data = pv_win_map, mapping = aes(long, lat, group = group)) +
   scale_fill_manual(values = c("blue", "red")) + theme_nick +
   labs(title = "Presidential Election Results (2016-2020)",
        caption = "*Alaska and Hawaii not included in image")
+```
 
+```{r, include = FALSE}
 pv_win_map_margin <- pv_win_map %>%
   mutate(pv2p_vote_margin = R_pv2p - D_pv2p, 
          region = tolower(state))
+```
 
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 ggplot(data = pv_win_map_margin, mapping = aes(long, lat, group = group)) + 
   geom_polygon(aes(fill = pv2p_vote_margin), color = "black") + geom_text(data = abbreviations2, aes(label = abbr), size = 2, color = "black") + facet_wrap(facets = year~.) +
   scale_fill_gradient2(high = "red", 
@@ -128,9 +134,8 @@ ggplot(data = pv_win_map_margin, mapping = aes(long, lat, group = group)) +
                        limits = c(-52, 52)) + theme_nick +
   labs(title = "State Two Party Vote in Presidential Elections ", 
        caption = "*Alaska and Hawaii not included in image")
-
-
 ```
+
 
 Using these two past presidential elections, I construct my model to predict the two-party vote share and Electoral College results for the 2024 Presidential Election. Although I include both sets of election results, I weigh the 2020 Presidential Election between Trump and Biden more heavily as it was more recent than the 2016 Presidential Election between Trump and Clinton. This division, of a 3/4 weight on the 2020 election and a 1/4 weight on the 2016 election is a simple and common method of distributing model influence when using historical election data. 
 
