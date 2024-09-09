@@ -113,7 +113,7 @@ ggplot(data = pv_win_map, mapping = aes(long, lat, group = group)) +
   geom_text(data = abbreviations2, aes(label = abbr), size = 2, color = "black") +
   facet_wrap(facets = year~.) + 
   scale_fill_manual(values = c("blue", "red")) + theme_nick +
-  labs(title = "Presidential Election Results (2016-2020)",
+  labs(title = "Presidential Election Results* (2016-2020)",
        caption = "*Alaska and Hawaii not included in image")
 ```
 
@@ -132,7 +132,7 @@ ggplot(data = pv_win_map_margin, mapping = aes(long, lat, group = group)) +
                        name = "Margin of Victory", 
                        breaks = c(-50, -25, 0, 25, 50), 
                        limits = c(-52, 52)) + theme_nick +
-  labs(title = "State Two Party Vote in Presidential Elections ", 
+  labs(title = "State Two Party Vote in Presidential Elections* ", 
        caption = "*Alaska and Hawaii not included in image")
 ```
 
@@ -193,7 +193,7 @@ ggplot(data = pv2p_2024_states, mapping = aes(long, lat, group = group)) +
                        name = "Margin of Victory", 
                        breaks = c(-50, -25, 0, 25, 50), 
                        limits = c(-52, 52)) + theme_nick +
-  labs(title = "Model Forecast of 2024 Presidential Election - 9/9/24*", 
+  labs(title = "Model Forecast of 2024 Presidential Election* - 9/9/24", 
        caption = "*Alaska and Hawaii not included in image")
 ```
 
