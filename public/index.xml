@@ -6,14 +6,14 @@
     <description>Recent content in Home on Predict with Nick</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 09 Sep 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://nsdominguez.github.io/election-blog/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Blog 1</title>
-      <link>https://nsdominguez.github.io/election-blog/post/2024/09/05/prediction-1/</link>
-      <pubDate>Thu, 05 Sep 2024 00:00:00 +0000</pubDate>
-      <guid>https://nsdominguez.github.io/election-blog/post/2024/09/05/prediction-1/</guid>
-      <description>&lt;p&gt;this is my prediction&lt;/p&gt;</description>
+      <link>https://nsdominguez.github.io/election-blog/post/2024/09/09/prediction-1/</link>
+      <pubDate>Mon, 09 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://nsdominguez.github.io/election-blog/post/2024/09/09/prediction-1/</guid>
+      <description>&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;# load data and packages &#xA;library(tidyverse)&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;pre&gt;&lt;code&gt;## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──&#xA;## ✔ dplyr     1.1.4     ✔ readr     2.1.5&#xA;## ✔ forcats   1.0.0     ✔ stringr   1.5.1&#xA;## ✔ ggplot2   3.5.1     ✔ tibble    3.2.1&#xA;## ✔ lubridate 1.9.3     ✔ tidyr     1.3.1&#xA;## ✔ purrr     1.0.2     &#xA;## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──&#xA;## ✖ dplyr::filter() masks stats::filter()&#xA;## ✖ dplyr::lag()    masks stats::lag()&#xA;## ℹ Use the conflicted package (&amp;lt;http://conflicted.r-lib.org/&amp;gt;) to force all conflicts to become errors&#xA;&lt;/code&gt;&lt;/pr</description>
     </item>
   </channel>
 </rss>

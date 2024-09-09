@@ -83,7 +83,7 @@ d_pvstate_wide <- d_pvstate_wide %>%
   left_join(states_map, by = "region") %>%
   mutate(winner = ifelse(R_pv2p > D_pv2p, "Republican", "Democrat")) 
   
-ggplot(data = d_pvstate_wide, mapping = aes(long, lat, group = group)) 
+ggplot(data = d_pvstate_wide, mapping = aes(long, lat, group = group)) +
   facet_wrap(facets = year~.) +
   geom_polygon(aes(fill = winner)) + 
   scale_fill_manual(values = c("blue", "red")) +
@@ -106,15 +106,14 @@ pv2p_2024_states <- d_pvstate_wide %>%
          region = tolower(state))
 
 # Plot the margin of victory in a U.S. state map.
-pv2p_2024_states %>%
-  left_join(states_map, by = "region") %>%
-  ggplot(aes(long, lat, group = group)) +
+pv2p_2024_states <- pv2p_2024_states %>%
+  left_join(states_map, by = "region")
+
+ggplot(data = pv2p_2024_states, mapping = aes(long, lat, group = group)) +
   geom_polygon(aes(fill = pv2p_2024_margin), color = "black") + 
   scale_fill_gradient(high = "red",
-                      low = "blue", 
-                      mid = "white",
-                      name = "win margin", 
-                      breaks )
+                      low = "blue",
+                      name = "win margin")
 
 # Generate projected state winners and merge with electoral college votes to make 
 # summary of electoral college vote distributions. 
