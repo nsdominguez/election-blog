@@ -32,8 +32,11 @@ Using these two past presidential elections, I construct my model to predict the
 
 
 
+
 Based on this weighted lagged model of past presidential election results, my model predicts Vice President Kamala Harris wins the national two-party popular vote (disregarding third party candidates) with *51.99%* of the vote compared to the Republican candidate, former President Donald Trump's *48.01%*, representing an approximate D+4 environment. However, the winner of the presidential election is not the popular vote winner. The candidate who wins the presidency wins the majority of Electoral College votes based on winning individual states. Therefore, with this two-party vote share model applied to each individual state, my model predicts that Harris will win the 2024 Presidential Election with *276* electoral votes compared to Trump’s *262*. This margin is closer than previous elections, such as when Biden won with 306 in 2020, or when Trump won with 304 electoral votes in 2016. A map of this victory is illustrated below. As expected, solidly Democratic and Republican states are forecasted to continue to vote for their respective candidates, while the most competitive states remain in the Rust Belt (WI, MI, PA) and the Sun Belt (NV, AZ, GA, NC).  
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-11-1.png" width="672" />
 
 An important caveat to these projects that I must emphasize is that these results are far from my final prediction. This model, an arguably conservative estimate based on averages, assumes that Harris will underperform Biden in 2020 and outperform Clinton in 2016. While historical trends are part of the story, election outcomes are not simply products of previous results. The model in this week’s blog post is simply the start of a months-long project. In subsequent blog posts, I will be adding more variables to my model to create the most accurate prediction of the 2024 presidential election. Stay tuned!
