@@ -27,7 +27,7 @@ September 9, 2024 – Welcome to the first week of Nick’s Picks, my forecastin
 
 The graph below displays the Electoral College map of every presidential election since 1980. Though there is some variation, it is clear that since 2000, and especially in the past few election cycles, many votes consistently vote for the same party each election on the presidential level, such as the West Coast and New England states voting consistently for the Democrats, and the Deep South and Great Plains states mainly voting for Republican candidates. However, there are a few states in the past few elections that have swung between Democrats and Republicans, including, but not limited to, states such as Wisconsin, Michigan, Pennsylvania, Ohio, Florida, Arizona, and North Carolina.
  
-```{r, include = FALSE}
+```{r, include = FALSE, warnings = FALSE}
 
 # Read presidential popular vote. 
 d_popvote <- read_csv("popvote_1948-2020.csv")
@@ -143,7 +143,7 @@ popvote_2024_prediction <- d_popvote_wide %>%
   mutate(dlag = ifelse(year == 2016, 0.25*democrat, 0.75*democrat)) %>%
   summarize(year = 2024, democrat = sum(dlag), republican = sum(rlag), winner = "D")
 ```
-```{r}
+```{r, include = FALSE}
 # predict electoral college
 
 d_pvstate_wide <- read_csv("clean_wide_state_2pv_1948_2020.csv")
@@ -171,7 +171,7 @@ pv2p_2024_states_ec <-  pv2p_2024_states %>%
 
 Based on this weighted lagged model of past presidential election results, my model predicts Vice President Kamala Harris wins the national two-party popular vote (disregarding third party candidates) with *51.99%* of the vote compared to the Republican candidate, former President Donald Trump's *48.01%*, representing an approximate D+4 environment. However, the winner of the presidential election is not the popular vote winner. The candidate who wins the presidency wins the majority of Electoral College votes based on winning individual states. Therefore, with this two-party vote share model applied to each individual state, my model predicts that Harris will win the 2024 Presidential Election with *276* electoral votes compared to Trump’s *262*. This margin is closer than previous elections, such as when Biden won with 306 in 2020, or when Trump won with 304 electoral votes in 2016. A map of this victory is illustrated below. As expected, solidly Democratic and Republican states are forecasted to continue to vote for their respective candidates, while the most competitive states remain in the Rust Belt (WI, MI, PA) and the Sun Belt (NV, AZ, GA, NC).  
 
-```{r, echo = FALSE, message = FALSE}
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
 
 pv2p_2024_states <- pv2p_2024_states %>%
   left_join(states_map, by = "region")
