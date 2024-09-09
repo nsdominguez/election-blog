@@ -77,7 +77,6 @@ ggplot(data = pv_win_map, mapping = aes(long, lat, group = group)) +
   geom_polygon(aes(fill = winner)) + scale_fill_manual(values = c("blue", "red")) +
   theme_void()
 
-# why is there an error code?
 d_pvstate_wide <- d_pvstate_wide %>%
   filter(year >= 1980) %>%
   left_join(states_map, by = "region") %>%
