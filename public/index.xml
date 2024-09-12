@@ -15,5 +15,12 @@
       <guid>https://nsdominguez.github.io/election-blog/post/2024/09/09/prediction-1/</guid>
       <description>&lt;h1 id=&#34;prediction-1-using-past-election-results&#34;&gt;Prediction #1: Using Past Election Results&lt;/h1&gt;&#xA;&lt;p&gt;September 9, 2024 – Welcome to the first week of Nick’s Picks, my forecasting model for the 2024 Presidential Election! For this week, I’m starting the basics of my model with a simple factor of prediction: what has happened before.&lt;/p&gt;&#xA;&lt;p&gt;The graph below displays the Electoral College map of every presidential election since 1980. Though there is some variation, it is clear that since 2000, and especially in the past few election cycles, many votes consistently vote for the same party each election on the presidential level, such as the West Coast and New England states voting consistently for the Democrats, and the Deep South and Great Plains states mainly voting for Republican candidates. However, there are a few states in the past few elections that have swung between Democrats and Republicans, including, but not limited to, states such as Wisconsin, Michigan, Pennsylvania, Ohio, Florida, Arizona, and North Carolina.&lt;/p&gt;</description>
     </item>
+    <item>
+      <title>Blog 2</title>
+      <link>https://nsdominguez.github.io/election-blog/post/1/01/01/prediction-2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://nsdominguez.github.io/election-blog/post/1/01/01/prediction-2/</guid>
+      <description>&lt;p&gt;Intro importance of economic factors&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;# show correlation between economic factors and incumbent vote share&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;p&gt;Describe new model with added economic factors (including state level)&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;# build model to predict incumbent vote share&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;p&gt;Share findings&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;# predict electoral college with map&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;p&gt;Share findings&lt;/p&gt;</description>
+    </item>
   </channel>
 </rss>
