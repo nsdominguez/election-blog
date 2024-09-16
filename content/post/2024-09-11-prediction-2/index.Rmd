@@ -117,6 +117,7 @@ p3 <- d_inc_econ |>
 
 p1
 ```
+
 In my model forecast for this week, I assess how key economic indicators influence peoples’ votes; constructing an OLS linear regression model using Quarter 2 (April, May, June) economic data from 1976 to 2020 as a proxy for perceptions of the economy leading up to the election to predict Democratic candidate two party vote share in each state. My national economic data includes GDP growth, real disposable personal income growth (RDPI), Consumer Price Index (CPI) to cover three highly salient and different aspects of evaluating the economy; national macroeconomic growth, personal finance situation, and inflation, respectively. However, because of the size of the United States, national metrics may not capture individual state trends. Therefore, my model includes average monthly unemployment for the three months of Q2 for each state to try to capture the more localized economic conditions. 
 
 In addition to these economic variables, I built upon my model last week by including a lagged variable representing Democrat two-party vote share in the previous presidential election, to account for the influence of partisanship in addition to economic conditions. This is why I chose Democrat two-party vote share to simply predict the winner of each state, as it would be more complicated to create a lagged incumbent party vote share variable instead of just choosing one of the two parties. To account my choice of focusing on one party’s variables and incumbency bias, I include two indicator variables: ‘inc_prez’ that denotes if the current president is running for reelection, and ‘inc_party’ to denote the party of the incumbent president, as voters may hold the incumbent president or political party responsible for current economic conditions. 
@@ -331,7 +332,7 @@ Additionally, I chose state-level unemployment to capture state economic conditi
 cor(full_data_statewide$ur_avg, full_data_statewide$D_pv2p, use = "complete.obs")
 ```
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 full_data_statewide |> 
   ggplot(aes(x = ur_avg, y = D_pv2p)) + 
   geom_hline(yintercept = 50, lty = 2) + 

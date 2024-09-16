@@ -10,6 +10,7 @@ slug: prediction-2
 
 
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+
 In my model forecast for this week, I assess how key economic indicators influence peoples’ votes; constructing an OLS linear regression model using Quarter 2 (April, May, June) economic data from 1976 to 2020 as a proxy for perceptions of the economy leading up to the election to predict Democratic candidate two party vote share in each state. My national economic data includes GDP growth, real disposable personal income growth (RDPI), Consumer Price Index (CPI) to cover three highly salient and different aspects of evaluating the economy; national macroeconomic growth, personal finance situation, and inflation, respectively. However, because of the size of the United States, national metrics may not capture individual state trends. Therefore, my model includes average monthly unemployment for the three months of Q2 for each state to try to capture the more localized economic conditions. 
 
 In addition to these economic variables, I built upon my model last week by including a lagged variable representing Democrat two-party vote share in the previous presidential election, to account for the influence of partisanship in addition to economic conditions. This is why I chose Democrat two-party vote share to simply predict the winner of each state, as it would be more complicated to create a lagged incumbent party vote share variable instead of just choosing one of the two parties. To account my choice of focusing on one party’s variables and incumbency bias, I include two indicator variables: ‘inc_prez’ that denotes if the current president is running for reelection, and ‘inc_party’ to denote the party of the incumbent president, as voters may hold the incumbent president or political party responsible for current economic conditions. 
@@ -43,20 +44,5 @@ Additionally, I chose state-level unemployment to capture state economic conditi
 
 
 
-
-
-```
-## `geom_smooth()` using formula = 'y ~ x'
-```
-
-```
-## Warning: Removed 51 rows containing non-finite outside the scale range
-## (`stat_smooth()`).
-```
-
-```
-## Warning: Removed 51 rows containing missing values or values outside the scale range
-## (`geom_point()`).
-```
 
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-14-1.png" width="672" />
