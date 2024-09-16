@@ -6,20 +6,21 @@
     <description>Recent content in Posts on Predict with Nick</description>
     <generator>Hugo</generator>
     <language>en-us</language>
+    <lastBuildDate>Mon, 16 Sep 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://nsdominguez.github.io/election-blog/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Blog 1</title>
-      <link>https://nsdominguez.github.io/election-blog/post/1/01/01/prediction-1/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://nsdominguez.github.io/election-blog/post/1/01/01/prediction-1/</guid>
-      <description>&lt;h1 id=&#34;prediction-1-using-past-election-results&#34;&gt;Prediction #1: Using Past Election Results&lt;/h1&gt;&#xA;&lt;p&gt;September 9, 2024 – Welcome to the first week of Nick’s Picks, my forecasting model for the 2024 Presidential Election! For this week, I’m starting the basics of my model with a simple factor of prediction: what has happened before.&lt;/p&gt;&#xA;&lt;p&gt;The graph below displays the Electoral College map of every presidential election since 1980. Though there is some variation, it is clear that since 2000, and especially in the past few election cycles, many votes consistently vote for the same party each election on the presidential level, such as the West Coast and New England states voting consistently for the Democrats, and the Deep South and Great Plains states mainly voting for Republican candidates. However, there are a few states in the past few elections that have swung between Democrats and Republicans, including, but not limited to, states such as Wisconsin, Michigan, Pennsylvania, Ohio, Florida, Arizona, and North Carolina.&lt;/p&gt;</description>
+      <title>Blog 2</title>
+      <link>https://nsdominguez.github.io/election-blog/post/2024/09/16/prediction-2/</link>
+      <pubDate>Mon, 16 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://nsdominguez.github.io/election-blog/post/2024/09/16/prediction-2/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;September 16, 2024&lt;/strong&gt; - Today marks 50 days until the 2024 Presidential Election. For this week&amp;rsquo;s model updates, I am focusing on one of the fundamentals of political forecasting: the economy. One of the most famous quotes in the political world belongs to longtime Democratic strategist James Carville, who famously said &amp;ldquo;It&amp;rsquo;s the economy, stupid&amp;rdquo;, and that statement is abundantly true. Americans evaluate the economy and choose candidates based on the recent state of the economy, known as voting retrospectively (Achen and Bartels 2017). Historically, economic metrics from Quarter 2 leading up to the election are strongly correlated with incumbent party vote share, as illustrated by the figures below. The blue line depicts the line of best fit for all years included in the data, white the red line represents the line of best fit for all elections included besides 2020, which was a major outlier on many economic indicators. In general, we can see that incumbent presidents, or their party successors, are rewarded if there was recent growth in Gross Domestic Product.&lt;/p&gt;</description>
     </item>
     <item>
-      <title>Blog 2</title>
-      <link>https://nsdominguez.github.io/election-blog/post/1/01/01/prediction-2/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://nsdominguez.github.io/election-blog/post/1/01/01/prediction-2/</guid>
-      <description>&lt;p&gt;&lt;strong&gt;September 16, 2024&lt;/strong&gt; - Today marks 50 days until the 2024 Presidential Election. For this week&amp;rsquo;s model updates, I am focusing on one of the fundamentals of political forecasting: the economy. One of the most famous quotes in the political world belongs to longtime Democratic strategist James Carville, who famously said &amp;ldquo;It&amp;rsquo;s the economy, stupid&amp;rdquo;, and that statement is abundantly true. Americans evaluate the economy and choose candidates based on the recent state of the economy, known as voting retrospectively (Achen and Bartels 2017). Historically, economic metrics from Quarter 2 leading up to the election are strongly correlated with incumbent party vote share, as illustrated by the figures below. The blue line depicts the line of best fit for all years included in the data, white the red line represents the line of best fit for all elections included besides 2020, which was a major outlier on many economic indicators. In general, we can see that incumbent presidents, or their party successors, are rewarded if there was recent growth in Gross Domestic Product.&lt;/p&gt;</description>
+      <title>Blog 1</title>
+      <link>https://nsdominguez.github.io/election-blog/post/2024/09/09/prediction-1/</link>
+      <pubDate>Mon, 09 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://nsdominguez.github.io/election-blog/post/2024/09/09/prediction-1/</guid>
+      <description>&lt;h1 id=&#34;prediction-1-using-past-election-results&#34;&gt;Prediction #1: Using Past Election Results&lt;/h1&gt;&#xA;&lt;p&gt;September 9, 2024 – Welcome to the first week of Nick’s Picks, my forecasting model for the 2024 Presidential Election! For this week, I’m starting the basics of my model with a simple factor of prediction: what has happened before.&lt;/p&gt;&#xA;&lt;p&gt;The graph below displays the Electoral College map of every presidential election since 1980. Though there is some variation, it is clear that since 2000, and especially in the past few election cycles, many votes consistently vote for the same party each election on the presidential level, such as the West Coast and New England states voting consistently for the Democrats, and the Deep South and Great Plains states mainly voting for Republican candidates. However, there are a few states in the past few elections that have swung between Democrats and Republicans, including, but not limited to, states such as Wisconsin, Michigan, Pennsylvania, Ohio, Florida, Arizona, and North Carolina.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

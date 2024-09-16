@@ -1,6 +1,6 @@
 ---
 title: Blog 1
-date: 'September 9, 2024'
+date: '2024-09-09'
 slug: prediction-1
 ---
 
