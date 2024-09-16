@@ -11,6 +11,7 @@ library(tidyverse)
 library(car)
 library(tidyr)
 library(lubridate)
+library(readr)
 
 theme_nick <- theme_bw() + 
   theme(panel.border = element_blank(),
