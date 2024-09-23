@@ -274,6 +274,7 @@ test_outcome <-  test %>%
   group_by(state_winner) %>%
   summarize(electoral_votes = sum(electors))
 ```
+
 ```{r, include = FALSE}
 # create electoral map
 library(maps)
@@ -297,6 +298,9 @@ scale_fill_gradient2(low = "red", mid = "white", high = "blue", midpoint = 50,
                      name = "Democratic Two-Party Vote Share") + theme_void() + theme(legend.position = "bottom") +
   labs(title = "Model Forecast of 2024 Presidential Election* - 9/16/24",
        caption = "*Alaska and Hawaii not included")
+
+# how to include Alaska and Hawaii? 
+
 ```
 
 While this may seem like a lopsided forecast, a thousand repetition cross-validation results in a relatively small mean out-of-sample error of -1.129, which indicates that this model has a good fit on this data. Plotting the residuals and a QQ-plot of all the data demonstrate that this model fits the data fairly appropriately, as residuals look decently evenly distributed. 

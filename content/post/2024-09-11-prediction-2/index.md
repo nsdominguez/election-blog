@@ -29,6 +29,7 @@ In addition to these economic variables, I built upon my model last week by incl
 
 
 
+
 Applying my individual state model including these variables to 2024 data yields dramatically different results than last week’s simple model. My new model, including national economic indicators, state-level unemployment, previous results, and incumbency factors predicts that Republican former President Donald Trump wins the 2024 Presidential Election with **326** electoral votes compared to Democrat Vice President Kamala Harris’ **212** electoral votes. In other words, voters are generally forecasted to punish the incumbent party, the Democratic Party, for the current economic conditions, as Kamala Harris is the current vice president to Democratic President Joe Biden. However, many crucial swing states had predicted Democratic two-party vote shares just below the 50% mark, which means that a Democratic victory is within the margin of error.
 
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-10-1.png" width="672" />

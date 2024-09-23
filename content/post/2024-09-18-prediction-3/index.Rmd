@@ -1,0 +1,336 @@
+---
+title: Prediction 3
+author: Nick Dominguez
+date: '2024-09-18'
+slug: prediction-3
+---
+
+# Prediction #3: Polling Data
+
+**September 23, 2024** -  This week’s model focuses on one of the staples of some of today’s most widely known election forecasting models: poll data. But how can we disentangle the deluge of polls and glean insight on what the outcome of the election may be? 
+
+Polls capture voter sentiments at a moment in time, and when polls are put together and averaged, we can get a clearer picture of how voters feel about the candidates over the course of the election. Because there are numerous pollsters that all have their own methods of sampling and measuring, we often look at polling aggregates such as FiveThirtyEight and RealClearPolitics. Forecasters like Nate Silver use polling averages in their election models, rather than just basing their models on a singular poll. Therefore, my model does the same. 
+
+With these facts in mind, I built a prediction model based on previous (2016 and 2020) and current poll data. In our models, we want to include as many polls as possible, but there are some constraints. Not all polls are built the same. We do not want poorly fielded polls to skew our averages and thus our predictions. Therefore, when selecting the statewide poll data from 2016 and 2020 to train my model, I first subset to not include the lowest quality of polls; polls with a D rating or a numeric rating of less than 1. 
+
+Another constraint we have to address is the limit of time frame we have for polls. Vice President Kamala Harris did not become the presumptive Democratic nominee until President Biden dropped out and endorsed her on July 21, 2024. The vast majority of  general election polling before this time was Biden vs. Trump polling. Therefore, my model only uses poll data from July 21, 2024 to September 9, 2024, the most recent polls I have in my 2024 dataset. As a result, when I selected the polling data to construct the model, I only included 2016 and 2020 poll data from this time period, relative to the election date of those respective election years. 
+
+To predict outcomes in individual states, I calculated polling averages for each state for polls for the 2016 and 2020 elections in this late July to early September time period for the Democratic candidates to predict Democratic two-party vote share as the outcome variable. In addition to the period polling average, I added state as a factor variable and election year as a numeric variable to account for state differences and election cycle changes. I also ran regressions that did or did not include the variables `state` and `year`, but the regression that had the highest $r^2$ of 0.992 and the lowest RMSE of 1.567 was the model that included both state and year in its construction. In summary, my model explains an extremely large proportion of the outcome variability (good in-sample fit) but does not overfit and therefore has good predictive power, as evidenced by the RMSE from the 1000 repetition cross validation. 
+
+As for the test data, I use 2024 state polling averages from late July to early September to predict Harris’ two party vote share this November. Unfortunately, although the model has 2016 and 2020 averages for every state, there are some states that do not have any polls during this time period in 2024 (see my data and RealClearPolitics). As a result, the model can only predict the 2024 Democrat two-party vote share for 34 states. The results of this poll data model forecast are shown below. 
+
+
+```{r, include = FALSE}
+setwd("~/Documents/GOV 1347/GOV 1347/content/post/2024-09-18-prediction-3")
+
+# load data and packages
+library(car)
+library(caret)
+library(CVXR)
+library(glmnet)
+library(tidyverse)
+library(lubridate)
+library(blogdown)
+library(tools)
+
+polls_2018_2020 <- read_csv("president_polls_2018_2020.csv")
+polls_2016 <- read_csv("president_polls_2016.csv")
+polls_2020 <- read_csv("president_polls_2020.csv")
+polls_2024 <- read_csv("president_polls_2024.csv")
+state_polls_1968_2024 <- read_csv("state_polls_1968-2024.csv")
+results <- read_csv("clean_wide_state_2pv_1948_2020.csv")
+results <- results %>%
+  mutate(state = str_to_lower(state)) %>%
+  select(year, state, D_pv, R_pv, D_pv2p, R_pv2p)
+
+```
+
+```{r, include = FALSE}
+polls_2024 <- polls_2024 %>%
+  drop_na(state) %>%
+  filter(answer == "Harris") %>%
+  mutate(percent = pct) %>%
+  mutate(
+    start_date = mdy(start_date),
+    end_date = mdy(end_date)
+  ) %>%
+  # Filter rows where start_date is after 7/21/24 and to 9/9/2020
+  filter(start_date > as.Date("2024-07-21")) %>%
+  mutate(state = str_to_lower(state)) %>%
+  group_by(state) %>%
+  summarize(avg = mean(percent)) %>% 
+  ungroup()
+
+polls_2024 <- polls_2024 %>%
+  mutate(year = 2024)
+```
+
+```{r, include = FALSE}
+polls_2020_use <- polls_2018_2020 %>%
+  drop_na(state) %>%
+  filter(answer == "Biden", numeric_grade >= 1) %>%
+  mutate(percent = pct) %>%
+  mutate(
+    start_date = mdy(start_date),
+    end_date = mdy(end_date)
+  ) %>%
+  # Filter rows where start_date is after 7/19/20 and before 9/7/20
+  filter(start_date > as.Date("2020-07-19") & end_date <= as.Date("2020-09-07")) %>%
+  mutate(state = str_to_lower(state)) %>%
+  group_by(state) %>%
+  summarize(avg = mean(percent)) %>% 
+  ungroup()
+
+polls_2020_use <- polls_2020_use %>%
+  mutate(year = 2020) %>%
+  left_join(results, by = c("year", "state"))
+
+```
+
+```{r, include = FALSE}
+polls_2016 <- polls_2016 %>%
+  drop_na(state, grade) %>%
+  filter(grade != "D", state != "U.S.") %>%
+  mutate(percent = adjpoll_clinton) %>%
+  mutate(
+    start_date = mdy(startdate),
+    end_date = mdy(enddate)
+  ) %>%
+  # Filter rows where start_date is after 7/24/16 and before 9/12/16
+  filter(start_date > as.Date("2016-07-24") & end_date <= as.Date("2016-09-12")) %>%
+  mutate(state = str_to_lower(state)) %>%
+  group_by(state) %>%
+  summarize(avg = mean(percent)) %>% 
+  ungroup()
+
+polls_2016 <- polls_2016 %>%
+  mutate(year = 2016) %>%
+  left_join(results, by = c("year", "state"))
+```
+
+```{r, include=FALSE}
+train_data <- bind_rows(polls_2016, polls_2020_use) %>%
+  drop_na()
+```
+
+```{r, include=FALSE}
+mod_pv <- lm(D_pv ~ avg + factor(state) + year, data = train_data)
+
+#mod1
+st_nyr <- lm(D_pv2p ~ avg + factor(state), data = train_data)
+#mod2
+st_yr <- lm(D_pv2p ~ avg + factor(state) + year, data = train_data)
+#mod3
+nst_nyr <- lm(D_pv2p ~ avg, data = train_data)
+#mod4
+nst_yr <- lm(D_pv2p ~ avg, data = train_data)
+```
+
+```{r, include=FALSE}
+polls_2024 <- polls_2024 %>%
+  filter(state != "maine cd-1" & state != "maine cd-2" & state != "nebraska cd-2")
+
+polls_2024$predict_st_yr <- predict(st_yr, newdata = polls_2024, interval = "prediction")
+polls_2024$predict_st_nyr <- predict(st_nyr, newdata = polls_2024)
+```
+
+```{r, include=FALSE}
+summary(st_yr)
+summary(st_nyr)
+```
+
+```{r, include=FALSE}
+# run cross-validation (with help from Chat-GPT 3.5)
+set.seed(2024)
+
+# Create k-folds while keeping all states in each fold
+folds <- createFolds(train_data$state, k = 5, list = TRUE)
+
+# Function to compute RMSE for a given fold
+compute_rmse <- function(train_indices, test_indices) {
+  train_fold <- train_data[train_indices, ]
+  test_fold <- train_data[test_indices, ]
+  
+  # Fit the model on the training fold
+  model <- lm(D_pv2p ~ avg + factor(state) + year, data = train_fold)
+  
+  # Make predictions on the test fold
+  predictions <- predict(model, newdata = test_fold)
+  
+  # Calculate RMSE
+  rmse <- sqrt(mean((test_fold$D_pv2p - predictions)^2, na.rm = TRUE))
+  return(rmse)
+}
+
+# Initialize a vector to store RMSE results
+results <- numeric(length(folds))
+
+# Loop through each fold
+for (i in seq_along(folds)) {
+  test_indices <- folds[[i]]
+  
+  # Ensure that the training data includes all factor levels
+  train_indices <- setdiff(1:nrow(train_data), test_indices)
+  
+  # Compute RMSE for this fold
+  results[i] <- compute_rmse(train_indices, test_indices)
+}
+
+# Create a data frame for results
+results_df <- data.frame(Fold = 1:length(results), RMSE = results)
+
+# Calculate the mean RMSE across all folds
+mean_rmse <- mean(results)
+print(mean_rmse)
+
+```
+
+```{r, include=FALSE}
+# code generated by Chat-GPT 3.5
+
+set.seed(2025)
+
+folds_noyear <- createFolds(train_data$state, k = 5, list = TRUE)
+
+compute_rmse_noyear <- function(train_indices_noyear, test_indices_noyear) {
+  train_fold_noyear <- train_data[train_indices_noyear, ]
+  test_fold_noyear <- train_data[test_indices_noyear, ]
+  
+  model_noyear <- lm(D_pv2p ~ avg + factor(state), data = train_fold_noyear)
+  
+  predictions_noyear <- predict(model_noyear, newdata = test_fold_noyear)
+  
+  rmse_noyear <- sqrt(mean((test_fold_noyear$D_pv2p - predictions_noyear)^2, na.rm = TRUE))
+  return(rmse_noyear)
+}
+
+results_noyear <- numeric(length(folds_noyear))
+
+for (i in seq_along(folds_noyear)) {
+  test_indices_noyear <- folds_noyear[[i]]
+  train_indices_noyear <- setdiff(1:nrow(train_data), test_indices_noyear)
+  results_noyear[i] <- compute_rmse_noyear(train_indices_noyear, test_indices_noyear)
+}
+
+results_df_noyear <- data.frame(Fold = 1:length(results_noyear), RMSE = results_noyear)
+
+
+mean_rmse_noyear <- mean(results_noyear)
+print(mean_rmse_noyear)
+
+```
+
+```{r, include=FALSE}
+polls_2024 <- polls_2024 %>%
+  mutate(winner = ifelse(predict_st_yr[,"fit"] >50, "D", "R"),
+         winner_st_nyr = ifelse(predict_st_nyr >50, "D", "R")) %>%
+  mutate(year = as.character(year))
+```
+
+```{r, include=FALSE}
+# predict electoral college
+ec <- read_csv("corrected_ec_1948_2024.csv") %>%
+  mutate(year = as.character(year)) %>% mutate(state = str_to_lower(state))
+  
+
+polls_2024 <- polls_2024 %>% 
+  left_join(ec, by = c("state", "year"))
+
+outcome <-  polls_2024 %>%
+  group_by(winner) %>%
+  summarize(electoral_votes = sum(electors))
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+# create electoral map of results
+
+library(sf)
+library(RColorBrewer)
+library(viridis)
+
+# Read US hexgrid data. 
+us_hexgrid <- read_sf("us_states_hexgrid.geojson.json") |> 
+  mutate(google_name = gsub(" \\(United States\\)", "", google_name))
+us_hexgrid[us_hexgrid$google_name == "District of Columbia",]$google_name <- "District Of Columbia"
+
+# Merge state predictions with hexgrid data.
+
+map <- us_hexgrid |> 
+  left_join(polls_2024, by = c("iso3166_2" = "stateab"))
+
+ggplot(data = map) +
+  geom_sf(aes(fill = predict_st_yr[,"fit"])) +
+  geom_sf_text(aes(label = iso3166_2), color = "black", size = 3, alpha = 0.6) + 
+  scale_fill_gradient2(low = "red", mid = "white", high = "navyblue", midpoint = 50, 
+                       breaks = c(20, 35, 50, 65, 80), 
+                       limits = c(25, 75),
+                       name = "Harris (D) Two-Party Vote Share*") +
+  labs(title = "2024 Presidential Forecast Polling Model",
+       caption = "*Using 7/21-9/9 Poll Data") + 
+  theme_void() + theme(legend.position = "bottom")
+```
+This model predicts that Democrat Vice President Kamala Harris will win with *303* electoral votes compared to Republican former President Donald Trump’s *130* electoral votes. But, this is not a full prediction, as there is insufficient data to predict outcomes for 16 states and the District of Columbia. However, it makes sense that these states have no polls, as they all are either consistently Republican or Democratic on the presidential level, as evidenced by the graph below. Even if we did have 2024 poll data for these states, it is unlikely that any of these states would flip.  
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+
+not_included <- train_data %>% 
+  filter(state %in% c("hawaii", "idaho", "wyoming", "north dakota", "south dakota", 
+                      "kansas", "louisiana", "kentucky", "mississippi", "alabama",
+                      "south carolina", "district of columbia", "delaware",
+                      "new jersey", "connecticut", "massachusetts", "rhode island")) %>%
+  group_by(state) %>%
+  summarize(mean_D_pv2p = mean(D_pv2p)) %>% ungroup()
+
+ec_nc <- ec %>%
+  filter(year == 2024)
+
+not_included <- not_included %>%
+  mutate(winner = ifelse(mean_D_pv2p > 50, "D", "R")) %>%
+  left_join(ec_nc, by = "state") %>%
+    mutate(state = toTitleCase(state))
+
+outcome_nc <- not_included %>%
+  group_by(winner) %>%
+  summarize(electoral_votes = sum(electors))
+
+full_outcome <- bind_rows(outcome, outcome_nc) %>%
+  group_by(winner) %>%
+  summarize(evs = sum(electoral_votes))
+
+ggplot(not_included, aes(x = mean_D_pv2p, y = reorder(state, mean_D_pv2p), fill = mean_D_pv2p)) + 
+  geom_bar(stat = "identity") + 
+  scale_fill_gradient2(low = "red", mid = "white", high = "navyblue", midpoint = 50, 
+    breaks = c(20, 35, 50, 65, 80), limits = c(25, 75), 
+    name = " Dem Vote Share (%)") +  
+  labs(x = "Mean Democrat Vote Share (2016-2020)",
+    y = "State",
+    title = "Recent Election Results in No Poll Data States") +
+  geom_vline(xintercept = 50)
+  theme_bw +
+  theme(axis.text.y = element_text(size = 8))
+```
+
+To incorporate these states into a final prediction for this week, I will assume that these states will vote in line with how they voted in 2016 and 2020. Summing these results, we get a final prediction of this week of *349* electoral votes for Harris, and *189* for Trump; representing a large Democratic victory.
+
+Although my model predicts a Harris win for the 34 states I was able to predict outcomes for, these are mere estimates and regressions contain error. As seen below, when we add error bars for a 95% confidence interval for predicted Democrat two-party vote share, there are  numerous Harris states in whose intervals straddle the 50% line, meaning that it is possible for Trump to carry some, if not all, of the closest states that Harris is predicted to win, including Pennsylvania, Wisconsin, Arizona, Florida, Georgia, North Carolina. Similarly, the intervals demonstrate that it is possible for Harris to win Texas, Ohio, and Iowa. Running my model with more polls and polls closer to the election on November 5th could change this, but for now, the election is still anyone’s game. 
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+
+polls_2024 <- polls_2024 %>%
+  mutate(state = toTitleCase(state))
+
+ggplot(polls_2024, aes(x = predict_st_yr[,"fit"], y = reorder(state, predict_st_yr[,"fit"]), fill = predict_st_yr[,"fit"])) + 
+  geom_bar(stat = "identity") + 
+  geom_errorbar(aes(xmin = predict_st_yr[,"lwr"], xmax = predict_st_yr[,"upr"]), 
+                width = 0.2, color = "black") + 
+  scale_fill_gradient2(low = "red", mid = "white", high = "navyblue", midpoint = 50, 
+    breaks = c(20, 35, 50, 65, 80), limits = c(25, 75), 
+    name = " Dem Vote Share (%)") +  
+  labs(x = "Harris (D) Predicted Two-Party Vote Share",
+    y = "State",
+    title = "Polling Model Predictions with Uncertainty") +
+  geom_vline(xintercept = 50)
+  theme_bw +
+  theme(axis.text.y = element_text(size = 8))
+```
+
