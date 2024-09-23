@@ -1,7 +1,7 @@
 ---
-title: Prediction 3
+title: Blog 3
 author: Nick Dominguez
-date: '2024-09-18'
+date: '2024-09-23'
 slug: prediction-3
 ---
 
@@ -45,21 +45,17 @@ As for the test data, I use 2024 state polling averages from late July to early 
 
 
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+
 This model predicts that Democrat Vice President Kamala Harris will win with *303* electoral votes compared to Republican former President Donald Trump’s *130* electoral votes. But, this is not a full prediction, as there is insufficient data to predict outcomes for 16 states and the District of Columbia. However, it makes sense that these states have no polls, as they all are either consistently Republican or Democratic on the presidential level, as evidenced by the graph below. Even if we did have 2024 poll data for these states, it is unlikely that any of these states would flip.  
+
 
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-14-1.png" width="672" />
 
-```
-## NULL
-```
 
 To incorporate these states into a final prediction for this week, I will assume that these states will vote in line with how they voted in 2016 and 2020. Summing these results, we get a final prediction of this week of *349* electoral votes for Harris, and *189* for Trump; representing a large Democratic victory.
 
 Although my model predicts a Harris win for the 34 states I was able to predict outcomes for, these are mere estimates and regressions contain error. As seen below, when we add error bars for a 95% confidence interval for predicted Democrat two-party vote share, there are  numerous Harris states in whose intervals straddle the 50% line, meaning that it is possible for Trump to carry some, if not all, of the closest states that Harris is predicted to win, including Pennsylvania, Wisconsin, Arizona, Florida, Georgia, North Carolina. Similarly, the intervals demonstrate that it is possible for Harris to win Texas, Ohio, and Iowa. Running my model with more polls and polls closer to the election on November 5th could change this, but for now, the election is still anyone’s game. 
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-15-1.png" width="672" />
 
-```
-## NULL
-```
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-15-1.png" width="672" />
 

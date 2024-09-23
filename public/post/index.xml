@@ -6,13 +6,13 @@
     <description>Recent content in Posts on Predict with Nick</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 18 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 23 Sep 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://nsdominguez.github.io/election-blog/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Prediction 3</title>
-      <link>https://nsdominguez.github.io/election-blog/post/2024/09/18/prediction-3/</link>
-      <pubDate>Wed, 18 Sep 2024 00:00:00 +0000</pubDate>
-      <guid>https://nsdominguez.github.io/election-blog/post/2024/09/18/prediction-3/</guid>
+      <title>Blog 3</title>
+      <link>https://nsdominguez.github.io/election-blog/post/2024/09/23/prediction-3/</link>
+      <pubDate>Mon, 23 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://nsdominguez.github.io/election-blog/post/2024/09/23/prediction-3/</guid>
       <description>&lt;h1 id=&#34;prediction-3-polling-data&#34;&gt;Prediction #3: Polling Data&lt;/h1&gt;&#xA;&lt;p&gt;&lt;strong&gt;September 23, 2024&lt;/strong&gt; -  This week’s model focuses on one of the staples of some of today’s most widely known election forecasting models: poll data. But how can we disentangle the deluge of polls and glean insight on what the outcome of the election may be?&lt;/p&gt;&#xA;&lt;p&gt;Polls capture voter sentiments at a moment in time, and when polls are put together and averaged, we can get a clearer picture of how voters feel about the candidates over the course of the election. Because there are numerous pollsters that all have their own methods of sampling and measuring, we often look at polling aggregates such as FiveThirtyEight and RealClearPolitics. Forecasters like Nate Silver use polling averages in their election models, rather than just basing their models on a singular poll. Therefore, my model does the same.&lt;/p&gt;</description>
     </item>
     <item>
