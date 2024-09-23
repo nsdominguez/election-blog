@@ -264,7 +264,7 @@ ggplot(data = map) +
   scale_fill_gradient2(low = "red", mid = "white", high = "navyblue", midpoint = 50, 
                        breaks = c(20, 35, 50, 65, 80), 
                        limits = c(25, 75),
-                       name = "Harris (D) Two-Party Vote Share*") +
+                       name = "Harris (D) Predicted Two-Party Vote Share*") +
   labs(title = "2024 Presidential Forecast Polling Model",
        caption = "*Using 7/21-9/9 Poll Data") + 
   theme_void() + theme(legend.position = "bottom")
@@ -304,7 +304,7 @@ ggplot(not_included, aes(x = mean_D_pv2p, y = reorder(state, mean_D_pv2p), fill 
   scale_fill_gradient2(low = "red", mid = "white", high = "navyblue", midpoint = 50, 
     breaks = c(20, 35, 50, 65, 80), limits = c(25, 75), 
     name = " Dem Vote Share (%)") +  
-  labs(x = "Mean Democrat Vote Share (2016-2020)",
+  labs(x = "Mean Democrat Two-Party Vote Share (2016-2020)",
     y = "State",
     title = "Recent Election Results in No Poll Data States") +
   geom_vline(xintercept = 50)
