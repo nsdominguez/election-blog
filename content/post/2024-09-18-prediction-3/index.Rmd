@@ -310,6 +310,8 @@ ggplot(not_included, aes(x = mean_D_pv2p, y = reorder(state, mean_D_pv2p), fill 
   geom_vline(xintercept = 50)
   theme_bw +
   theme(axis.text.y = element_text(size = 8))
+  
+  # note: I left DC gray because I wanted to maintain color palette scale consistency across my graphs. Modifying the scale to include it would leave less distinction for other states. 
 ```
 
 
