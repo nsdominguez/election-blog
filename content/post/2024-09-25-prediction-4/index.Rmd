@@ -1,5 +1,5 @@
 ---
-title: Prediction 4
+title: Blog 4
 author: Nick Dominguez
 date: '2024-09-30'
 slug: prediction-4
@@ -179,25 +179,25 @@ us_hexgrid[us_hexgrid$google_name == "District of Columbia",]$google_name <- "Di
 map <- us_hexgrid |> 
   left_join(test2024, by = c("iso3166_2" = "stateab"))
 
-# Create the ggplot object
 g1 <- ggplot(data = map) +
-  geom_sf(aes(fill = mod2[, "fit"],
-              text = paste(
-                'State:', state,
-                '<br>2024 Harris:', mod2[, "fit"],
-                '<br>2020 Biden:', D_pv2p_lag1,
-                '<br>Electoral Votes:', electors
-              ))) + 
-  geom_sf_text(aes(label = iso3166_2), color = "black", size = 3, alpha = 0.6) + 
+  geom_sf(aes(fill = mod2[, "fit"])) + 
+  geom_sf_text(aes(label = iso3166_2,
+                   text = paste(
+                     'State:', state,
+                     '<br>2024 Harris:', mod2[, "fit"],
+                     '<br>2020 Biden:', D_pv2p_lag1,
+                     '<br>Electoral Votes:', electors
+                   )),
+               color = "black", size = 3, alpha = 0.6) + 
   scale_fill_gradient2(low = "red", mid = "white", high = "navyblue", midpoint = 50, 
                        breaks = c(20, 35, 50, 65, 80), 
                        limits = c(20, 80),
                        name = "Harris (D) Predicted Two-Party Vote Share*") +
-  labs(title = "2024 Presidential Forecast",
+  labs(title = "2024 Presidential Forecast - Incumbency Model",
        caption = "* based on incumbency model") + 
-  theme_void() + theme(legend.position = "bottom")
+  theme_void() +
+  theme(legend.position = "none")
 
-# Make the plot interactive with tooltips
 ggplotly(g1, tooltip = "text")
 ```
 
@@ -217,7 +217,7 @@ g2 <- ggplot(test2024, aes(x = mod2[, "fit"], y = reorder(state, mod2[, "fit"]),
                        limits = c(20, 80), name = "Dem Vote Share (%)") +  
   labs(x = "Harris (D) Predicted Two-Party Vote Share",
        y = "State",
-       title = "Incumbency Factors Predictions with Uncertainty") +
+       title = "Incumbency Model Predictions") +
   geom_vline(xintercept = 50) +
   theme(panel.background = element_rect(fill = "white"),
         plot.title = element_text(hjust = 0, size = 14),
