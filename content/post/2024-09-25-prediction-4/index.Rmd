@@ -1,0 +1,231 @@
+---
+title: Prediction 4
+author: Nick Dominguez
+date: '2024-09-25'
+slug: prediction-4
+---
+
+Plan: 
+
+- explain incumbency
+- should Trump and/or Harris be considered incumbents?
+- for expert prediction model, might just want to focus on swing states
+- could use expert predictions in ensembling
+- time for change model (with more variables?)
+- preliminary ensemble (with previous forecasts)
+- include EC prediction with plotly (name, prediction vote share, electoral votes, and error)
+
+extensions:
+- incumbency for harris or trump? 
+- compare with time for change model?
+- analyze 2020 expert forecasts
+
+
+```{r, include = FALSE}
+setwd("~/Documents/GOV 1347/GOV 1347/content/post/2024-09-25-prediction-4")
+library(car)
+library(caret)
+library(CVXR)
+library(glmnet)
+library(kableExtra)
+library(maps)
+library(RColorBrewer)
+library(sf)
+library(tidyverse)
+library(viridis)
+library(plotly)
+library(blogdown)
+```
+
+```{r, include = FALSE}
+context <- read_csv("election_contexts - Sheet1.csv")
+state_popvote <- read_csv("state_popvote_1948_2020.csv")
+popvote_app <- read_csv("popvote_1948-2020.csv")
+```
+
+```{r}
+# exploratory graphs
+# power of incumbency
+# time for change
+```
+
+
+```{r, include = FALSE}
+# create training data
+context$inc_prez_running <- factor(context$inc_prez_running)
+context$inc_party_nom_recent_admin <- factor(context$inc_party_nom_recent_admin)
+context$challenger_recent_admin <- factor(context$challenger_recent_admin)
+
+data <- state_popvote %>%
+  left_join(context, by = "year") %>%
+  filter(year >= 1976)
+
+popvote_app <- popvote_app %>%
+  filter(party == "democrat") %>%
+  select(year, juneapp)
+
+data <- data %>%
+  left_join(popvote_app, by = "year")
+```
+
+```{r, include = FALSE}
+# create 2024 test data
+
+test2024 <- state_popvote %>%
+  filter(year == 2020) %>%
+  mutate(D_2020 = D_pv2p, D_2016 = D_pv2p_lag1) %>%
+  select(state, D_2020, D_2016) %>%
+  rename(D_pv2p_lag1 = D_2020, D_pv2p_lag2 = D_2016) %>%
+  mutate(year = 2024)
+
+test2024 <- test2024 %>%
+  left_join(context, by = "year") %>%
+  left_join(popvote_app, by = "year")
+
+```
+
+```{r, include = FALSE}
+# weights
+
+data$lin_weights <- ifelse(data$year == 1976, 1,
+              ifelse(data$year == 1980, 2,
+              ifelse(data$year == 1984, 3,
+              ifelse(data$year == 1988, 4,
+              ifelse(data$year == 1992, 5,
+              ifelse(data$year == 1996, 6,
+              ifelse(data$year == 2000, 7,
+              ifelse(data$year == 2004, 8,
+              ifelse(data$year == 2008, 9,
+              ifelse(data$year == 2012, 10,
+              ifelse(data$year == 2016, 11, 12)))))))))))
+
+data$exp_weights <- exp(0.1 * (data$year - 2020))
+```
+
+```{r, include = FALSE}
+library(glmnet)
+
+y <- data$D_pv2p
+x <- as.matrix(data[, c("D_pv2p_lag1", "D_pv2p_lag2", "year", "inc_party", 
+                      "inc_prez_running", "inc_party_nom_recent_admin", 
+                      "challenger_recent_admin", "juneapp", 
+                      "inc_party_duration", "state")])
+
+cv_model <- cv.glmnet(x, y, alpha = 0.5)
+
+plot(cv_model)
+
+best_lambda <- cv_model$lambda.min
+
+final_model <- glmnet(x, y, alpha = 0.5, lambda = best_lambda)
+
+coef(final_model)
+
+```
+
+```{r, include = FALSE}
+# model making 
+
+mod2 <- lm(D_pv2p ~ 
+               inc_prez_running + 
+               juneapp + 
+               inc_party_nom_recent_admin + 
+               challenger_recent_admin + 
+              state * inc_party + 
+               inc_prez_running * juneapp +
+             inc_party_duration * juneapp + 
+             inc_party_nom_recent_admin * juneapp +
+             year * D_pv2p_lag1 + 
+             state * juneapp,
+           data = data, weights = data$exp_weights)
+
+summary(mod2)
+
+test2024$mod2 <- predict(mod2, newdata = test2024, interval = "prediction")
+```
+
+
+```{r, include=FALSE}
+test2024 <- test2024 %>%
+  mutate(winner = ifelse(mod2[,"fit"] >50, "D", "R"))
+```
+
+```{r, include=FALSE}
+# predict electoral college
+ec <- read_csv("corrected_ec_1948_2024.csv")
+  
+test2024 <- test2024 %>% 
+  left_join(ec, by = c("state", "year"))
+
+outcome <-  test2024 %>%
+  group_by(winner) %>%
+  summarize(electoral_votes = sum(electors))
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+# create electoral map of results
+
+library(sf)
+library(RColorBrewer)
+library(viridis)
+
+# Read US hexgrid data. 
+us_hexgrid <- read_sf("us_states_hexgrid.geojson.json") |> 
+  mutate(google_name = gsub(" \\(United States\\)", "", google_name))
+
+us_hexgrid[us_hexgrid$google_name == "District of Columbia",]$google_name <- "District Of Columbia"
+
+# Merge state predictions with hexgrid data.
+map <- us_hexgrid |> 
+  left_join(test2024, by = c("iso3166_2" = "stateab"))
+
+# Create the ggplot object
+g1 <- ggplot(data = map) +
+  geom_sf(aes(fill = mod2[, "fit"],
+              text = paste(
+                'State:', state,
+                '<br>2024 Harris:', mod2[, "fit"],
+                '<br>2020 Biden:', D_pv2p_lag1,
+                '<br>Electoral Votes:', electors
+              ))) + 
+  geom_sf_text(aes(label = iso3166_2), color = "black", size = 3, alpha = 0.6) + 
+  scale_fill_gradient2(low = "red", mid = "white", high = "navyblue", midpoint = 50, 
+                       breaks = c(20, 35, 50, 65, 80), 
+                       limits = c(20, 80),
+                       name = "Harris (D) Predicted Two-Party Vote Share*") +
+  labs(title = "2024 Presidential Forecast",
+       caption = "* based on incumbency model") + 
+  theme_void() + theme(legend.position = "bottom")
+
+# Make the plot interactive with tooltips
+ggplotly(g1, tooltip = "text")
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+g2 <- ggplot(test2024, aes(x = mod2[, "fit"], y = reorder(state, mod2[, "fit"]), fill = mod2[, "fit"])) + 
+  geom_bar(stat = "identity", 
+           aes(text = paste(
+             'State:', state,
+             '<br>Preicted Dem Voteshare:', mod2[, "fit"],
+             '<br>Lower Bound:', mod2[, "lwr"],
+             '<br>Upper Bound:', mod2[, "upr"]
+           ))) + 
+  geom_errorbar(aes(xmin = mod2[, "lwr"], xmax = mod2[, "upr"]), 
+                width = 0.2, color = "black") + 
+  scale_fill_gradient2(low = "red", mid = "white", high = "navyblue", 
+                       midpoint = 50, breaks = c(30, 40, 50, 60, 70), 
+                       limits = c(20, 80), name = "Dem Vote Share (%)") +  
+  labs(x = "Harris (D) Predicted Two-Party Vote Share",
+       y = "State",
+       title = "Incumbency Factors Predictions with Uncertainty") +
+  geom_vline(xintercept = 50) +
+  theme(panel.background = element_rect(fill = "white"),
+        plot.title = element_text(hjust = 0, size = 14),
+        axis.text.y = element_text(size = 5),
+        panel.grid.major = element_line(color = "lightgray", size = 0.3),
+        panel.grid.minor = element_line(color = "lightgray", size = 0.2),
+        plot.title.position = "plot")
+
+ggplotly(g2, tooltip = "text")
+```
+
