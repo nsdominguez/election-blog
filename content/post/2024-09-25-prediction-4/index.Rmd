@@ -1,7 +1,7 @@
 ---
 title: Prediction 4
 author: Nick Dominguez
-date: '2024-09-25'
+date: '2024-09-30'
 slug: prediction-4
 ---
 
