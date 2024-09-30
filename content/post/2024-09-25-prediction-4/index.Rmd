@@ -5,21 +5,21 @@ date: '2024-09-30'
 slug: prediction-4
 ---
 
-Plan: 
+# Prediction #4: Incumbency Factors
 
-- explain incumbency
-- should Trump and/or Harris be considered incumbents?
-- for expert prediction model, might just want to focus on swing states
-- could use expert predictions in ensembling
-- time for change model (with more variables?)
-- preliminary ensemble (with previous forecasts)
-- include EC prediction with plotly (name, prediction vote share, electoral votes, and error)
+**September 30, 2024** - This week, I explored how incumbency matters for election outcomes. What are the benefits, or disadvantages, of being an incumbent? What about being a candidate affiliated with the incumbent? Historically since the 1952 presidential election, incumbent presidents won 7 out of 11 reelection bids. There are many hypotheses as to why incumbents get an electoral boost. Incumbents could just have more media coverage and name recognition, but as the sitting president, their administration oversees the allocation of federal funds and grants (Kriner and Reeves, 2012) and takes credit for economic gains made during their four years, as I explored with pocketbook voting in my second blog. There is even evidence that presidents will often award more funds (pork) to counties in states to target voting blocs critical to their reelection (Kriner and Reeves, 2015). Therefore, incumbency is a powerful tool that is wielded by incumbent presidents. But, if conditions worsen during their tenure, incumbents can be punished for these and denied reelection (Achen and Bartels, 2016). 
 
-extensions:
-- incumbency for harris or trump? 
-- compare with time for change model?
-- analyze 2020 expert forecasts
+Despite the fairly high reelection rate of incumbent presidents, the incumbent *party* nominee does not get elected, more often than not. One reason could be that, by the time the torch is passed to a new nominee for the incumbent party, the incumbent party has held the presidency for two terms, and voters could suffer from incumbent fatigue and desire change from the party in power. They simply grow tired of the same people who have been in the executive office, and may consider the incumbent party candidate, especially one that is connected to the incumbent administration (such as the Vice President) as a continuation of the status quo. 
 
+For this week’s model, I constructed a linear regression model using several incumbency-related variables, using data from presidential elections from 1976 to 2020. Drawing on Alan Abramowitz’s highly predictive time-for-change model, I use the national approval rating of the incumbent president in June of the election year to measure the popularity of the current administration, which gauges if there is an incumbent advantage (if the incumbent is highly approved) or disadvantage in this election. I also include indicator variables for if the incumbent is running for reelection, if the incumbent party nominee is affiliated with the incumbent party (such as the Vice President) and if the challenger candidate is affiliated with the most recent administration of their respective party. I included these last two variables specifically to account for the interesting circumstance in that both candidates have some claim to incumbency. Vice President Harris is the incumbent in the sense that she is from the incumbent administration, but Trump was the incumbent president only four years ago and could remain in recent memory for voters. 
+
+Intuitively, these variables interact with each other to have an effect on the election outcome for each state. Therefore, I constructed the regression with interaction terms for June approval rating and indicator variable if the president is running for reelection or not, and for June approval and the indicator for if the incumbent party nominee is part of the incumbent administration. These variables help model how salient and predictive approval rating is based on how much the incumbent party’s nominee is associated with the incumbent administration. For example, the approval rating might matter more if the president is running for reelection, versus their Vice President running for election, versus an incumbent party candidate from outside the administration. Furthermore, to capture candidate fatigue, I also constructed an indicator variable representing how long the incumbent party has held the presidency leading up to the election with the June approval rating of the incumbent president. If voters have experienced the same party in power for an extended period of time, that may affect if they want that party to continue to lead, based on how the current president is leading. 
+
+My model also includes interactions terma between state and a binary incumbent party variable, between state and the June incumbent approval rating, and the election year and lag Democrat two-party vote share of the previous election interaction term to account for state level differences in partisanship and incumbency effects, as well as partisan polarization over time. 
+
+Finally, I included exponential weights for the election years, giving more recent election observations greater weight. Studies have shown winnowing incumbent effects as the electorate becomes increasingly partisan (Donovan et al., 2019) and therefore the incumbency dynamic of elections decades ago may not be as predictive given our increasingly polarized environment. 
+
+Putting all these variables together with Democrat two-party vote share as the outcome variable resulted in an OLS linear regression model with an adjusted *r*-squared value of *0.952*. It makes sense that this is a higher *r*-squared than Abramowitz’s model, as I include many more variables to capture nuances of these elections at the risk of overfitting. I then applied 2024 election data to this model to predict each state’s Democrat two-party vote share for this upcoming election. These results are illustrated below in a new interactive electoral map for my model’s prediction to compare Harris’ predicted two-party vote share compared to Biden’s in 2020.
 
 ```{r, include = FALSE}
 setwd("~/Documents/GOV 1347/GOV 1347/content/post/2024-09-25-prediction-4")
@@ -41,12 +41,6 @@ library(blogdown)
 context <- read_csv("election_contexts - Sheet1.csv")
 state_popvote <- read_csv("state_popvote_1948_2020.csv")
 popvote_app <- read_csv("popvote_1948-2020.csv")
-```
-
-```{r}
-# exploratory graphs
-# power of incumbency
-# time for change
 ```
 
 
@@ -144,7 +138,6 @@ summary(mod2)
 test2024$mod2 <- predict(mod2, newdata = test2024, interval = "prediction")
 ```
 
-
 ```{r, include=FALSE}
 test2024 <- test2024 %>%
   mutate(winner = ifelse(mod2[,"fit"] >50, "D", "R"))
@@ -193,13 +186,17 @@ g1 <- ggplot(data = map) +
                        breaks = c(20, 35, 50, 65, 80), 
                        limits = c(20, 80),
                        name = "Harris (D) Predicted Two-Party Vote Share*") +
-  labs(title = "2024 Presidential Forecast - Incumbency Model",
+  labs(title = "2024 Presidential Forecast - Two-Party Vote Share",
        caption = "* based on incumbency model") + 
   theme_void() +
   theme(legend.position = "none")
 
 ggplotly(g1, tooltip = "text")
 ```
+
+Based on my incumbency model, the incumbent Vice President, Kamala Harris, the Democrat,  is predicted to win the 2024 presidential election with **349** electoral votes over the Republican, previous incumbent President Donald Trump, who is predicted to win **189** electoral votes. 
+
+As always with prediction, there is confidence and error. When plotting the predicted Democrat two-party vote share for each state, every state in between Maine and Alaska has a 95% confidence interval on either side of the 50% benchmark for victory. This means that my model predicts that these states could possibly vote in either direction, including the consensus tossup states such as Michigan, Nevada, Georgia, Wisconsin, North Carolina, Pennsylvania, Florida, and Arizona. Therefore, my model is not fully confident that Harris (or Trump) will assuredly win their predicted states this November.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 g2 <- ggplot(test2024, aes(x = mod2[, "fit"], y = reorder(state, mod2[, "fit"]), fill = mod2[, "fit"])) + 
@@ -214,7 +211,7 @@ g2 <- ggplot(test2024, aes(x = mod2[, "fit"], y = reorder(state, mod2[, "fit"]),
                 width = 0.2, color = "black") + 
   scale_fill_gradient2(low = "red", mid = "white", high = "navyblue", 
                        midpoint = 50, breaks = c(30, 40, 50, 60, 70), 
-                       limits = c(20, 80), name = "Dem Vote Share (%)") +  
+                       limits = c(20, 80), name = "") +  
   labs(x = "Harris (D) Predicted Two-Party Vote Share",
        y = "State",
        title = "Incumbency Model Predictions") +
