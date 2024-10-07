@@ -1,0 +1,497 @@
+---
+title: Prediction 5
+author: Nick Dominguez
+date: '2024-10-07'
+slug: prediction-5
+---
+
+```{r}
+setwd("~/Documents/GOV 1347/GOV 1347/content/post/2024-10-07-prediction-5")
+```
+
+
+```{r, include = FALSE}
+# load libraries 
+library(car)
+library(caret)
+library(CVXR)
+library(foreign)
+library(glmnet)
+library(haven)
+library(janitor)
+library(kableExtra)
+library(maps)
+library(mlr3)
+library(randomForest)
+library(ranger)
+library(RColorBrewer)
+library(sf)
+library(tidyverse)
+library(viridis)
+library(blogdown)
+```
+
+
+```{r, include = FALSE}
+# load data
+
+ec <- read_csv("corrected_ec_1948_2024.csv")
+
+state_turnout <- read_csv("state_turnout_1980_2022.csv")
+state_demos <- read_csv("demographics.csv")
+state_vote <- read_csv("state_popvote_1948_2020.csv")
+state_polls <- read_csv("state_polls_1968-2024.csv")
+
+natl_vote <- read_csv("popvote_1948_2020.csv")
+natl_polls <- read_csv("national_polls_1968-2024.csv")
+natl_turnout <- read_csv("turnout_1789_2020.csv")
+
+natl_turnout_age <- read_csv("turnout_age_1986_2022.csv")
+natl_turnout_edu <- read_csv("turnout_educ_1986_2022.csv")
+natl_turnout_race <- read_csv("turnout_race_1986_2022.csv")
+
+```
+
+```{r, include = FALSE}
+# clean turnout data
+
+state_turnout$vep_turnout <- as.numeric(gsub("%", "", state_turnout$vep_turnout))
+state_turnout$vep_highest_office <- as.numeric(gsub("%", "", state_turnout$vep_highest_office))
+state_turnout$vap_highest_office <- as.numeric(gsub("%", "", state_turnout$vap_highest_office))
+state_turnout$noncitizen <- as.numeric(gsub("%", "", state_turnout$noncitizen))
+
+```
+
+```{r, include = FALSE}
+# clean demographic data
+
+state_demos <- state_demos %>%
+  mutate(under_18 = under_5 + age_5_to_9 + age_10_to_14 + age_15_to_17,
+         age_18_to_24 = age_18_to_19 + age_20 + age_21 + age_22_to_24,
+         age_25_to_34 = age_25_to_29 + age_30_to_34,
+         age_55_to_64 = age_55_to_59 + age_60_to_61 + age_62_to_64)
+```
+
+
+```{r, include = FALSE}
+state_turnout_with_us <- state_turnout
+
+state_turnout <- state_turnout %>%
+  filter(state != "United States")
+```
+
+```{r, include = FALSE}
+state_demo_turnout <- state_demos %>%
+  left_join(state_turnout, by = c("state", "year"))
+  
+```
+
+```{r, include = FALSE}
+state_vote1 <- state_vote %>%
+  select(state, year, D_pv2p, R_pv2p, D_pv2p_lag1, R_pv2p_lag1)
+
+state_full <- state_demo_turnout %>%
+  left_join(state_vote1, by = c("state", "year"))
+```
+
+
+
+```{r, include = FALSE}
+# exploratory: what factors matter?
+
+state_full_recent <- state_full %>%
+  filter(year >= 2000)
+
+y <- state_full_recent$D_pv2p
+x <- as.matrix(state_full_recent[, c("white", "black", "american_indian", 
+                        "asian_pacific_islander", "other_race", "two_or_more_races",
+                        "hispanic_white", "hispanic_black", "not_hispanic_white",
+                        "under_18", "age_18_to_24", "age_25_to_34", "age_35_to_44",
+                        "age_45_to_54", "age_55_to_64", "age_65_to_74", 
+                        "age_75_to_84", "age_85_and_over", "less_than_college",
+                        "bachelors", "graduate")])
+
+cv_model1 <- cv.glmnet(x, y, alpha = 0.5)
+
+plot(cv_model1)
+
+best_lambda1 <- cv_model1$lambda.min
+
+Dmodel <- glmnet(x, y, alpha = 0.5, lambda = best_lambda1)
+
+coef(Dmodel)
+```
+
+```{r, include = FALSE}
+y <- state_full_recent$R_pv2p
+x <- as.matrix(state_full_recent[, c("white", "black", "american_indian", 
+                        "asian_pacific_islander", "other_race", "two_or_more_races",
+                        "hispanic_white", "hispanic_black", "not_hispanic_white",
+                        "under_18", "age_18_to_24", "age_25_to_34", "age_35_to_44",
+                        "age_45_to_54", "age_55_to_64", "age_65_to_74", 
+                        "age_75_to_84", "age_85_and_over", "less_than_college",
+                        "bachelors", "graduate")])
+
+cv_model2 <- cv.glmnet(x, y, alpha = 0.5)
+
+plot(cv_model2)
+
+best_lambda2 <- cv_model2$lambda.min
+
+Rmodel <- glmnet(x, y, alpha = 0.5, lambda = best_lambda2)
+
+coef(Rmodel)
+```
+
+
+```{r, include = FALSE}
+# demographic trend models
+mod_white <- lm(white ~ state + year, data = state_full_recent)
+mod_black <- lm(black ~ state + year, data = state_full_recent)
+mod_american_indian <- lm(american_indian ~ state + year, data = state_full_recent)
+mod_asian_pacific_islander <- lm(asian_pacific_islander ~ state + year, data = state_full_recent)
+mod_other_race <- lm(other_race ~ state + year, data = state_full_recent)
+mod_two_or_more_races <- lm(two_or_more_races ~ state + year, data = state_full_recent)
+mod_hispanic_white <- lm(hispanic_white ~ state + year, data = state_full_recent)
+mod_hispanic_black <- lm(hispanic_black ~ state + year, data = state_full_recent)
+mod_not_hispanic_white <- lm(not_hispanic_white ~ state + year, data = state_full_recent)
+mod_under_18 <- lm(under_18 ~ state + year, data = state_full_recent)
+mod_age_18_to_24 <- lm(age_18_to_24 ~ state + year, data = state_full_recent)
+mod_age_25_to_34 <- lm(age_25_to_34 ~ state + year, data = state_full_recent)
+mod_age_35_to_44 <- lm(age_35_to_44 ~ state + year, data = state_full_recent)
+mod_age_45_to_54 <- lm(age_45_to_54 ~ state + year, data = state_full_recent)
+mod_age_55_to_64 <- lm(age_55_to_64 ~ state + year, data = state_full_recent)
+mod_age_65_to_74 <- lm(age_65_to_74 ~ state + year, data = state_full_recent)
+mod_age_75_to_84 <- lm(age_75_to_84 ~ state + year, data = state_full_recent)
+mod_age_85_and_over <- lm(age_85_and_over ~ state + year, data = state_full_recent)
+mod_less_than_college <- lm(less_than_college ~ state + year, data = state_full_recent)
+mod_bachelors <- lm(bachelors ~ state + year, data = state_full_recent)
+mod_graduate <- lm(graduate ~ state + year, data = state_full_recent)
+```
+
+
+```{r, include = FALSE}
+# predict demographics and turnout for 2024
+
+set.seed(2024)
+# Number of simulations
+num_simulations <- 1000
+simulated_results <- data.frame()
+
+# Loop through each state and generate simulations for 2024 values
+for (state in unique(state_full_recent$state)) {
+  for (i in 1:num_simulations) {
+    # Simulate demographic values using the fitted models
+    simulated_white <- rnorm(1, mean = predict(mod_white, newdata = data.frame(year = 2024, state = state)), 
+                             sd = sd(state_full_recent$white, na.rm = TRUE))
+    simulated_black <- rnorm(1, mean = predict(mod_black, newdata = data.frame(year = 2024, state = state)), 
+                             sd = sd(state_full_recent$black, na.rm = TRUE))
+    simulated_american_indian <- rnorm(1, mean = predict(mod_american_indian, newdata = data.frame(year = 2024, state = state)), 
+                                       sd = sd(state_full_recent$american_indian, na.rm = TRUE))
+    simulated_asian_pacific_islander <- rnorm(1, mean = predict(mod_asian_pacific_islander, newdata = data.frame(year = 2024, state = state)), 
+                                              sd = sd(state_full_recent$asian_pacific_islander, na.rm = TRUE))
+    simulated_other_race <- rnorm(1, mean = predict(mod_other_race, newdata = data.frame(year = 2024, state = state)), 
+                                  sd = sd(state_full_recent$other_race, na.rm = TRUE))
+    simulated_two_or_more_races <- rnorm(1, mean = predict(mod_two_or_more_races, newdata = data.frame(year = 2024, state = state)), 
+                                         sd = sd(state_full_recent$two_or_more_races, na.rm = TRUE))
+    simulated_hispanic_white <- rnorm(1, mean = predict(mod_hispanic_white, newdata = data.frame(year = 2024, state = state)), 
+                                      sd = sd(state_full_recent$hispanic_white, na.rm = TRUE))
+    simulated_hispanic_black <- rnorm(1, mean = predict(mod_hispanic_black, newdata = data.frame(year = 2024, state = state)), 
+                                      sd = sd(state_full_recent$hispanic_black, na.rm = TRUE))
+    simulated_not_hispanic_white <- rnorm(1, mean = predict(mod_not_hispanic_white, newdata = data.frame(year = 2024, state = state)), 
+                                          sd = sd(state_full_recent$not_hispanic_white, na.rm = TRUE))
+
+    simulated_under_18 <- rnorm(1, mean = predict(mod_under_18, newdata = data.frame(year = 2024, state = state)), 
+                                sd = sd(state_full_recent$under_18, na.rm = TRUE))
+    simulated_age_18_to_24 <- rnorm(1, mean = predict(mod_age_18_to_24, newdata = data.frame(year = 2024, state = state)), 
+                                    sd = sd(state_full_recent$age_18_to_24, na.rm = TRUE))
+    simulated_age_25_to_34 <- rnorm(1, mean = predict(mod_age_25_to_34, newdata = data.frame(year = 2024, state = state)), 
+                                    sd = sd(state_full_recent$age_25_to_34, na.rm = TRUE))
+    simulated_age_35_to_44 <- rnorm(1, mean = predict(mod_age_35_to_44, newdata = data.frame(year = 2024, state = state)), 
+                                    sd = sd(state_full_recent$age_35_to_44, na.rm = TRUE))
+    simulated_age_45_to_54 <- rnorm(1, mean = predict(mod_age_45_to_54, newdata = data.frame(year = 2024, state = state)), 
+                                    sd = sd(state_full_recent$age_45_to_54, na.rm = TRUE))
+    simulated_age_55_to_64 <- rnorm(1, mean = predict(mod_age_55_to_64, newdata = data.frame(year = 2024, state = state)), 
+                                    sd = sd(state_full_recent$age_55_to_64, na.rm = TRUE))
+    simulated_age_65_to_74 <- rnorm(1, mean = predict(mod_age_65_to_74, newdata = data.frame(year = 2024, state = state)), 
+                                    sd = sd(state_full_recent$age_65_to_74, na.rm = TRUE))
+    simulated_age_75_to_84 <- rnorm(1, mean = predict(mod_age_75_to_84, newdata = data.frame(year = 2024, state = state)), 
+                                    sd = sd(state_full_recent$age_75_to_84, na.rm = TRUE))
+    simulated_age_85_and_over <- rnorm(1, mean = predict(mod_age_85_and_over, newdata = data.frame(year = 2024, state = state)), 
+                                       sd = sd(state_full_recent$age_85_and_over, na.rm = TRUE))
+
+    simulated_less_than_college <- rnorm(1, mean = predict(mod_less_than_college, newdata = data.frame(year = 2024, state = state)), 
+                                         sd = sd(state_full_recent$less_than_college, na.rm = TRUE))
+    simulated_bachelors <- rnorm(1, mean = predict(mod_bachelors, newdata = data.frame(year = 2024, state = state)), 
+                                 sd = sd(state_full_recent$bachelors, na.rm = TRUE))
+    simulated_graduate <- rnorm(1, mean = predict(mod_graduate, newdata = data.frame(year = 2024, state = state)), 
+                                sd = sd(state_full_recent$graduate, na.rm = TRUE))
+
+    # Combine all simulated values into a data frame for each state and iteration
+    simulated_results <- rbind(simulated_results, data.frame(
+      state = state,
+      white = simulated_white,
+      black = simulated_black,
+      american_indian = simulated_american_indian,
+      asian_pacific_islander = simulated_asian_pacific_islander,
+      other_race = simulated_other_race,
+      two_or_more_races = simulated_two_or_more_races,
+      hispanic_white = simulated_hispanic_white,
+      hispanic_black = simulated_hispanic_black,
+      not_hispanic_white = simulated_not_hispanic_white,
+      under_18 = simulated_under_18,
+      age_18_to_24 = simulated_age_18_to_24,
+      age_25_to_34 = simulated_age_25_to_34,
+      age_35_to_44 = simulated_age_35_to_44,
+      age_45_to_54 = simulated_age_45_to_54,
+      age_55_to_64 = simulated_age_55_to_64,
+      age_65_to_74 = simulated_age_65_to_74,
+      age_75_to_84 = simulated_age_75_to_84,
+      age_85_and_over = simulated_age_85_and_over,
+      less_than_college = simulated_less_than_college,
+      bachelors = simulated_bachelors,
+      graduate = simulated_graduate
+    ))
+  }
+}
+
+
+```
+
+
+```{r, include = FALSE}
+# construct prediction model
+rf_model <- randomForest(
+  D_pv2p ~ white + black + american_indian + asian_pacific_islander + other_race + 
+            two_or_more_races + hispanic_white + hispanic_black + not_hispanic_white + 
+    age_18_to_24 + age_25_to_34 + age_35_to_44 + age_45_to_54 + 
+            age_55_to_64 + age_65_to_74 + age_75_to_84 + age_85_and_over + 
+            less_than_college + bachelors + graduate + vep_highest_office + 
+    D_pv2p_lag1 + state,
+  data = state_full_recent,
+  ntree = 750,       
+  mtry = 8,           
+  importance = TRUE
+)
+```
+
+```{r, include = FALSE}
+add_vote <- state_full_recent %>%
+  filter(year == 2020) %>%
+  select(state, D_pv2p)
+
+simulated_results <- simulated_results %>%
+  left_join(add_vote, by = "state") %>%
+  rename(D_pv2p_lag1 = D_pv2p)
+  
+```
+
+```{r, include = FALSE}
+turnout_data <- state_full_recent %>%
+  filter(year %in% c(2020, 2016, 2012)) %>%
+  group_by(state) %>%
+  summarize(vep_highest_office = mean(vep_highest_office)) %>%
+  ungroup() %>% select(state, vep_highest_office)
+```
+
+```{r, include = FALSE}
+simulated_results <- simulated_results %>%
+  left_join(turnout_data, by = "state") 
+```
+
+# Prediction #5: Demographics and Turnout
+
+**October 7, 2024** - We are now officially less than one month until the 2024 Presidential Election. This week, we will investigate the question: how do demographic characteristics and turnout affect vote outcomes? 
+
+There has been extensive research to answer this question. For example, one of the earliest papers, Wolfinger and Rosenstone (1980) found that education level in particular is an important factor in determining turnout, using Census data from the early 1970s. Similarly, a decade later, Rosenstone and Hansen used American National Election Studies data to reveal that it is not just education, but the most participatory demographics were white, wealthy, educated voters. 
+
+In recent years, there has been discourse as to who increased voter turnout benefits. People often posit that increased voter turnout often benefits Democrats, since the most reliable voting blocs of older, whiter, wealthier Americans tend to vote more with the Republican Party. However, Shaw and Petrocik (2020) refute this claim, finding that increased voter turnout across a large sample of elections does not significantly boost one party or the other. There is also evidence to suggest that while demographic variables do matter, when used to predict whether one will vote for a Democrat or Republican, they are only correct 63% of the time. Therefore, a person’s vote choice, and their decision to even vote, is not solely a product of their demographic background (Kim and Zilinksy 2023). 
+
+Nonetheless, it is still a useful exercise to get a sense of how demographic variables affect vote outcomes since they are related to vote outcomes, especially in an increasingly calcified electorate. Predicting vote outcomes from turnout and demographics requires that we know these input variables for the election we’re trying to predict. But, this is a problem, since we do not know the turnout of an election that has not happened. To address this, I estimate 2024 voter turnout, measured by the voting eligible turnout of the highest office (turnout to vote for President) by averaging VEP highest office turnout across the 2012, 2016, and 2020 elections for each state. In other words, I assume that for the 2024 election, voter turnout will be average in each state. 
+
+Similarly, while we could get estimates of state demographic composition in 2024 by using samples of the voter file for each state, but these data contain many missing values, and therefore will be difficult to get estimates. Instead, I estimate state demographic characteristics by creating regressions for 20 different demographic variables using data from 2000 to 2020 to predict what state demographic compositions are in 2024. Then, I used Monte Carlo simulations for these predictions to better understand the variability that these values could have, assuming a Gaussian distribution. 
+
+As for my predictive model, I used the set of 20 demographic variables (including variables for race, age, and education) and VEP highest office turnout, lagged Democrat two-party vote share from the previous election, as well as a state factor variable to predict Democrat two-party vote share. The training data has a more narrow time span, from 2000 to 2020, because we do not have values for all of these variables for earlier elections. For this model, I used a Random Forest instead of an OLS linear regression model. Random forest models are more robust for prediction and can automatically handle interaction terms, which is useful since demographic groups do not vote uniformly across states. For example, white voters in Southern states tend to vote Republican than white voters in Minnesota or Massachusetts, or how Hispanic voters in California, who are mostly of Mexican descent, vote more for Democrats than Cuban Americans, which are the largest Hispanic group in Florida. The resulting random forest model explains 90.47% of the variance in outcomes, has an in-sample RMSE of 1.49 and a grouped k-fold cross validation out-of-sample RMSE of 6.52. The importance of each variable in the model is shown below. 
+
+
+```{r, echo = FALSE}
+varImpPlot(rf_model)
+```
+
+
+```{r, include = FALSE, warning = FALSE}
+simulated_results$prediction <- sapply(1:nrow(simulated_results), function(i) {
+  predict(rf_model, newdata = simulated_results[i, , drop = FALSE])
+})
+```
+
+```{r, include = FALSE}
+simulated_results$prediction <- as.numeric(simulated_results$prediction)
+
+result_df <- simulated_results %>%
+  group_by(state) %>%
+  summarise(
+    mean_prediction = mean(prediction, na.rm = TRUE),
+    lower_bound = quantile(prediction, probs = 0.025, na.rm = TRUE),
+    upper_bound = quantile(prediction, probs = 0.975, na.rm = TRUE)
+  )
+```
+
+```{r, include = FALSE}
+
+predicted_values_train <- predict(rf_model, state_full_recent)
+
+# Step 2: Calculate the RMSE
+actual_values <- state_full_recent$D_pv2p
+rmse <- sqrt(mean((predicted_values_train - actual_values)^2))
+
+print(rmse)
+
+```
+
+```{r, include = FALSE}
+
+set.seed(2025)  
+folds <- groupKFold(state_full_recent$state, k = 5) 
+
+train_control <- trainControl(
+  method = "cv",
+  index = folds
+)
+
+rf_cv_model <- train(
+  D_pv2p ~ white + black + american_indian + asian_pacific_islander + other_race + 
+           two_or_more_races + hispanic_white + hispanic_black + not_hispanic_white + 
+           age_18_to_24 + age_25_to_34 + age_35_to_44 + age_45_to_54 + 
+           age_55_to_64 + age_65_to_74 + age_75_to_84 + age_85_and_over + 
+           less_than_college + bachelors + graduate + vep_highest_office + 
+           D_pv2p_lag1 + state,
+  data = state_full_recent,
+  method = "rf",
+  trControl = train_control,
+  tuneGrid = data.frame(mtry = 8),
+  ntree = 750,
+  importance = TRUE
+)
+
+print(rf_cv_model$results$RMSE)
+
+```
+
+```{r, include = FALSE}
+rf_model
+```
+
+
+```{r, include = FALSE}
+result_df$state <- tolower(result_df$state)
+ec$state <- tolower(ec$state)
+
+ec_2024 <- ec %>%
+  filter(year == 2024)
+
+result_df <- result_df %>% 
+  left_join(ec_2024, by = "state") %>%
+  mutate(winner = ifelse(mean_prediction > 50, "D", "R"))
+
+outcome <- result_df %>%
+  group_by(winner) %>%
+  summarize(electoral_votes = sum(electors))
+```
+
+```{r, include = FALSE}
+library(tools)
+result_df$state <- toTitleCase(result_df$state)
+```
+
+```{r, include = FALSE}
+result_df$mean_prediction <- round(result_df$mean_prediction, digits = 2)
+result_df$lower_bound <- round(result_df$lower_bound, digits = 2)
+result_df$upper_bound <- round(result_df$upper_bound, digits = 2)
+```
+
+```{r, include = FALSE}
+vote_2020 <- simulated_results %>%
+  select(state, D_pv2p_lag1)
+
+vote_2020$D_pv2p_lag1 <- round(vote_2020$D_pv2p_lag1, digits = 2)
+
+result_df <- result_df %>%
+  left_join(vote_2020, by = "state")
+```
+
+With the simulated and estimated 2024 data, my Random Forest demographics and turnout model predicts that Democrat Kamala Harris will win the 2024 Presidential Election with **349** electoral votes compared to Republican Donald Trump’s **189** electoral votes. Despite different vote share estimates, this is the same outcome as my incumbency factors model last week. State results are shown in the map below, as well as the range of plausible vote shares for each state. The 95% confidence intervals for each state’s vote share indicates that my model suggests there are scenarios in which either Trump or Harris could carry the most competitive states. 
+
+*Note: there is an error in the bar plot that prevents the Trump-won state bar values to map correctly. I will update this post as soon as I figure out how to fix this.*
+
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+# create electoral map of results
+
+# Read US hexgrid data. 
+us_hexgrid <- read_sf("us_states_hexgrid.geojson.json") |> 
+  mutate(google_name = gsub(" \\(United States\\)", "", google_name))
+
+us_hexgrid[us_hexgrid$google_name == "District of Columbia",]$google_name <- "District Of Columbia"
+
+# Merge state predictions with hexgrid data.
+map <- us_hexgrid |> 
+  left_join(result_df, by = c("iso3166_2" = "stateab"))
+
+g1 <- ggplot(data = map) +
+  geom_sf(aes(fill = mean_prediction)) + 
+  geom_sf_text(aes(label = iso3166_2,
+                   text = paste(
+                     'State:', state,
+                     '<br>Predicted Harris 2-P Vote Share:', mean_prediction,
+                     '<br>2020 Biden 2-P Vote Share:', D_pv2p_lag1,
+                     '<br>Electoral Votes:', electors
+                   )),
+               color = "black", size = 3, alpha = 0.6) + 
+  scale_fill_gradient2(low = "red", mid = "white", high = "navyblue", midpoint = 50, 
+                       breaks = c(20, 35, 50, 65, 80), 
+                       limits = c(20, 80),
+                       name = "Harris (D) Predicted Two-Party Vote Share*") +
+  labs(title = "2024 Presidential Forecast - Two-Party Vote Share",
+       caption = "* based on demographics and turnout model") + 
+  theme_void() +
+  theme(legend.position = "none")
+
+library(plotly)
+
+ggplotly(g1, tooltip = "text")
+
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+
+g2 <- ggplot(result_df, aes(x = mean_prediction, y = reorder(state, mean_prediction), fill = mean_prediction)) + 
+  geom_bar(stat = "identity", 
+           aes(text = paste(
+             'State:', state,
+             '<br>Predicted Harris Voteshare:', mean_prediction,
+             '<br>Lower Bound:', lower_bound,
+             '<br>Upper Bound:', upper_bound
+           ))) + 
+  geom_errorbar(aes(xmin = lower_bound, xmax = upper_bound), 
+                width = 0.2, color = "black") + 
+  scale_fill_gradient2(low = "red", mid = "white", high = "navyblue", 
+                       midpoint = 50, breaks = c(30, 40, 50, 60, 70), 
+                       limits = c(20, 80), name = "") +  
+  labs(x = "Harris (D) Predicted Two-Party Vote Share",
+       y = "State",
+       title = "Demographics and Turnout Model Predictions") +
+  geom_vline(xintercept = 50) +
+  theme(panel.background = element_rect(fill = "white"),
+        plot.title = element_text(hjust = 0, size = 14),
+        axis.text.y = element_text(size = 5),
+        panel.grid.major = element_line(color = "lightgray", size = 0.3),
+        panel.grid.minor = element_line(color = "lightgray", size = 0.2),
+        plot.title.position = "plot") +
+  scale_x_continuous(limits = c(0, 100))
+
+ggplotly(g2, tooltip = "text")
+# I don't know why the bars won't graph correctly. 
+```
+
+As with each weekly blog post, I must emphasize that these predictions are mere components of a forthcoming final prediction that will integrate all of my individual models together. As evidenced by the literature and the fairly large out-of-sample RMSE, the predictive power of demographics and turnout are limited. Additionally, due to data constraints, I use overall VEP highest office turnout for each state, which does not fully account for turnout differences between groups. This may explain why in Republican states, mostly in the South, Harris is predicted to substantially improve the Democrat two-party vote share compared to Biden. In subsequent models I may use election laws and more specific turnout estimates by demographic group to better predict outcomes, to account for the large disparity in voter turnout by demographics, especially in rural Black Belt counties that have low turnout. This demographic and turnout model could also be further improved by including polling crosstab averages to better reflect how each demographic group may vote in 2024, and how it may depart from previous elections. If I am able to implement these changes, I would have more confidence in the predictions for the 2024 election that this model provides.
