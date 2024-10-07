@@ -5,7 +5,7 @@ date: '2024-10-07'
 slug: prediction-5
 ---
 
-```{r}
+```{r, include = FALSE}
 setwd("~/Documents/GOV 1347/GOV 1347/content/post/2024-10-07-prediction-5")
 ```
 
@@ -462,6 +462,8 @@ library(plotly)
 ggplotly(g1, tooltip = "text")
 
 ```
+
+
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 
