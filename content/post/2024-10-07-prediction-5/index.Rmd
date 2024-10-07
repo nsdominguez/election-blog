@@ -1,5 +1,5 @@
 ---
-title: Prediction 5
+title: Blog 5
 author: Nick Dominguez
 date: '2024-10-07'
 slug: prediction-5
@@ -170,7 +170,7 @@ mod_graduate <- lm(graduate ~ state + year, data = state_full_recent)
 ```
 
 
-```{r, include = FALSE}
+```{r, include = FALSE, cache = TRUE}
 # predict demographics and turnout for 2024
 
 set.seed(2024)
