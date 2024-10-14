@@ -175,7 +175,7 @@ graph <- train %>%
 
 g3 <- ggplot(data = graph, mapping = aes(x = D_contribution_prop, y = D_pv2p, color = winner)) + 
   geom_point(aes(text = paste(
-             'State:', state,
+             state,
              '<br>Dem. Contribution %:', D_prop,
              '<br>Dem. Vote %:', D_vote
            ))) + 
@@ -323,7 +323,7 @@ test <- test %>%
 
 g4 <- ggplot(data = test, mapping = aes(x = D_contribution_prop*100, y = prediction[,"fit"], color = candidate)) + 
   geom_point(aes(text = paste(
-             'State:', state,
+             state,
              '<br>Dem. Contribution %:', D_contribution_prop,
              '<br>Predicted Dem. Vote %:', prediction[,"fit"]
            ))) + 
