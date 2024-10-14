@@ -168,7 +168,7 @@ test <- full_data %>%
   filter(year == 2024)
 ```
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
 graph <- train %>%
   mutate(D_prop = round(D_contribution_prop * 100, 2)) %>%
   mutate(D_vote = round(D_pv2p, 2))
@@ -317,7 +317,7 @@ ggplotly(g1, tooltip = "text")
 
 Based on FEC campaign contributions, my model predicts that Democrat Vice President Kamala Harris will narrowly win the presidency, with **276** electoral votes compared to Republican former President Donald Trump’s **262** electoral votes. In this predicted outcome, Harris wins every state Biden won in 2020 except Arizona and Georgia, which are reclaimed by Trump. Interestingly, the model predicts that the higher contribution-victory threshold for Democrats will be less significant in 2024, as Harrs is predicted to win every state where she has at least a simple majority of contributions, except North Carolina, while the same is true for Trump except the state of Nevada. In the two states Trump is predicted to flip, Georgia and Arizona, Trump holds a majority of campaign contributions.
 
-```{r}
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
 test <- test %>%
   mutate(candidate = ifelse(winner == "D", "Harris", "Trump"))
 
