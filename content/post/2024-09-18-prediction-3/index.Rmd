@@ -1,6 +1,6 @@
 ---
-title: Blog 3
-author: Nick Dominguez
+title: "Just Look at the Numbers: Polling"
+author: "Nick Dominguez"
 date: '2024-09-23'
 slug: prediction-3
 ---

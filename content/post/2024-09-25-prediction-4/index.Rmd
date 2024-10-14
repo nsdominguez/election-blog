@@ -1,6 +1,6 @@
 ---
-title: Blog 4
-author: Nick Dominguez
+title: "Who's Running?: Incumbency"
+author: "Nick Dominguez"
 date: '2024-09-30'
 slug: prediction-4
 ---

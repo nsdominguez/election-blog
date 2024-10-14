@@ -1,5 +1,6 @@
 ---
-title: Blog 1
+title: "Past, Present, and Future: Previous Results"
+author: "Nick Dominguez"
 date: '2024-09-09'
 slug: prediction-1
 ---

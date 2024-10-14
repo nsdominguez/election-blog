@@ -1,0 +1,331 @@
+---
+title: "Money is Power: Campaign Finance" 
+author: "Nick Dominguez"
+date: '2024-10-13'
+slug: prediction-6
+---
+
+```{r, include = FALSE}
+# set working directory
+setwd("~/Documents/GOV 1347/GOV 1347/content/post/2024-10-13-prediction-6")
+
+# load packages
+library(blogdown)
+library(car)
+library(caret)
+library(cowplot)
+library(curl)
+library(CVXR)
+library(foreign)
+library(geofacet)
+library(glmnet)
+library(haven)
+library(janitor)
+library(kableExtra)
+library(maps)
+library(mlr3)
+library(plotly)
+library(randomForest)
+library(ranger)
+library(RColorBrewer)
+library(rstan)
+library(scales)
+library(sf)
+library(shinystan)
+library(tidyverse)
+library(viridis)
+
+# load data
+fec <- read_csv("FEC_contributions_by_state_2008_2024.csv")
+bea_state <- read_csv("bea_state_income_per_capita - Table.csv")
+ec <- read_csv("corrected_ec_1948_2024.csv")
+votes <- read_csv("state_popvote_1948_2020.csv")
+```
+
+```{r, include = FALSE}
+# clean data
+
+bea_long <- bea_state %>%
+   select(-c(`1929`, `1930`, `1931`, `1932`, `1933`, `1934`, `1935`, `1936`, `1937`, 
+            `1938`, `1939`, `1940`, `1941`, `1942`, `1943`, `1944`, `1945`, `1946`, 
+            `1947`, `1948`, `1949`)) %>%
+  pivot_longer(
+    cols = matches("^\\d{4}$"), 
+    names_to = "year",
+    values_to = "income_per_capita"
+  ) %>%
+  mutate(year = as.integer(year)) %>%
+  mutate(year_n = year+1)
+
+```
+
+```{r, include = FALSE}
+fec <- fec %>%
+  mutate(state = case_when(
+    contribution_state == "AL" ~ "Alabama",
+    contribution_state == "AK" ~ "Alaska",
+    contribution_state == "AZ" ~ "Arizona",
+    contribution_state == "AR" ~ "Arkansas",
+    contribution_state == "CA" ~ "California",
+    contribution_state == "CO" ~ "Colorado",
+    contribution_state == "CT" ~ "Connecticut",
+    contribution_state == "DE" ~ "Delaware",
+    contribution_state == "DC" ~ "District of Columbia",
+    contribution_state == "FL" ~ "Florida",
+    contribution_state == "GA" ~ "Georgia",
+    contribution_state == "HI" ~ "Hawaii",
+    contribution_state == "ID" ~ "Idaho",
+    contribution_state == "IL" ~ "Illinois",
+    contribution_state == "IN" ~ "Indiana",
+    contribution_state == "IA" ~ "Iowa",
+    contribution_state == "KS" ~ "Kansas",
+    contribution_state == "KY" ~ "Kentucky",
+    contribution_state == "LA" ~ "Louisiana",
+    contribution_state == "ME" ~ "Maine",
+    contribution_state == "MD" ~ "Maryland",
+    contribution_state == "MA" ~ "Massachusetts",
+    contribution_state == "MI" ~ "Michigan",
+    contribution_state == "MN" ~ "Minnesota",
+    contribution_state == "MS" ~ "Mississippi",
+    contribution_state == "MO" ~ "Missouri",
+    contribution_state == "MT" ~ "Montana",
+    contribution_state == "NE" ~ "Nebraska",
+    contribution_state == "NV" ~ "Nevada",
+    contribution_state == "NH" ~ "New Hampshire",
+    contribution_state == "NJ" ~ "New Jersey",
+    contribution_state == "NM" ~ "New Mexico",
+    contribution_state == "NY" ~ "New York",
+    contribution_state == "NC" ~ "North Carolina",
+    contribution_state == "ND" ~ "North Dakota",
+    contribution_state == "OH" ~ "Ohio",
+    contribution_state == "OK" ~ "Oklahoma",
+    contribution_state == "OR" ~ "Oregon",
+    contribution_state == "PA" ~ "Pennsylvania",
+    contribution_state == "RI" ~ "Rhode Island",
+    contribution_state == "SC" ~ "South Carolina",
+    contribution_state == "SD" ~ "South Dakota",
+    contribution_state == "TN" ~ "Tennessee",
+    contribution_state == "TX" ~ "Texas",
+    contribution_state == "UT" ~ "Utah",
+    contribution_state == "VT" ~ "Vermont",
+    contribution_state == "VA" ~ "Virginia",
+    contribution_state == "WA" ~ "Washington",
+    contribution_state == "WV" ~ "West Virginia",
+    contribution_state == "WI" ~ "Wisconsin",
+    contribution_state == "WY" ~ "Wyoming")) %>%
+  rename(year = election_year)
+```
+
+```{r, include = FALSE}
+fec1 <- fec %>%
+  group_by(state, year) %>%                                   
+  summarize(
+    D_contribution_difference = sum(ifelse(party == "Democrat", contribution_receipt_amount, 0)) -
+                      sum(ifelse(party == "Republican", contribution_receipt_amount, 0)), 
+    D_contribution_prop = sum(ifelse(party == "Democrat", contribution_receipt_amount, 0)) / 
+                          sum(contribution_receipt_amount, na.rm = TRUE),            
+    .groups = 'drop'                                          
+  )
+```
+
+```{r, include = FALSE}
+fec1 <- fec1 %>%
+  left_join(bea_long, by = c("state" = "State", "year" = "year_n")) %>%
+  select(-c(year.y, FIPS))
+```
+
+```{r, include = FALSE}
+votes_2024 <- votes %>%
+  filter(year == 2020) %>%
+  select(state, D_pv2p, D_pv2p_lag1) %>%
+  rename(D_pv2p_lag2 = D_pv2p_lag1) %>%
+  rename(D_pv2p_lag1 = D_pv2p) %>%
+  mutate(year = 2024)
+```
+
+```{r, include = FALSE}
+votes_full <- bind_rows(votes, votes_2024)
+```
+
+```{r, include = FALSE}
+# compile final data
+full_data <- fec1 %>%
+  left_join(votes_full, by = c("state", "year"))
+```
+
+```{r, include = FALSE}
+# split data
+train <- full_data %>%
+  filter(year != 2024)
+
+test <- full_data %>%
+  filter(year == 2024)
+```
+
+```{r, echo = FALSE}
+ggplot(data = train, mapping = aes(x = D_contribution_prop, y = D_pv2p, color = winner)) + 
+  geom_point() + 
+  facet_wrap(~year) + 
+  geom_vline(xintercept = 0.5, linetype = "dotted") + 
+  geom_hline(yintercept = 50, linetype = "dotted") +
+  scale_color_manual(values = c("navyblue", "red")) +
+  theme_bw() + 
+  labs(x = "Democratic Proportion of Contributions", 
+       y = "Democratic Two-Party Vote Share", 
+       title = "Fundraising as a Support Barometer",
+       caption = "Data from FEC", 
+       color = "State Winner") + 
+  theme(plot.title = element_text(face = "bold"))
+```
+
+
+```{r, include = FALSE}
+# construct model
+mod1 <- lm(D_pv2p ~
+             D_contribution_prop +
+             D_contribution_difference * state, 
+           data = train)
+summary(mod1)
+```
+
+```{r, include = FALSE}
+# cross validation (help from Chat-GPT)
+
+set.seed(2025)
+
+compute_rmse <- function(train_indices, test_indices) {
+  train_fold <- train[train_indices, ]
+  test_fold <- train[test_indices, ]
+
+  model <- lm(D_pv2p ~ D_contribution_prop + D_contribution_difference * state, 
+                     data = train_fold)
+
+  predictions <- predict(model, newdata = test_fold)
+
+  rmse <- sqrt(mean((test_fold$D_pv2p - predictions)^2, na.rm = TRUE))
+  return(rmse)
+}
+
+num_folds <- 5
+num_repeats <- 1000
+
+all_results <- numeric(num_repeats)
+
+for (repeat_idx in 1:num_repeats) {
+  folds <- createFolds(train$state, k = num_folds, list = TRUE)
+  
+  results <- numeric(length(folds))
+
+  for (i in seq_along(folds)) {
+    test_indices <- folds[[i]]
+    train_indices <- setdiff(1:nrow(train), test_indices)
+    
+    results[i] <- compute_rmse(train_indices, test_indices)
+  }
+  
+  all_results[repeat_idx] <- mean(results)
+}
+
+mean_rmse <- mean(all_results)
+print(mean_rmse)
+
+
+```
+
+
+```{r, include = FALSE}
+# generate predictions
+test$prediction <- predict(mod1, newdata = test, interval = "prediction")
+
+#round results
+test <- test %>%
+  mutate(across(where(is.numeric), ~ round(., 2)))
+```
+
+```{r, include = FALSE}
+# fix DC
+ec$state <- str_replace(ec$state, "District Of Columbia", "District of Columbia")
+```
+
+```{r, include = FALSE}
+# calculate winner
+test <- test %>% 
+  left_join(ec, by = c("state", "year")) %>%
+  mutate(winner = ifelse(prediction[, "fit"] > 50, "D", "R"))
+
+outcome <- test %>%
+  group_by(winner) %>%
+  summarize(electoral_votes = sum(electors))
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+
+# create electoral map of results
+
+test$prediction_fill <- test$prediction[,"fit"]
+test$prediction_fill[test$state == "District of Columbia"] <- 80
+
+# Read US hexgrid data. 
+us_hexgrid <- read_sf("us_states_hexgrid.geojson.json") |> 
+  mutate(google_name = gsub(" \\(United States\\)", "", google_name))
+
+# Merge state predictions with hexgrid data.
+map <- us_hexgrid |> 
+  left_join(test, by = c("google_name" = "state"))
+
+g1 <- ggplot(data = map) +
+  geom_sf(aes(fill = prediction_fill)) + 
+  geom_sf_text(aes(label = stateab,
+                   text = paste(
+                     'State:', google_name,
+                     '<br>Predicted Harris 2-P Vote Share:', prediction[,"fit"],
+                     '<br>2020 Biden 2-P Vote Share:', D_pv2p_lag1,
+                     '<br>Electoral Votes:', electors
+                   )),
+               color = "black", size = 3, alpha = 0.6) + 
+  scale_fill_gradient2(low = "red", mid = "white", high = "navyblue", midpoint = 50, 
+                       breaks = c(20, 35, 50, 65, 80), 
+                       limits = c(20, 80),
+                       name = "Harris (D) Predicted Two-Party Vote Share*") +
+  labs(title = "2024 Presidential Forecast Model - Two-Party Vote Share",
+       caption = "* based on contributions model") + 
+  theme_void() +
+  theme(legend.position = "none") + 
+  theme(plot.title = element_text(face = "bold"))
+
+ggplotly(g1, tooltip = "text")
+
+```
+
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+
+g2 <- ggplot(test, aes(x = prediction[,"fit"], y = reorder(state, prediction[,"fit"]), 
+                       fill = prediction_fill)) + 
+  geom_col(
+    aes(text = paste(
+             'State:', state,
+             '<br>Predicted Harris Voteshare:', prediction[,"fit"],
+             '<br>Lower Bound:', prediction[,"lwr"],
+             '<br>Upper Bound:', prediction[,"upr"]
+           ))
+    ) + 
+  geom_errorbar(aes(xmin = prediction[,"lwr"], xmax = prediction[,"upr"]), 
+                width = 0.2, color = "black") + 
+  scale_fill_gradient2(low = "red", mid = "white", high = "navyblue", 
+                       midpoint = 50, breaks = c(30, 40, 50, 60, 70), 
+                       limits = c(20, 80), name = "") +  
+  labs(x = "Harris (D) Predicted Two-Party Vote Share",
+       y = "State",
+       title = "FEC Contributions Model Predictions") +
+  geom_vline(xintercept = 50, linetype = "dotted") +
+  theme(panel.background = element_rect(fill = "white"),
+        plot.title = element_text(hjust = 0, size = 14),
+        axis.text.y = element_text(size = 5),
+        panel.grid.major = element_line(color = "lightgray", size = 0.3),
+        panel.grid.minor = element_line(color = "lightgray", size = 0.2),
+        plot.title.position = "plot") + 
+  theme(plot.title = element_text(face = "bold"))
+
+ggplotly(g2, tooltip = "text") 
+```

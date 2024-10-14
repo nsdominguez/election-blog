@@ -1,6 +1,6 @@
 ---
-title: Blog 5
-author: Nick Dominguez
+title: "Who Votes?: Demographics and Turnout"
+author: "Nick Dominguez"
 date: '2024-10-07'
 slug: prediction-5
 ---
@@ -420,10 +420,7 @@ result_df <- result_df %>%
   left_join(vote_2020, by = "state")
 ```
 
-With the simulated and estimated 2024 data, my Random Forest demographics and turnout model predicts that Democrat Kamala Harris will win the 2024 Presidential Election with **349** electoral votes compared to Republican Donald Trump’s **189** electoral votes. Despite different vote share estimates, this is the same outcome as my incumbency factors model last week. State results are shown in the map below, as well as the range of plausible vote shares for each state. The 95% confidence intervals for each state’s vote share indicates that my model suggests there are scenarios in which either Trump or Harris could carry the most competitive states. 
-
-*Note: there is an error in the bar plot that prevents the Trump-won state bar values to map correctly. I will update this post as soon as I figure out how to fix this.*
-
+With the simulated and estimated 2024 data, my Random Forest demographics and turnout model predicts that Democrat Kamala Harris will win the 2024 Presidential Election with **349** electoral votes compared to Republican Donald Trump’s **189** electoral votes. Despite different vote share estimates, this is the same outcome as my incumbency factors model last week. State results are shown in the map below, as well as the range of plausible vote shares for each state. The 95% confidence intervals for each state’s vote share indicates that my model suggests there are scenarios in which either Trump or Harris could carry the most competitive states.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 # create electoral map of results

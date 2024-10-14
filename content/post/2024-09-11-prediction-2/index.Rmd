@@ -1,5 +1,6 @@
 ---
-title: Blog 2
+title: "Pocketbook Voting: Economic Fundamentals"
+author: "Nick Dominguez"
 date: '2024-09-16'
 slug: prediction-2
 ---
