@@ -5,6 +5,12 @@ date: '2024-10-13'
 slug: prediction-6
 ---
 
+## Prediction 6: FEC Contribution Filings
+
+There are now only 22 days until Election Day, when we will finally get some answers about the accuracy of my predictions. At this point in the election cycle, depending on your location, you might be seeing more campaign ads flooding the airwaves. Campaign ads, both promoting their candidates and attacking their opponents, can be found on TV channels, radio stations, and even social media feeds. These advertisements are effective methods to reach large audiences, but they come at a steep financial cost to campaigns. Therefore, one could infer that the more money a candidate or campaign raises and spends, the more ads they can buy, and the more likely they can win. 
+
+Unfortunately, we do not have advertisement data for the 2024 election, but I do have FEC contribution filings, detailing the amount donors have given to the Trump and Biden/Harris campaigns in 2024; as well as for presidential elections going back to 2008. Although this data is not the same as campaign spending data, campaign contribution receipts can act as a barometer of a candidate’s support in a given state. This can be seen in the plot below. 
+
 ```{r, include = FALSE}
 # set working directory
 setwd("~/Documents/GOV 1347/GOV 1347/content/post/2024-10-13-prediction-6")
@@ -163,8 +169,16 @@ test <- full_data %>%
 ```
 
 ```{r, echo = FALSE}
-ggplot(data = train, mapping = aes(x = D_contribution_prop, y = D_pv2p, color = winner)) + 
-  geom_point() + 
+graph <- train %>%
+  mutate(D_prop = round(D_contribution_prop * 100, 2)) %>%
+  mutate(D_vote = round(D_pv2p, 2))
+
+g3 <- ggplot(data = graph, mapping = aes(x = D_contribution_prop, y = D_pv2p, color = winner)) + 
+  geom_point(aes(text = paste(
+             'State:', state,
+             '<br>Dem. Contribution %:', D_prop,
+             '<br>Dem. Vote %:', D_vote
+           ))) + 
   facet_wrap(~year) + 
   geom_vline(xintercept = 0.5, linetype = "dotted") + 
   geom_hline(yintercept = 50, linetype = "dotted") +
@@ -176,8 +190,13 @@ ggplot(data = train, mapping = aes(x = D_contribution_prop, y = D_pv2p, color = 
        caption = "Data from FEC", 
        color = "State Winner") + 
   theme(plot.title = element_text(face = "bold"))
+
+ggplotly(g3, tooltip = "text")
 ```
 
+In each of these past elections, there is a clear positive and linear correlation between the candidate’s share of the total proportion of the total campaign contributions from residents of a state and the candidate’s two-party vote share; suggesting that campaign contributions might be a good predictor of election outcomes, as the campaign that receives a majority of the contributions typically wins the state. And as that share of contributions increases, so does vote share. One thing to note from these graphs is that it looks like 50% may not be the benchmark for contributions in order to win the state for Democrats. As in each of these elections there are a handful of states where Democrats outraised Republicans, yet the states still vote Republican, while there are far fewer states in the inverse scenario, suggesting that Democrats need to outraise Republicans by larger margins to win competitive states. 
+
+Using data from the 2008-2020 elections, I constructed an OLS regression model to predict 2024 state election outcomes. My input variables include the aforementioned Democratic candidate proportion of all campaign contributions, as well as an interaction term between state and the raw dollar difference in campaign contributions between the Democratic and Republican candidates. I included this term to account for differences in campaign donations due to differences in state partisanship and income, as well as other factors that may affect how people in different states donate. This model fits the training data well, with an adjusted $r^2$ of 0.93, and is suitable for prediction with an out-of-sample k-fold cross validation RMSE of 5.77. The model predictions from 2024 data are illustrated below. 
 
 ```{r, include = FALSE}
 # construct model
@@ -232,7 +251,6 @@ print(mean_rmse)
 
 ```
 
-
 ```{r, include = FALSE}
 # generate predictions
 test$prediction <- predict(mod1, newdata = test, interval = "prediction")
@@ -277,9 +295,9 @@ g1 <- ggplot(data = map) +
   geom_sf(aes(fill = prediction_fill)) + 
   geom_sf_text(aes(label = stateab,
                    text = paste(
-                     'State:', google_name,
-                     '<br>Predicted Harris 2-P Vote Share:', prediction[,"fit"],
-                     '<br>2020 Biden 2-P Vote Share:', D_pv2p_lag1,
+                     google_name,
+                     '<br>Predicted 2-P Harris %:', prediction[,"fit"],
+                     '<br>2020 2-P Biden %:', D_pv2p_lag1,
                      '<br>Electoral Votes:', electors
                    )),
                color = "black", size = 3, alpha = 0.6) + 
@@ -297,6 +315,34 @@ ggplotly(g1, tooltip = "text")
 
 ```
 
+Based on FEC campaign contributions, my model predicts that Democrat Vice President Kamala Harris will narrowly win the presidency, with **276** electoral votes compared to Republican former President Donald Trump’s **262** electoral votes. In this predicted outcome, Harris wins every state Biden won in 2020 except Arizona and Georgia, which are reclaimed by Trump. Interestingly, the model predicts that the higher contribution-victory threshold for Democrats will be less significant in 2024, as Harrs is predicted to win every state where she has at least a simple majority of contributions, except North Carolina, while the same is true for Trump except the state of Nevada. In the two states Trump is predicted to flip, Georgia and Arizona, Trump holds a majority of campaign contributions.
+
+```{r}
+test <- test %>%
+  mutate(candidate = ifelse(winner == "D", "Harris", "Trump"))
+
+g4 <- ggplot(data = test, mapping = aes(x = D_contribution_prop*100, y = prediction[,"fit"], color = candidate)) + 
+  geom_point(aes(text = paste(
+             'State:', state,
+             '<br>Dem. Contribution %:', D_contribution_prop,
+             '<br>Predicted Dem. Vote %:', prediction[,"fit"]
+           ))) + 
+  geom_vline(xintercept = 50, linetype = "dotted") + 
+  geom_hline(yintercept = 50, linetype = "dotted") +
+  scale_color_manual(values = c("navyblue", "red")) +
+  theme_bw() + 
+  labs(x = "Democratic Proportion of Contributions", 
+       y = "Predicted Harris Two-Party Vote Share", 
+       title = "Fundraising Proportions and Model Predictions",
+       color = "Predicted Winner") + 
+  theme(plot.title = element_text(face = "bold"))
+
+ggplotly(g4, tooltip = "text")
+```
+
+It is also important to note that while campaign contributions can be a good proxy of candidate support, the actual money raised by candidates is dispersed to states where they think they need it most, so, for example, while Trump may outraise Harris in Georgia, that does not he *outspend* her there as well. The inverse is true for states where Harris outraised Trump. 
+
+This model predicts a very close electoral vote outcome for the 2024 election, and predicts very close state vote shares with an abundance of uncertainty around these competitive states. As there are still a few weeks left of the campaign, it is entirely possible for either Trump or Harris to increase their contributions and tip the scales in their favor. 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 
@@ -304,8 +350,8 @@ g2 <- ggplot(test, aes(x = prediction[,"fit"], y = reorder(state, prediction[,"f
                        fill = prediction_fill)) + 
   geom_col(
     aes(text = paste(
-             'State:', state,
-             '<br>Predicted Harris Voteshare:', prediction[,"fit"],
+             state,
+             '<br>Predicted 2-P Harris %:', prediction[,"fit"],
              '<br>Lower Bound:', prediction[,"lwr"],
              '<br>Upper Bound:', prediction[,"upr"]
            ))
