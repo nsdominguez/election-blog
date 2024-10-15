@@ -324,7 +324,7 @@ test <- test %>%
 g4 <- ggplot(data = test, mapping = aes(x = D_contribution_prop*100, y = prediction[,"fit"], color = candidate)) + 
   geom_point(aes(text = paste(
              state,
-             '<br>Dem. Contribution %:', D_contribution_prop,
+             '<br>Dem. Contribution %:', D_contribution_prop*100,
              '<br>Predicted Dem. Vote %:', prediction[,"fit"]
            ))) + 
   geom_vline(xintercept = 50, linetype = "dotted") + 
