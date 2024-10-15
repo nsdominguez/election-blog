@@ -176,8 +176,8 @@ graph <- train %>%
 g3 <- ggplot(data = graph, mapping = aes(x = D_contribution_prop, y = D_pv2p, color = winner)) + 
   geom_point(aes(text = paste(
              state,
-             '<br>Dem. Contribution %:', D_prop,
-             '<br>Dem. Vote %:', D_vote
+             '<br>Dem. Contribution:', D_prop,'%',
+             '<br>Dem. Vote:', D_vote,'%'
            ))) + 
   facet_wrap(~year) + 
   geom_vline(xintercept = 0.5, linetype = "dotted") + 
@@ -296,8 +296,8 @@ g1 <- ggplot(data = map) +
   geom_sf_text(aes(label = stateab,
                    text = paste(
                      google_name,
-                     '<br>Predicted 2-P Harris %:', prediction[,"fit"],
-                     '<br>2020 2-P Biden %:', D_pv2p_lag1,
+                     '<br>Predicted 2-P Harris Vote:', prediction[,"fit"],'%',
+                     '<br>2020 2-P Biden Vote:', D_pv2p_lag1,'%',
                      '<br>Electoral Votes:', electors
                    )),
                color = "black", size = 3, alpha = 0.6) + 
@@ -315,7 +315,7 @@ ggplotly(g1, tooltip = "text")
 
 ```
 
-Based on FEC campaign contributions, my model predicts that Democrat Vice President Kamala Harris will narrowly win the presidency, with **276** electoral votes compared to Republican former President Donald Trump’s **262** electoral votes. In this predicted outcome, Harris wins every state Biden won in 2020 except Arizona and Georgia, which are reclaimed by Trump. Interestingly, the model predicts that the higher contribution-victory threshold for Democrats will be less significant in 2024, as Harrs is predicted to win every state where she has at least a simple majority of contributions, except North Carolina, while the same is true for Trump except the state of Nevada. In the two states Trump is predicted to flip, Georgia and Arizona, Trump holds a majority of campaign contributions.
+Based on FEC campaign contributions, my model predicts that Democrat Vice President Kamala Harris will narrowly win the presidency, with **276** electoral votes compared to Republican former President Donald Trump’s **262** electoral votes. In this predicted outcome, Harris wins every state Biden won in 2020 except Arizona and Georgia, which are reclaimed by Trump. Interestingly, the model predicts that the higher contribution-victory threshold for Democrats will be less significant in 2024, as Harris is predicted to win every state where she has at least a simple majority of contributions, except North Carolina, while the same is true for Trump except the state of Nevada. In the two states Trump is predicted to flip, Georgia and Arizona, Trump holds a majority of campaign contributions.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 test <- test %>%
@@ -324,8 +324,8 @@ test <- test %>%
 g4 <- ggplot(data = test, mapping = aes(x = D_contribution_prop*100, y = prediction[,"fit"], color = candidate)) + 
   geom_point(aes(text = paste(
              state,
-             '<br>Dem. Contribution %:', D_contribution_prop*100,
-             '<br>Predicted Dem. Vote %:', prediction[,"fit"]
+             '<br>Dem. Contribution Share:', D_contribution_prop*100,'%',
+             '<br>Predicted Dem. Vote:', prediction[,"fit"],'%'
            ))) + 
   geom_vline(xintercept = 50, linetype = "dotted") + 
   geom_hline(yintercept = 50, linetype = "dotted") +
@@ -351,9 +351,9 @@ g2 <- ggplot(test, aes(x = prediction[,"fit"], y = reorder(state, prediction[,"f
   geom_col(
     aes(text = paste(
              state,
-             '<br>Predicted 2-P Harris %:', prediction[,"fit"],
-             '<br>Lower Bound:', prediction[,"lwr"],
-             '<br>Upper Bound:', prediction[,"upr"]
+             '<br>Predicted 2-P Harris:', prediction[,"fit"],'%',
+             '<br>Lower Bound:', prediction[,"lwr"],'%',
+             '<br>Upper Bound:', prediction[,"upr"],'%'
            ))
     ) + 
   geom_errorbar(aes(xmin = prediction[,"lwr"], xmax = prediction[,"upr"]), 
