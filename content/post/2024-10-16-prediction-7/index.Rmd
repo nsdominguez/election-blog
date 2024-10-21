@@ -1,0 +1,700 @@
+---
+title: "Stumped: Campaign Ground Game "
+author: "Nick Dominguez"
+date: '2024-10-21'
+slug: prediction-7
+---
+
+```{r, include = FALSE}
+# load data
+library(blogdown)
+library(plotly)
+library(geofacet)
+library(ggpubr)
+library(ggthemes)
+library(haven)
+library(kableExtra)
+library(maps)
+library(mgcv)
+library(mgcViz)
+library(RColorBrewer)
+library(scales)
+library(sf)
+library(spData)
+library(stargazer)
+library(tidygeocoder)
+library(tidyverse)
+library(tigris)
+library(tmap)
+library(tmaptools)
+library(viridis)
+library(rsample)
+```
+
+```{r, include = FALSE}
+setwd("~/Documents/GOV 1347/GOV 1347/content/post/2024-10-16-prediction-7")
+```
+
+```{r, include = FALSE}
+# load data
+events <- read_csv("campaign_events_geocoded.csv")
+```
+
+```{r}
+
+
+events <- events %>%
+  mutate(date = as.Date(date))
+
+
+cutoff_dates <- data.frame(
+  year = c(2016, 2020),
+  cutoff_date = as.Date(c("2016-10-18", "2020-10-13"))
+)
+
+
+filtered_events <- events %>%
+  left_join(cutoff_dates, by = "year") %>%
+  filter((year == 2024) | (date <= cutoff_date)) %>%
+  select(-cutoff_date)  # Remove the cutoff_date column if it's no longer needed
+
+  
+```
+
+```{r, include = FALSE}
+filtered_events <- filtered_events %>%
+  group_by(date, state, city, Event.Type, year, longitude, latitude) %>%
+  summarize(candidate = str_c(unique(candidate), collapse = " / "), .groups = 'drop')
+
+# Create the indicator variables
+filtered_events <- filtered_events %>%
+  mutate(
+    president = if_else(
+      str_detect(candidate, "Trump|Clinton|Biden|(Harris.*2024)"), 1, 0
+    ),
+    vp = if_else(
+      str_detect(candidate, "Pence|Kaine|Vance|Walz|(Harris.*2020)"), 1, 0
+    ),
+   filtered_events <- filtered_events %>%
+  mutate(
+    rally = if_else(str_detect(Event.Type, "Rally"), 1, 0),
+    speech = if_else(str_detect(Event.Type, "Speech"), 1, 0)
+  )
+    )
+
+write.csv(filtered_events, "filtered_events.csv", row.names = FALSE)
+```
+
+```{r, include = FALSE}
+events_new <- read_csv("eventsNEW.csv")
+```
+
+```{r, include = FALSE}
+events_new <- events_new %>%
+  filter(ntnl_tv_event == 0) %>%
+  filter(Event.Type != "Fundraiser") %>%
+  mutate(party = ifelse(str_detect(candidate,"Biden|Harris|Clinton|Kaine|Walz"), "D", "R"))
+```
+
+```{r, include = FALSE}
+events_bystate <- events_new %>%
+  group_by(state, year, party) %>%
+  summarize(
+    n_events = n(),
+    president = sum(president),
+    vp = sum(vp),
+    .groups = 'drop'
+  )
+
+# Pivot the data to have separate columns for Democrats (D) and Republicans (R)
+events_bystate <- events_bystate %>%
+  pivot_wider(
+    names_from = party,
+    values_from = c(n_events, president, vp),
+    names_sep = "_"
+  ) %>%
+  # Fill any missing values with 0 (for cases where one party had no events in that state-year)
+  replace_na(list(n_events_D = 0, n_events_R = 0, president_D = 0, president_R = 0, vp_D = 0, vp_R = 0))
+  
+```
+
+```{r, include = FALSE}
+all_states <- c("AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "ID", 
+                "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", 
+                "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", 
+                "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY")
+
+# List of years you're working with (e.g., 2016, 2020, 2024)
+all_years <- c(2016, 2020, 2024)
+
+# Create a complete grid of all state-year combinations
+dummy_dataframe <- expand.grid(state = all_states, year = all_years)
+
+# Join the dummy dataframe with your collapsed_events data
+full_events <- dummy_dataframe %>%
+  left_join(events_bystate, by = c("state", "year")) %>%
+  replace_na(list(n_events_D = 0, n_events_R = 0, president_D = 0, president_R = 0, vp_D = 0, vp_R = 0))
+
+```
+
+
+```{r, include = FALSE}
+state_names <- c(
+  AL = "Alabama", AK = "Alaska", AZ = "Arizona", AR = "Arkansas", CA = "California",
+  CO = "Colorado", CT = "Connecticut", DE = "Delaware", FL = "Florida", GA = "Georgia",
+  HI = "Hawaii", ID = "Idaho", IL = "Illinois", IN = "Indiana", IA = "Iowa", KS = "Kansas",
+  KY = "Kentucky", LA = "Louisiana", ME = "Maine", MD = "Maryland", MA = "Massachusetts",
+  MI = "Michigan", MN = "Minnesota", MS = "Mississippi", MO = "Missouri", MT = "Montana",
+  NE = "Nebraska", NV = "Nevada", NH = "New Hampshire", NJ = "New Jersey", NM = "New Mexico",
+  NY = "New York", NC = "North Carolina", ND = "North Dakota", OH = "Ohio", OK = "Oklahoma",
+  OR = "Oregon", PA = "Pennsylvania", RI = "Rhode Island", SC = "South Carolina", SD = "South Dakota",
+  TN = "Tennessee", TX = "Texas", UT = "Utah", VT = "Vermont", VA = "Virginia", WA = "Washington",
+  WV = "West Virginia", WI = "Wisconsin", WY = "Wyoming", DC = "District Of Columbia"
+)
+
+# Mutate the dataframe to create a new variable with full state names
+full_events <- full_events %>%
+  mutate(state_full = state_names[state])
+```
+
+```{r, include = FALSE}
+popvote <- read_csv("state_popvote_1948_2020.csv")
+```
+
+```{r, include = FALSE}
+full_events <- full_events %>%
+  full_join(popvote, by = c("state_full" = "state", "year" = "year"))
+```
+
+```{r, include = FALSE}
+train <- full_events %>%
+  filter(year %in% c(2016, 2020))
+
+test <- full_events %>%
+  filter(year == 2024)
+```
+
+```{r, include = FALSE}
+votes_2024 <- train %>%
+  filter(year == 2020) %>%
+  select(state, D_pv2p, D_pv2p_lag1) %>%
+  rename(D_pv2p_lag2 = D_pv2p_lag1) %>%
+  rename(D_pv2p_lag1 = D_pv2p) %>%
+  mutate(year = 2024)
+
+test <- test %>%
+  left_join(votes_2024, by = c("year" = "year", "state" = "state"))
+```
+
+```{r, include = FALSE}
+test <- test %>%
+  rename(D_pv2p_lag1 = D_pv2p_lag1.y)
+```
+
+```{r, include = FALSE}
+# help from Chat-GPT
+library(glmnet)
+
+
+# Prepare the data
+X <- model.matrix(D_pv2p ~ president_D + president_R + vp_D + vp_R + D_pv2p_lag1, data = train)
+y <- train$D_pv2p
+
+# Fit a Lasso model (alpha = 1 for Lasso)
+lasso_model <- glmnet(X, y, alpha = 1)
+
+# Perform cross-validation for lambda selection
+cv_lasso <- cv.glmnet(X, y, alpha = 1)
+
+# Best lambda
+best_lambda <- cv_lasso$lambda.min
+
+# Final model with the best lambda
+final_model <- glmnet(X, y, alpha = 1, lambda = best_lambda)
+
+# Extract coefficients
+coef_matrix <- coef(final_model)  # This will return a sparse matrix
+
+# Convert sparse matrix to a data frame
+coef_table <- as.data.frame(as.matrix(coef_matrix))
+
+# Print the significant variables
+print(coef_table)
+
+```
+
+```{r, include = FALSE}
+mod1 <- lm(D_pv2p ~ president_R + vp_D + vp_R + D_pv2p_lag1, data = train)
+summary(mod1)
+```
+
+```{r, include = FALSE}
+test$prediction_mod1 <- predict(mod1, newdata = test, interval = "prediction")
+```
+
+## Prediction 7: Campaign Events and Preliminary Ensembling
+
+# Campaign Ground Game 
+
+**October 21, 2024** – We are now just a day over two weeks from Election Day 2024. At this point in the election cycle, the air waves aren’t the only space jam-packed with campaign messaging. If you live in some of the most contested “swing” states, such as Pennsylvania, Wisconsin, Michigan, Arizona, Georgia, Nevada, or North Carolina, you may have had some campaign volunteers or canvassers knock on your door. Perhaps Trump or Harris, or their respective running mates, have stopped in your town for a rally, speech, or visit to a local business. All of these activities, the in-person interactions with a candidate or their representative, constitute a campaign’s ground game. 
+
+The activities of ground game, such as canvassing, visits, rallies, or speeches are opportunities for candidates to engage directly with voters. Candidates and campaigns strategize their ground game to generate enthusiasm with their core supporters, increase the turnout likelihood of their known supporters or those likely to support them, and even attempt to persuade swing voters. 
+
+Research generally agrees with the notion that targeted ground game activity produces a mild effect on election outcomes. But, in a close election, these small differences can add up. Therefore, it is a useful exercise to use ground game data to make some predictions for 2024. 
+
+Unfortunately, ground game data is hard to come by. While there is data about the campaign office locations for previous elections, we do not have any for 2024. Therefore, to measure ground game, I’m using a logue of campaign events for each of the two presidential candidates from the 2016, 2020, and 2024 elections. These include rallies, speeches, town halls, or campaign visits made by the major presidential candidates: Trump, Clinton, Biden, Harris; and/or their respective running mates, from after their convention up to about 3 weeks before the election. Judging by the plot below, it is clear that candidates concentrate their events in key swing states, while never holding events in almost half of all states. It is also clear that Trump is an incessant rally holder, as he has held the overwhelming majority of campaign events compared to each Democrat he has faced. This makes our data available for prediction purposes extremely sparse, as we have not observed campaign events of any kind in a large number of states, let alone a sufficient number of Democratic candidate events. 
+
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+full_events_recent <- full_events %>%
+  filter(year >= 2016) %>%
+  mutate(total_events = n_events_D + n_events_R) %>%
+  arrange(desc(total_events)) %>%
+  mutate(state = factor(state, levels = unique(state)))
+
+ggplot(full_events_recent, aes(x = state, y = total_events, fill = factor(c('Democratic Events', 'Republican Events')))) +
+  geom_bar(aes(y = n_events_D, fill = "Democratic Events"), stat = "identity") +
+  geom_bar(aes(y = n_events_R, fill = "Republican Events"), stat = "identity") +
+  scale_fill_manual(values = c("Democratic Events" = "navyblue", "Republican Events" = "red")) +
+  facet_wrap(~ year, ncol = 1) + 
+  labs(x = "State", y = "Total Number of Events", fill = "Event Candidate Party", 
+       title = "Campaign Events by State") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+        plot.title = element_text(face = "bold"))
+```
+
+```{r, include = FALSE}
+ec <- read_csv("corrected_ec_1948_2024.csv")
+
+test$state_full <- str_replace(test$state_full, "District Of Columbia", "District of Columbia")
+ec$state <- str_replace(ec$state, "District Of Columbia", "District of Columbia")
+```
+
+```{r, include = FALSE}
+# calculate winner
+test <- test %>% 
+  left_join(ec, by = c("state_full" = "state", "year" = "year")) %>%
+  mutate(winner = ifelse(prediction_mod1[, "fit"] > 50, "D", "R"))
+
+outcome <- test %>%
+  group_by(winner) %>%
+  summarize(electoral_votes = sum(electors))
+```
+
+```{r, include = FALSE}
+test_viz1 <- test %>%
+  mutate(across(where(is.numeric), ~ round(., 2)))
+```
+
+
+Nonetheless, I fit an OLS regression model using data from the 2016 and 2020 elections for each state. My predictor variables of interest included the number of events attended in a given state either by the Democratic presidential candidate, Republican presidential candidate, or either of the vice presidential candidates, as well as lagged vote share from the previous election. To reduce prediction error, I used elastic-net regularization to check for the strongest predictors. This resulted in me dropping the variable for the number of events attended by the Democratic presidential candidate. The remaining event variables all had extremely small effects compared to the lagged vote share, but I included them for the sake of the exercise. My ground game event model predicting Democrat two-party vote share yielded an adjusted r-squared of 0.9297, due to the inclusion of lagged vote share. Otherwise, the data would be too sparse for any sort of prediction. Using 2024 campaign event data, I predicted Harris’ two-party vote share in each state. The prediction results are shown below. 
+
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+
+# create electoral map of results
+
+test_viz1$prediction_fill <- test$prediction_mod1[,"fit"]
+test_viz1$prediction_fill[test_viz1$state_full == "District of Columbia"] <- 80
+
+# Read US hexgrid data. 
+us_hexgrid <- read_sf("us_states_hexgrid.geojson.json") |> 
+  mutate(google_name = gsub(" \\(United States\\)", "", google_name))
+
+# Merge state predictions with hexgrid data.
+map <- us_hexgrid |> 
+  left_join(test_viz1, by = c("google_name" = "state_full"))
+
+g1 <- ggplot(data = map) +
+  geom_sf(aes(fill = prediction_fill)) + 
+  geom_sf_text(aes(label = stateab,
+                   text = paste(
+                     google_name,
+                     '<br>Predicted 2-P Harris Vote:', prediction_mod1[,"fit"],'%',
+                     '<br>2020 2-P Biden Vote:', D_pv2p_lag1,'%',
+                     '<br>Electoral Votes:', electors
+                   )),
+               color = "black", size = 3, alpha = 0.6) + 
+  scale_fill_gradient2(low = "red", mid = "white", high = "navyblue", midpoint = 50, 
+                       breaks = c(20, 35, 50, 65, 80), 
+                       limits = c(20, 80),
+                       name = "Harris (D) Predicted Two-Party Vote Share*") +
+  labs(title = "2024 Presidential Forecast Model - Ground Game",
+       caption = "* based on campaign events model") + 
+  theme_void() +
+  theme(legend.position = "none") + 
+  theme(plot.title = element_text(face = "bold"))
+
+ggplotly(g1, tooltip = "text")
+
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+
+g2 <- ggplot(test_viz1, aes(x = prediction_mod1[,"fit"], y = reorder(state_full, prediction_mod1[,"fit"]), 
+                       fill = prediction_fill)) + 
+  geom_col(
+    aes(text = paste(
+             state_full,
+             '<br>Predicted 2-P Harris:', prediction_mod1[,"fit"],'%',
+             '<br>Lower Bound:', prediction_mod1[,"lwr"],'%',
+             '<br>Upper Bound:', prediction_mod1[,"upr"],'%'
+           ))
+    ) + 
+  geom_errorbar(aes(xmin = prediction_mod1[,"lwr"], xmax = prediction_mod1[,"upr"]), 
+                width = 0.2, color = "black") + 
+  scale_fill_gradient2(low = "red", mid = "white", high = "navyblue", 
+                       midpoint = 50, breaks = c(30, 40, 50, 60, 70), 
+                       limits = c(20, 80), name = "") +  
+  labs(x = "Harris (D) Predicted Two-Party Vote Share",
+       y = "State",
+       title = "Ground Game Model Predictions") +
+  geom_vline(xintercept = 50, linetype = "dotted") +
+  theme(panel.background = element_rect(fill = "white"),
+        plot.title = element_text(hjust = 0, size = 14),
+        axis.text.y = element_text(size = 5),
+        panel.grid.major = element_line(color = "lightgray", size = 0.3),
+        panel.grid.minor = element_line(color = "lightgray", size = 0.2),
+        plot.title.position = "plot") + 
+  theme(plot.title = element_text(face = "bold"))
+
+ggplotly(g2, tooltip = "text") 
+
+```
+
+This simple ground game campaign event model predicted that Republican former president Donald Trump will win the 2024 election with **306** electoral votes, compared to Democrat Vice President Kamala Harris’ **232** electoral votes. In this scenario, Trump narrowly flips back the five states (Wisconsin, Michigan, Pennsylvania, Arizona, and Georgia) by less than 1 percentage point. This suggests that if Harris and Walz want to tilt the scales of the election in her favor, she should ramp up her event schedule to compete with Trump’s prolific amount of rallies. 
+
+```{r, include = FALSE}
+polls <- read_csv("state_polls_1968-2024.csv")
+```
+
+```{r, include = FALSE}
+polls <- polls %>%
+  filter(year >= 1976) %>%
+  filter(days_left == 21) %>%
+  filter(!state %in% c("Nebraska Cd 2", "NE-1", "NE-2", "NE-3", "ME-1", "ME-2")) %>%
+  group_by(year, state) %>%
+  summarise(
+    poll_difference = sum(ifelse(party == "DEM", poll_support, -poll_support)),
+    .groups = 'drop') 
+```
+
+```{r, include = FALSE}
+popvote$state <- str_replace(popvote$state, "District Of Columbia", "District of Columbia")
+
+polls <- polls %>%
+  mutate(weight = exp((year - 2020) / 4))
+
+train_polls <- polls %>%
+  filter(year < 2024) %>%
+  left_join(popvote, by = c("state" = "state", "year" = "year"))
+
+test_polls <- polls %>%
+  filter(year == 2024)
+```
+
+```{r, include = FALSE}
+state_models <- train_polls %>%
+  group_by(state) %>%
+  do(mod2 = lm(D_pv2p ~ poll_difference, data = ., weights = .$weight),
+     mod3 = lm(D_pv2p ~ poll_difference + year, data = ., weights = .$weight)) %>%
+  mutate(
+    adj_r_squared_mod2 = summary(mod2)$adj.r.squared,
+    adj_r_squared_mod3 = summary(mod3)$adj.r.squared
+  )
+```
+
+```{r, include = FALSE}
+mean(state_models$adj_r_squared_mod2)
+mean(state_models$adj_r_squared_mod3)
+```
+
+
+```{r, include = FALSE}
+# help from Chat GPT-3
+
+# Set number of folds for cross-validation
+k <- 5
+
+# Create k-fold cross-validation for each state
+folds <- train_polls %>%
+  group_by(state) %>%
+  nest() %>%
+  mutate(cv_folds = map(data, ~ vfold_cv(.x, v = k)))
+
+# Train and evaluate the models, calculating RMSE for each fold
+results <- folds %>%
+  mutate(cv_results = map(cv_folds, ~ {
+    map_df(.x$splits, function(split) {
+      train_data <- analysis(split)
+      test_data <- assessment(split)
+
+      # Fit both models on the training data
+      mod2 <- lm(D_pv2p ~ poll_difference, data = train_data, weights = train_data$weight)
+      mod3 <- lm(D_pv2p ~ poll_difference + year, data = train_data, weights = train_data$weight)
+
+      # Predict on the validation data for both models
+      pred_mod2 <- predict(mod2, newdata = test_data)
+      pred_mod3 <- predict(mod3, newdata = test_data)
+
+      # Calculate RMSE for both models
+      rmse_mod2 <- sqrt(mean((test_data$D_pv2p - pred_mod2)^2))
+      rmse_mod3 <- sqrt(mean((test_data$D_pv2p - pred_mod3)^2))
+
+      tibble(rmse_mod2 = rmse_mod2, rmse_mod3 = rmse_mod3)
+    })
+  }))
+
+# Calculate the average RMSE for each model across all folds
+avg_rmse <- results %>%
+  unnest(cv_results) %>%
+  group_by(state) %>%
+  summarise(
+    avg_rmse_mod2 = mean(rmse_mod2),
+    avg_rmse_mod3 = mean(rmse_mod3)
+  )
+
+```
+
+```{r, include = FALSE}
+rmse_mod2 <-mean(avg_rmse$avg_rmse_mod2)
+rmse_mod3 <- mean(avg_rmse$avg_rmse_mod3)
+
+weight_model2 <- 1 / rmse_mod2
+weight_model3 <- 1 / rmse_mod3
+
+# Step 2: Normalize the weights
+total_weight <- weight_model2 + weight_model3
+normalized_weight_model2 <- weight_model2 / total_weight
+normalized_weight_model3 <- weight_model3 / total_weight
+
+# Step 3: Scale weights to add up to 0.5
+final_weight_model2 <- normalized_weight_model2 * 0.5
+final_weight_model3 <- normalized_weight_model3 * 0.5
+
+final_weight_model2
+final_weight_model3
+```
+
+```{r, include = FALSE}
+test_polls <- test_polls %>%
+  rowwise() %>%
+  mutate(
+    prediction = list(predict(
+      state_models$mod2[state_models$state == state][[1]], 
+      newdata = data.frame(poll_difference = poll_difference, year = 2024),
+      interval = "prediction", level = 0.95
+    )),
+    D_pv2p_pred = prediction[1],
+    lower_bound = prediction[2],
+    upper_bound = prediction[3]
+  ) %>%
+  select(-prediction)
+```
+
+```{r, include = FALSE}
+test_polls <- test_polls %>%
+  rowwise() %>%
+  mutate(
+    prediction_mod2 = list(predict(
+      state_models$mod2[state_models$state == state][[1]], 
+      newdata = data.frame(poll_difference = poll_difference),
+      interval = "prediction", level = 0.95
+    )),
+    D_pv2p_pred_mod2 = prediction_mod2[1],
+    lower_bound_mod2 = prediction_mod2[2],
+    upper_bound_mod2 = prediction_mod2[3],
+
+    prediction_mod3 = list(predict(
+      state_models$mod3[state_models$state == state][[1]], 
+      newdata = data.frame(poll_difference = poll_difference, year = 2024),  # Includes year for mod3
+      interval = "prediction", level = 0.95
+    )),
+    D_pv2p_pred_mod3 = prediction_mod3[1],
+    lower_bound_mod3 = prediction_mod3[2],
+    upper_bound_mod3 = prediction_mod3[3]
+  ) %>%
+  select(-prediction_mod2, -prediction_mod3)
+
+```
+
+```{r, include = FALSE}
+# import FEC contributions model
+FEC_predictions <- read_csv("FEC_predictions1.csv")
+```
+
+```{r, include = FALSE}
+combined_predictions <- FEC_predictions %>%
+  full_join(test, by = c("state" = "state_full")) %>%
+  left_join(test_polls, by = "state")
+
+# Define the weights
+polling_weight_mod2 <- final_weight_model2
+polling_weight_mod3 <- final_weight_model2
+fec_weight <- 0.3
+event_weight <- 0.2
+
+```
+
+```{r, include = FALSE}
+combined_predictions <- combined_predictions %>%
+  rename(
+    poll_pred2 = D_pv2p_pred_mod2,
+    poll_lower_bound2 = lower_bound_mod2,
+    poll_upper_bound2 = upper_bound_mod2,
+    poll_pred3 = D_pv2p_pred_mod3,
+    poll_lower_bound3 = lower_bound_mod3,
+    poll_upper_bound3 = upper_bound_mod3,
+    fec_pred = prediction.fit,
+    fec_lower_bound = prediction.lwr,
+    fec_upper_bound = prediction.upr)
+```
+
+
+```{r, include = FALSE}
+# help from Chat-GPT
+all_three <- combined_predictions %>%
+  filter(!is.na(poll_pred2) & !is.na(poll_pred3) & !is.na(fec_pred) & !is.na(prediction_mod1[,"fit"]))
+
+# Dataframe for states with only FEC and event predictions (no polling prediction)
+fec_event_only <- combined_predictions %>%
+  filter(is.na(poll_pred2) & is.na(poll_pred3) & !is.na(fec_pred) & !is.na(prediction_mod1[,"fit"]))
+
+# Calculate weighted averages for states with all three predictions
+all_three <- all_three %>%
+  rowwise() %>%
+  mutate(
+    total_weight = polling_weight_mod2 + polling_weight_mod3 + fec_weight + event_weight,
+    poll_weight2 = polling_weight_mod2 / total_weight,
+    poll_weight3 = polling_weight_mod3 / total_weight,
+    fec_weight_adj = fec_weight / total_weight,
+    event_weight_adj = event_weight / total_weight,
+    final_prediction = poll_weight2 * poll_pred2 + poll_weight3 * poll_pred3 + fec_weight_adj * fec_pred + event_weight_adj * prediction_mod1[,"fit"],
+    final_lower_bound = poll_weight2 * poll_lower_bound2 + poll_weight3 * poll_lower_bound3 + fec_weight_adj * fec_lower_bound + event_weight_adj * prediction_mod1[,"lwr"],
+    final_upper_bound = poll_weight2 * poll_upper_bound2 + poll_weight3 * poll_upper_bound3 + fec_weight_adj * fec_upper_bound + event_weight_adj * prediction_mod1[,"upr"]
+  )
+
+# Calculate weighted averages for states with only FEC and event predictions
+fec_event_only <- fec_event_only %>%
+  rowwise() %>%
+  mutate(
+    total_weight = fec_weight + event_weight,
+    fec_weight_adj = fec_weight / total_weight,
+    event_weight_adj = event_weight / total_weight,
+    final_prediction = fec_weight_adj * fec_pred + event_weight_adj * prediction_mod1[,"fit"],
+    final_lower_bound = fec_weight_adj * fec_lower_bound + event_weight_adj * prediction_mod1[,"lwr"],
+    final_upper_bound = fec_weight_adj * fec_upper_bound + event_weight_adj * prediction_mod1[,"fit"]
+  )
+
+# Combine the two dataframes back together
+final_combined_predictions <- bind_rows(all_three, fec_event_only)
+```
+
+```{r, include = FALSE}
+ec2024 <- ec %>% filter(year == 2024)
+
+final_combined_predictions <- final_combined_predictions %>% 
+  left_join(ec2024, by = "state") %>%
+  mutate(winner = ifelse(final_prediction > 50, "D", "R"))
+
+outcome2 <- final_combined_predictions %>%
+  group_by(winner) %>%
+  summarize(electoral_votes = sum(electors.y))
+
+final_combined_predictions <- final_combined_predictions %>%
+  select(state, D_pv2p_lag1.y, final_prediction, final_lower_bound, final_upper_bound, electors.y, winner) %>%
+  mutate(across(where(is.numeric), ~ round(., 2)))
+  
+```
+
+# Prediction by Ensembling
+
+One flaw of using the number of campaign events to predict vote share is that the data does not account for the size of the events. One could hypothesize that having a small number of extremely large rallies has a different effect than many small stumping events. Additionally, what is the exact effect of these campaign events anyway? Do in-person events like rallies and speeches sway voters, considering that the people who most likely attend these events are ardent supporters? Considering campaign events are one small facet of a candidate’s path to victory, can they even make a good prediction? 
+
+These questions are why we may not want to put all of our prediction eggs in one model basket. Ensembling, or putting the predictions of models together, allows us to make more informed and accurate predictions, as we are able to account for more predictors. 
+
+To create a more accurate prediction of the election based on campaign-related factors, I ensembled my ground game model predictions with three other models. The first two models are simple models based on polling data. One of the drawbacks of the spare campaign event data was that I had to construct a singular pooled model to predict all states. For the poll models, I constructed unpooled OLS regressions for each state based on FiveThirtyEight’s state polling averages 3 weeks before the election. In fitting these models, I added exponential weights by election year, for data from the 1976 to 2020 elections, to account for the fact that more recent elections will be more informative for 2024 predictions. The first polling average model includes a simple difference in polling average between the Democratic and Republican candidates to predict Democratic two-party vote share, while the second model includes these same variables plus year as a numeric variable to account for time trends. The first model resulted in a mean adjusted r-squared of 0.33 across states, while the second model had an adjusted r-squared of 0.52 across states. 
+
+The third additional model might be familiar, it is my pooled FEC contributions model from last week (see my “Money is Power: Campaign Finance” article for more information on how I created this OLS model). In short, this model has an adjusted r-squared of 0.93 and an out-of-sample k-fold cross validation RMSE of 5.77. 
+For the ensemble model, I estimated a prediction for each state by calculating the weighted average of the predictions from the four models. Because of polling’s historically good predictive power, I allotted 50% weight for both polling models. I divided this weight between each model based on the average RMSE across the two unpooled models. The simple polling average model had an average RMSE of 4.52, while the polling average and year model had an average RMSE of 5.43, which translated into a ~0.273 and ~ 0.227 weight respectively. As for the other 50% weight, the FEC contributions model received 0.3, and the ground game model received 0.2 weight, because the FEC contributions model simply is built on more data and is more suitable for accurate prediction. Additionally, the polling averages models could not make predictions for a majority of states, because statewide polling has not been conducted in every state in the 2024 election cycle yet. Therefore, for states without polling model predictions, their weighted average uses predictions from only the ground game and FEC contribution models. The results of this weighted average ensemble model is shown below. 
+
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+
+# create electoral map of results
+
+final_combined_predictions$prediction_fill <- final_combined_predictions$final_prediction
+final_combined_predictions$prediction_fill[final_combined_predictions$state == "District of Columbia"] <- 80
+
+# I rounded off the values, so I grabbed Wisconsin's unrounded value
+final_combined_predictions$final_prediction[final_combined_predictions$final_prediction == "Wisconsin"] <- 49.99456
+
+# Read US hexgrid data. 
+us_hexgrid <- read_sf("us_states_hexgrid.geojson.json") |> 
+  mutate(google_name = gsub(" \\(United States\\)", "", google_name))
+
+# Merge state predictions with hexgrid data.
+map2 <- us_hexgrid |> 
+  left_join(final_combined_predictions, by = c("google_name" = "state"))
+
+g3 <- ggplot(data = map2) +
+  geom_sf(aes(fill = prediction_fill)) + 
+  geom_sf_text(aes(label = iso3166_2,
+                   text = paste(
+                     google_name,
+                     '<br>Predicted 2-P Harris Vote:', final_prediction,'%',
+                     '<br>2020 2-P Biden Vote:', D_pv2p_lag1.y,'%',
+                     '<br>Electoral Votes:', electors.y
+                   )),
+               color = "black", size = 3, alpha = 0.6) + 
+  scale_fill_gradient2(low = "red", mid = "white", high = "navyblue", midpoint = 50, 
+                       breaks = c(20, 35, 50, 65, 80), 
+                       limits = c(20, 80),
+                       name = "Harris (D) Predicted Two-Party Vote Share*") +
+  labs(title = "2024 Presidential Election Predictions: Ground Game Ensemble Model") + 
+  theme_void() +
+  theme(legend.position = "none") + 
+  theme(plot.title = element_text(face = "bold"))
+
+ggplotly(g3, tooltip = "text")
+
+```
+
+This ensemble model predicts that Republican former president Donald Trump will win the 2024 election with **278** electoral votes, compared to Democrat Vice President Kamala Harris’ **260** electoral votes; an extremely close election. But, the prediction becomes even closer when you consider that the model predicts Harris will get 49.99456 percent of the two-party vote share! If my model is off by a fraction of a decimal point, then Harris could win the 2024 presidential election with exactly 270 electoral votes! It literally does not get any closer than this. In addition to Wisconsin, the model predicts that the six other swing states will also be extremely close calls, indicating that the election is still any candidate’s game. 
+
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+
+g4 <- ggplot(final_combined_predictions, aes(x = final_prediction, y = reorder(state, final_prediction), 
+                       fill = prediction_fill)) + 
+  geom_col(
+    aes(text = paste(
+             state,
+             '<br>Predicted 2-P Harris:', final_prediction,'%',
+             '<br>Lower Bound:', final_lower_bound,'%',
+             '<br>Upper Bound:', final_upper_bound,'%'
+           ))
+    ) + 
+  geom_errorbar(aes(xmin = final_lower_bound, xmax = final_upper_bound), 
+                width = 0.2, color = "black") + 
+  scale_fill_gradient2(low = "red", mid = "white", high = "navyblue", 
+                       midpoint = 50, breaks = c(30, 40, 50, 60, 70), 
+                       limits = c(20, 80), name = "") +  
+  labs(x = "Harris (D) Predicted Two-Party Vote Share",
+       y = "State",
+       title = "Ground Game Ensemble Model Predictions") +
+  geom_vline(xintercept = 50, linetype = "dotted") +
+  theme(panel.background = element_rect(fill = "white"),
+        plot.title = element_text(hjust = 0, size = 14),
+        axis.text.y = element_text(size = 5),
+        panel.grid.major = element_line(color = "lightgray", size = 0.3),
+        panel.grid.minor = element_line(color = "lightgray", size = 0.2),
+        plot.title.position = "plot") + 
+  theme(plot.title = element_text(face = "bold"))
+
+ggplotly(g4, tooltip = "text") 
+
+```
+
+While preliminary, this ensemble model demonstrates how in my final prediction, I will combine components of many of the predictive models I have made in the past seven weeks. Stay tuned as I try to make sense of this extremely contentious and uncertain election! 

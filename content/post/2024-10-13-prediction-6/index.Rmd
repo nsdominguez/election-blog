@@ -255,10 +255,13 @@ print(mean_rmse)
 # generate predictions
 test$prediction <- predict(mod1, newdata = test, interval = "prediction")
 
+write.csv(test, "FEC_predictions1.csv", row.names = FALSE)
+
 #round results
 test <- test %>%
   mutate(across(where(is.numeric), ~ round(., 2)))
 ```
+
 
 ```{r, include = FALSE}
 # fix DC

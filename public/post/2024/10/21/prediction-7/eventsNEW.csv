@@ -1,0 +1,588 @@
+date,state,city,Event.Type,ntnl_tv_event,year,longitude,latitude,candidate,president,vp,rally,speech
+2016-09-09,AL,Birmingham,Church Tour,0,2016,-86.8024326,33.5206824,Kaine,0,1,0,0
+2024-09-28,AL,Tuscaloosa,Speech & Campaign Appearance,0,2024,-87.5675258,33.2095614,Trump,1,0,0,1
+2016-08-02,AZ,Phoenix,Rally/Speech,0,2016,-112.074141,33.4484367,Pence,0,1,1,1
+2016-08-02,AZ,Tuscon,Rally/Speech,0,2016,NA,NA,Pence,0,1,1,1
+2016-08-31,AZ,Phoenix,Rally/Speech,0,2016,-112.074141,33.4484367,Trump,1,0,1,1
+2016-09-22,AZ,Mesa,Speech to Living Word Bible Church,0,2016,-111.831455,33.4151005,Pence,0,1,0,1
+2016-10-04,AZ,Prescott Valley,Rally/Speech,0,2016,-112.3338634,34.5950776,Trump,1,0,1,1
+2016-10-08,AZ,Phoenix,Fundraiser,0,2016,-112.074141,33.4484367,Kaine,0,1,0,0
+2020-09-14,AZ,Phoenix,Roundtable,0,2020,-112.074141,33.4484367,Trump,1,0,0,0
+2020-09-18,AZ,Litchfield Park,Rally/Speech,0,2020,-112.358124,33.4933796,Pence,0,1,1,1
+2020-09-18,AZ,Phoenix,Roundtable,0,2020,-112.074141,33.4484367,Pence,0,1,0,0
+2020-10-08,AZ,Peoria,Rally/Speech,0,2020,-112.237294,33.5806115,Pence,0,1,1,1
+2020-10-08,AZ,Phoenix,Speech,0,2020,-112.074141,33.4484367,Biden/Harris,1,0,0,1
+2024-08-09,AZ,Glendale,Rally,0,2024,-112.185994,33.5386858,Harris / Walz,0,1,1,0
+2024-08-13,AZ,Glendale,Campaign Visit,0,2024,-112.185994,33.5386858,Vance,0,1,0,0
+2024-08-22,AZ,Cochise County,Campaign Visit,0,2024,NA,NA,Trump,1,0,0,0
+2024-08-23,AZ,Glendale,Rally,0,2024,-112.185994,33.5386858,Harris,0,0,1,0
+2024-09-04,AZ,Mesa,Rally,0,2024,-111.831455,33.4151005,Vance,0,1,1,0
+2024-09-05,AZ,Phoenix,Rally,0,2024,-112.074141,33.4484367,Vance,0,1,1,0
+2024-09-10,AZ,Phoenix,Campaign Visit,0,2024,-112.074141,33.4484367,Walz,0,1,0,0
+2024-09-12,AZ,Tucson,Rally,0,2024,-110.974847,32.2228765,Trump,1,0,1,0
+2024-09-27,AZ,Douglas,Campaign Visit,0,2024,-109.5545036,31.3447174,Harris,0,0,0,0
+2024-10-09,AZ,"Chandler, Tucson",Campaign Visit & Rally,0,2024,NA,NA,Walz,0,1,1,0
+2024-10-09,AZ,"Tucson, Mesa",Rally & Speech,0,2024,NA,NA,Vance,0,1,1,1
+2024-10-10,AZ,Phoenix,Rally,0,2024,-112.074141,33.4484367,Harris,0,0,1,0
+2024-10-11,AZ,Scottsdale,Campaign Event,0,2024,-111.926018,33.4942189,Harris,0,0,0,0
+2024-10-13,AZ,Prescott Valley,Rally,0,2024,-112.3338634,34.5950776,Trump,1,0,1,0
+2016-08-22,CA,Los Angeles,Jimmy Kimmel Live,1,2016,-118.242766,34.0536909,Clinton,1,0,0,0
+2016-09-07,CA,La Jolla,Fundraiser,0,2016,-117.2740777,32.8401623,Pence,0,1,0,0
+2016-09-07,CA,Newport Beach,Fundraiser,0,2016,-117.9294401,33.6170092,Pence,0,1,0,0
+2016-09-08,CA,Simi Valley,Rally/Speech at Reagan Library,0,2016,-118.7538071,34.2677404,Pence,0,1,1,1
+2016-09-19,CA,Los Angeles,Fundraiser,0,2016,-118.242766,34.0536909,Kaine,0,1,0,0
+2016-09-20,CA,Los Angeles,Fundraiser,0,2016,-118.242766,34.0536909,Kaine,0,1,0,0
+2016-09-21,CA,Atherton,Fundraiser,0,2016,-122.2058272,37.453773,Kaine,0,1,0,0
+2016-10-08,CA,Los Angeles,Fundraiser,0,2016,-118.242766,34.0536909,Kaine,0,1,0,0
+2016-10-09,CA,Sacramento,Fundraiser,0,2016,-121.493895,38.5810606,Kaine,0,1,0,0
+2016-10-13,CA,San Francisco,Fundraiser,0,2016,-122.4193286,37.7792588,Clinton,1,0,0,0
+2016-10-14,CA,Burbank,The Ellen DeGeneres Show,1,2016,-118.307201,34.1812089,Clinton,1,0,0,0
+2024-08-13,CA,Los Angeles,Speech,0,2024,-118.242766,34.0536909,Walz,0,1,0,1
+2024-09-06,CA,San Diego,Campaign Visit,0,2024,-117.162772,32.7174202,Vance,0,1,0,0
+2024-10-12,CA,Coachella,Rally & Roundtable,0,2024,-116.1342347,33.67114675,Trump,1,0,1,0
+2016-07-29,CO,Colorado Springs,Rally/Speech,0,2016,-104.825348,38.8339578,Trump,1,0,1,1
+2016-07-29,CO,Denver,Rally/Speech,0,2016,-104.984862,39.7392364,Trump,1,0,1,1
+2016-08-03,CO,Colorado Springs,Rally/Speech,0,2016,-104.825348,38.8339578,Pence,0,1,1,1
+2016-08-03,CO,Commerce City,Rally/Speech,0,2016,-104.9338675,39.8083196,Clinton,1,0,1,1
+2016-08-03,CO,Denver,Rally/Speech,0,2016,-104.984862,39.7392364,Pence,0,1,1,1
+2016-08-23,CO,Lakewood,Small Business Roundtable,0,2016,-105.0846694,39.7085736,Kaine,0,1,0,0
+2016-09-17,CO,Colorado Springs,Rally/Speech,0,2016,-104.825348,38.8339578,Trump,1,0,1,1
+2016-09-22,CO,Colorado Springs,Town Hall,0,2016,-104.825348,38.8339578,Pence,0,1,0,0
+2016-10-03,CO,Loveland,Rally/Speech,0,2016,-105.07498,40.3977612,Trump,1,0,1,1
+2016-10-03,CO,Pueblo,Rally/Speech,0,2016,-104.6141867,38.263995,Trump,1,0,1,1
+2016-10-10,CO,Denver,Get Out the Vote Concert,0,2016,-104.984862,39.7392364,Kaine,0,1,0,0
+2016-10-12,CO,Pueblo,Rally/Speech,0,2016,-104.6141867,38.263995,Clinton,1,0,1,1
+2016-10-18,CO,Colorado Springs,Rally/Speech,0,2016,-104.825348,38.8339578,Trump,1,0,1,1
+2016-10-18,CO,Grand Junction,Rally/Speech,0,2016,-108.56448,39.0672568,Trump,1,0,1,1
+2024-10-11,CO,Aurora,Rally,0,2024,-104.830994,39.7405111,Trump,1,0,1,0
+2016-08-13,CT,Fairfield,Rally/Speech,0,2016,-73.2637258,41.1412078,Trump,1,0,1,1
+2016-08-05,DC,Washington DC,Speech,0,2016,-77.0365427,38.8950368,Clinton,1,0,0,1
+2016-08-28,DC,Washington DC,State of the Union with Jake Tapper,1,2016,-77.0365427,38.8950368,Pence,0,1,0,0
+2016-09-08,DC,Washington DC,Fundraiser,0,2016,-77.0365427,38.8950368,Kaine,0,1,0,0
+2016-09-09,DC,Washington DC,"CBS ""This Morning""",1,2016,-77.0365427,38.8950368,Kaine,0,1,0,0
+2016-09-09,DC,Washington DC,Speech to Values Voter Summit,0,2016,-77.0365427,38.8950368,Trump / Pence,1,1,0,1
+2016-09-10,DC,Washington DC,Keynote at Human Rights Campaign Dinner,0,2016,-77.0365427,38.8950368,Kaine,0,1,0,0
+2016-09-13,DC,Washington DC,Press Conference,0,2016,-77.0365427,38.8950368,Pence,0,1,0,0
+2016-09-15,DC,Washington DC,"Speech, Congressional Hispanic Caucus gala",0,2016,-77.0365427,38.8950368,Clinton,1,0,0,1
+2016-09-16,DC,Washington DC,Press Conference,0,2016,-77.0365427,38.8950368,Trump,1,0,0,0
+2016-09-16,DC,Washington DC,Speech to Black Women's Agenda Symposium,0,2016,-77.0365427,38.8950368,Clinton,1,0,0,1
+2016-09-17,DC,Washington DC,Speech to Congressional Black Caucus Foundation,0,2016,-77.0365427,38.8950368,Clinton,1,0,0,1
+2024-08-12,DC,Howard University,Campaign Visit,0,2024,-77.02030569,38.9231758,Harris,0,0,0,0
+2024-09-07,DC,Washington,Speech at Human Rights Campaign Dinner,0,2024,-77.0365427,38.8950368,Walz,0,1,0,1
+2024-09-14,DC,Washington,Speech at CBC Phoenix Awards,0,2024,-77.0365427,38.8950368,Harris,0,0,0,1
+2024-09-18,DC,Washington,Speech at Congressional Hispanic Caucus Institute's Leadership Conference,0,2024,-77.0365427,38.8950368,Harris,0,0,0,1
+2024-09-19,DC,Washington,Speech at Israeli American National Conference,0,2024,-77.0365427,38.8950368,Trump,1,0,0,1
+2016-07-27,FL,Doral,Speech/Press Conference,0,2016,-80.35396791,25.8184725,Trump,1,0,0,1
+2016-08-02,FL,Daytona Beach,Rally/Speech,0,2016,-81.0228331,29.2108147,Kaine,0,1,1,1
+2016-08-03,FL,Daytona Beach,Rally/Speech,0,2016,-81.0228331,29.2108147,Trump,1,0,1,1
+2016-08-03,FL,Jacksonville,Rally/Speech,0,2016,-81.655651,30.3321838,Trump,1,0,1,1
+2016-08-08,FL,Kissimmee,Rally/Speech,0,2016,-81.47125711,28.2866972,Clinton,1,0,1,1
+2016-08-08,FL,St. Petersburg,Rally/Speech,0,2016,-82.6359078,27.7700475,Clinton,1,0,1,1
+2016-08-09,FL,Miami,Facility Tour,0,2016,-80.19362,25.7741728,Clinton,1,0,0,0
+2016-08-10,FL,Fort Lauderdale,Rally/Speech,0,2016,-80.1433786,26.1223084,Trump,1,0,1,1
+2016-08-11,FL,Kissimmee,Rally/Speech,0,2016,-81.47125711,28.2866972,Trump,1,0,1,1
+2016-08-24,FL,Tampa,Rally/Speech,0,2016,-82.458444,27.9477595,Trump,1,0,1,1
+2016-08-26,FL,Tallahassee,Voter Registration Event,0,2016,-84.2809332,30.4380832,Kaine,0,1,0,0
+2016-08-27,FL,Pembroke Pines,Rally/Speech,0,2016,-80.2872086,26.0061943,Kaine,0,1,1,1
+2016-08-31,FL,Sarasota,Rally/Town hall,0,2016,-82.5308545,27.3365805,Pence,0,1,1,0
+2016-09-06,FL,Tampa,Rally/Speech,0,2016,-82.458444,27.9477595,Clinton,1,0,1,1
+2016-09-09,FL,Pensacola,Rally/Speech,0,2016,-87.2169149,30.421309,Trump,1,0,1,1
+2016-09-16,FL,Miami,Rally/Speech,0,2016,-80.19362,25.7741728,Trump,1,0,1,1
+2016-09-17,FL,The Villages,Rally/Speech,0,2016,-82.0041758,28.9269978,Pence,0,1,1,1
+2016-09-18,FL,Jacksonville,Speech to First Baptist Church of Jacksonville,0,2016,-81.655651,30.3321838,Pence,0,1,0,1
+2016-09-19,FL,Estero,Rally/Speech,0,2016,-81.8067537,26.4381474,Trump,1,0,1,1
+2016-09-21,FL,Orlando,Rally/Speech,0,2016,-81.3790304,28.5421109,Clinton,1,0,1,1
+2016-09-25,FL,Miami,Rally/Speech,0,2016,-80.19362,25.7741728,Kaine,0,1,1,1
+2016-09-26,FL,Lakeland,Rally/Speech,0,2016,-81.9498042,28.0394654,Kaine,0,1,1,1
+2016-09-26,FL,Orlando,Debate Watch Party,0,2016,-81.3790304,28.5421109,Kaine,0,1,0,0
+2016-09-26,FL,Orlando,Round-table discussion,0,2016,-81.3790304,28.5421109,Kaine,0,1,0,0
+2016-09-27,FL,Melbourne,Rally/Speech,0,2016,-80.6077908,28.0785034,Trump,1,0,1,1
+2016-09-27,FL,Orlando,Speech to supporters,0,2016,-81.3790304,28.5421109,Kaine,0,1,0,1
+2016-09-30,FL,Coral Springs,Rally/Speech,0,2016,-80.2706044,26.271192,Clinton,1,0,1,1
+2016-09-30,FL,Fort Pierce,Rally/Speech,0,2016,-80.3256056,27.4467056,Clinton,1,0,1,1
+2016-09-30,FL,Miami Beach,Fundraiser,0,2016,-80.1353006,25.7929198,Clinton,1,0,0,0
+2016-10-11,FL,Miami,Rally/Speech,0,2016,-80.19362,25.7741728,Clinton,1,0,1,1
+2016-10-11,FL,Panama City,Rally/Speech,0,2016,-85.6602936,30.1586518,Trump,1,0,1,1
+2016-10-12,FL,Lakeland,Rally/Speech,0,2016,-81.9498042,28.0394654,Trump,1,0,1,1
+2016-10-12,FL,Ocala,Rally/Speech,0,2016,-82.1400923,29.1871986,Trump,1,0,1,1
+2016-10-13,FL,West Palm Beach,Rally/Speech,0,2016,-80.0532942,26.715364,Trump,1,0,1,1
+2016-10-14,FL,Miami,Speech to Miami/Dade Republicans,0,2016,-80.19362,25.7741728,Pence,0,1,0,1
+2016-10-14,FL,Pensacola,Rally/Speech,0,2016,-87.2169149,30.421309,Pence,0,1,1,1
+2016-10-15,FL,Miami,Voter Registration Event,0,2016,-80.19362,25.7741728,Kaine,0,1,0,0
+2016-10-15,FL,Tampa,Fundraiser,0,2016,-82.458444,27.9477595,Pence,0,1,0,0
+2016-10-16,FL,Miami,"""Fox News Sunday"" Interview",1,2016,-80.19362,25.7741728,Kaine,0,1,0,0
+2016-10-16,FL,Miami,"ABC ""This Week"" Interview",1,2016,-80.19362,25.7741728,Kaine,0,1,0,0
+2016-10-16,FL,Miami,"CBS ""Face the Natiion"" Interview",1,2016,-80.19362,25.7741728,Kaine,0,1,0,0
+2016-10-16,FL,Miami,Speech to Pnuema Church,0,2016,-80.19362,25.7741728,Kaine,0,1,0,1
+2016-10-16,FL,Palm Beach County,Speech to The Faith Center church,0,2016,-80.07322837,26.6859824,Kaine,0,1,0,1
+2016-10-16,FL,Tampa,"""Fox News Sunday"" Interview",1,2016,-82.458444,27.9477595,Pence,0,1,0,0
+2016-10-16,FL,Tampa,"CBS ""Face the Natiion"" Interview",1,2016,-82.458444,27.9477595,Pence,0,1,0,0
+2016-10-16,FL,Tampa,"NBC ""Meet the Press"" Interview",1,2016,-82.458444,27.9477595,Pence,0,1,0,0
+2020-09-08,FL,Jupiter,Speech,0,2020,-80.0942087,26.9342246,Trump,1,0,0,1
+2020-09-10,FL,Miami,Roundtable,0,2020,-80.19362,25.7741728,Harris,0,0,0,0
+2020-09-15,FL,Kissimmee,Speech,0,2020,-81.47125711,28.2866972,Biden,1,0,0,1
+2020-09-15,FL,Tampa,Roundtable,0,2020,-82.458444,27.9477595,Biden,1,0,0,0
+2020-09-24,FL,Jacksonville,Rally/Speech,0,2020,-81.655651,30.3321838,Trump,1,0,1,1
+2020-09-25,FL,Doral,Roundtable,0,2020,-80.35396791,25.8184725,Trump,1,0,0,0
+2020-10-05,FL,Miami,Speech,0,2020,-80.19362,25.7741728,Biden,1,0,0,1
+2020-10-05,FL,Miami,Town Hall,0,2020,-80.19362,25.7741728,Biden,1,0,0,0
+2020-10-10,FL,Orlando,Rally/Speech,0,2020,-81.3790304,28.5421109,Pence,0,1,1,1
+2020-10-10,FL,The Villages,Rally/Speech,0,2020,-82.0041758,28.9269978,Pence,0,1,1,1
+2020-10-12,FL,Sanford,Rally/Speech,0,2020,-81.2680223,28.8117345,Trump,1,0,1,1
+2020-10-13,FL,Miramar,Speech,0,2020,-80.2322706,25.9873137,Biden,1,0,0,1
+2020-10-13,FL,Pembroke Pines,Speech,0,2020,-80.2872086,26.0061943,Biden,1,0,0,1
+2016-08-29,GA,Atlanta,Rally/Speech,0,2016,-84.3902644,33.7489924,Pence,0,1,1,1
+2016-08-29,GA,Perry,Town hall,0,2016,-83.7319658,32.4586695,Pence,0,1,0,0
+2016-08-30,GA,Dalton,Town hall,0,2016,-84.9702475,34.7691867,Pence,0,1,0,0
+2020-09-25,GA,Atlanta,Speech,0,2020,-84.3902644,33.7489924,Trump,1,0,0,1
+2024-07-30,GA,Atlanta,Rally,0,2024,-84.3902644,33.7489924,Harris,0,0,1,0
+2024-08-03,GA,Atlanta,Rally,0,2024,-84.3902644,33.7489924,Harris,0,0,1,0
+2024-08-22,GA,Valdosta,Democratic National Convention & Campaign Visit,0,2024,-83.2784851,30.8327022,Walz,0,1,0,0
+2024-08-28,GA,Hinesville,Bus Tour,0,2024,-81.5960705,31.8477347,Walz / Harris,0,1,0,0
+2024-08-29,GA,Savannah,Bus Tour,0,2024,-81.0921335,32.0790074,Harris,0,0,0,0
+2024-08-29,GA,Savannah,Bus Tour & Campaign Visit,0,2024,-81.0921335,32.0790074,Walz,0,1,0,0
+2024-09-16,GA,Atlanta,Speech at Georgia Freedom and Faith Dinner,0,2024,-84.3902644,33.7489924,Vance,0,1,0,1
+2024-09-17,GA,Macon,Rally & Campaign Visit,0,2024,-83.6324022,32.8406946,Walz,0,1,1,0
+2024-09-20,GA,Atlanta,Speech & Rally,0,2024,-84.3902644,33.7489924,Harris,0,0,1,1
+2024-09-24,GA,Savannah,Speech,0,2024,-81.0921335,32.0790074,Trump,1,0,0,1
+2024-09-30,GA,Valdosta,Public Appearance & Remarks,0,2024,-83.2784851,30.8327022,Trump,1,0,0,0
+2024-10-02,GA,NA,Public appearance,0,2024,NA,NA,Harris,0,0,0,0
+2024-10-04,GA,Evans,Public appearance,0,2024,-82.13878197,33.5143065,Trump,1,0,0,0
+2024-10-04,GA,Linsdale,Speech,0,2024,NA,NA,Vance,0,1,0,1
+2024-10-11,GA,Lawrenceville,Campaign Visit,0,2024,-83.9890066,33.9566391,Vance,0,1,0,0
+2024-10-15,GA,Atlanta,Speech,0,2024,-84.3902644,33.7489924,Trump,1,0,0,1
+2016-07-28,IA,Cedar Rapids,Rally/Speech,0,2016,-91.6704053,41.9758872,Trump,1,0,1,1
+2016-07-28,IA,Davenport,Rally/Speech,0,2016,-90.5770967,41.5235808,Trump,1,0,1,1
+2016-08-05,IA,Des Moines,Rally/Speech,0,2016,-93.6249494,41.5868654,Trump / Pence,1,1,1,1
+2016-08-10,IA,Des Moines,Rally/Speech,0,2016,-93.6249494,41.5868654,Clinton,1,0,1,1
+2016-08-17,IA,Cedar Rapids,Rally/Speech,0,2016,-91.6704053,41.9758872,Kaine,0,1,1,1
+2016-08-22,IA,Cedar Rapids,Rally/Speech,0,2016,-91.6704053,41.9758872,Pence,0,1,1,1
+2016-08-27,IA,Des Moines,"Speech at Ernst ""Roast and Ride"" Fundraiser",0,2016,-93.6249494,41.5868654,Trump,1,0,0,1
+2016-09-13,IA,Des Moines,Rally/Speech,0,2016,-93.6249494,41.5868654,Trump,1,0,1,1
+2016-09-19,IA,Ames,Rally/Speech,0,2016,-93.6170448,42.0267567,Kaine,0,1,1,1
+2016-09-19,IA,Dubuque,Rally/Speech,0,2016,-90.6647985,42.5006243,Pence,0,1,1,1
+2016-09-19,IA,Mason City,Town Hall,0,2016,-93.2017941,43.1524574,Pence,0,1,0,0
+2016-09-24,IA,Des Moines,Speech to IA Faith and Freedom Coalition,0,2016,-93.6249494,41.5868654,Pence,0,1,0,1
+2016-09-28,IA,Council Bluffs,Rally/Speech,0,2016,-95.8519484,41.258841,Trump,1,0,1,1
+2016-09-29,IA,Des Moines,Rally/Speech,0,2016,-93.6249494,41.5868654,Clinton,1,0,1,1
+2016-10-11,IA,Bettendorf,Speech to Ronald Reagan Dinner,0,2016,-90.5098639,41.5253792,Pence,0,1,0,1
+2016-10-11,IA,Newton,Town Hall,0,2016,-93.0538852,41.6997139,Pence,0,1,0,0
+2020-10-01,IA,Council Bluffs,Rally/Speech,0,2020,-95.8519484,41.258841,Pence,0,1,1,1
+2016-09-01,ID,Boise,Fundraiser,0,2016,-116.200886,43.6166163,Pence,0,1,0,0
+2016-09-05,IL,Hampton,Salute to Labor Picnic/Speech,0,2016,-90.4096858,41.5561473,Clinton,1,0,0,1
+2016-09-14,IL,Chicago,Fundraiser,0,2016,-87.6244212,41.8755616,Kaine,0,1,0,0
+2016-09-28,IL,Bolingbrook,Fundraiser,0,2016,-88.0717708,41.7003302,Trump,1,0,0,0
+2016-09-28,IL,Chicago,Speech to Polish American Congress,0,2016,-87.6244212,41.8755616,Trump,1,0,0,1
+2016-09-14,IN,Gary,Speech to volunteers,0,2016,-87.3370646,41.6020962,Kaine,0,1,0,1
+2016-09-30,IN,Fort Wayne,Rally/Speech,0,2016,-85.1386015,41.0799898,Pence,0,1,1,1
+2024-07-25,IN,Indianapolis,Speech to Zeta Phi Beta sorority,0,2024,-86.1583502,39.7683331,Harris,0,0,0,1
+2016-08-11,LA,New Orleans,Speech to Progressive National Baptist Convention,0,2016,-90.0782127,29.9759983,Kaine,0,1,0,1
+2016-09-12,MD,Baltimore,Speech to National Guard Association,0,2016,-76.610759,39.2908816,Trump,1,0,0,1
+2016-10-17,MD,Bethesda,Fundraiser,0,2016,-77.0942447,38.9846816,Kaine,0,1,0,0
+2024-08-15,MD,Largo,Speech,0,2024,-76.82857457,38.8824538,Harris,0,0,0,1
+2016-08-04,ME,Portland,Rally/Speech,0,2016,-70.2586618,43.6573605,Trump,1,0,1,1
+2016-09-15,ME,Cape Elizabeth,Fundraiser,0,2016,-70.2289333,43.5931434,Kaine,0,1,0,0
+2016-10-15,ME,Bangor,Rally/Speech,0,2016,-68.7713289,44.8016255,Trump,1,0,1,1
+2016-07-28,MI,Grand Rapids,Rally/Speech,0,2016,-85.6678639,42.9632425,Pence,0,1,1,1
+2016-07-28,MI,Novi,Rally/Speech,0,2016,-83.4754913,42.48059,Pence,0,1,1,1
+2016-08-05,MI,Grand Rapids,Rally/Speech,0,2016,-85.6678639,42.9632425,Kaine,0,1,1,1
+2016-08-08,MI,Detroit,Speech,0,2016,-83.0466403,42.3315509,Trump / Pence,1,1,0,1
+2016-08-11,MI,Detroit,Rally/Speech,0,2016,-83.0466403,42.3315509,Clinton,1,0,1,1
+2016-08-19,MI,Dimondale,Rally/Speech,0,2016,-84.648949,42.6455931,Trump,1,0,1,1
+2016-09-03,MI,Detroit,Speech at Greater Faith Ministries,0,2016,-83.0466403,42.3315509,Trump,1,0,0,1
+2016-09-13,MI,Ann Arbor,Rally/Speech,0,2016,-83.7484616,42.2813722,Kaine,0,1,1,1
+2016-09-14,MI,Flint,Speech to Bethel United Methodist Church,0,2016,-83.6900211,43.0161693,Trump,1,0,0,1
+2016-09-30,MI,Novi,Rally/Speech,0,2016,-83.4754913,42.48059,Trump,1,0,1,1
+2016-10-10,MI,Detroit,Rally/Speech,0,2016,-83.0466403,42.3315509,Clinton,1,0,1,1
+2016-10-17,MI,Shelby Township,Fundraiser,0,2016,-86.33795092,43.5974492,Pence,0,1,0,0
+2016-10-18,MI,Detroit,Rally/Organizing Event,0,2016,-83.0466403,42.3315509,Kaine,0,1,1,0
+2020-08-28,MI,Traverse City,Rally/Speech,0,2020,-85.6165976,44.7606481,Pence,0,1,1,1
+2020-09-09,MI,Warren,Speech,0,2020,-83.0062746,42.4932575,Biden,1,0,0,1
+2020-09-10,MI,Freeland,Rally/Speech,0,2020,-84.1227598,43.5250265,Trump,1,0,1,1
+2020-09-22,MI,Detroit,Roundtable,0,2020,-83.0466403,42.3315509,Harris,0,0,0,0
+2020-09-22,MI,Detroit,Speech,0,2020,-83.0466403,42.3315509,Harris,0,0,0,1
+2020-10-02,MI,Grand Rapids,Speech,0,2020,-85.6678639,42.9632425,Biden,1,0,0,1
+2024-08-07,MI,Romulus,Rally,0,2024,-83.3965995,42.2222614,Harris / Walz,0,1,1,0
+2024-08-07,MI,Shelby Township,Speech & Campaign Visit,0,2024,-86.33795092,43.5974492,Vance,0,1,0,1
+2024-08-08,MI,Wayne,Campaign Event,0,2024,-83.3863215,42.2814269,Harris / Walz,0,1,0,0
+2024-08-14,MI,Byron Center,Campaign Visit,0,2024,-85.72791602,42.81928795,Walz,0,1,0,0
+2024-08-20,MI,Howell,Campaign Visit,0,2024,-83.9293952,42.6072552,Trump,1,0,0,0
+2024-08-22,MI,Democratic National Convention,Convention & Speech,0,2024,NA,NA,Harris,0,0,0,1
+2024-08-26,MI,"Arlington, Detroit",Campaign Visit & Speech,0,2024,NA,NA,Harris,0,0,0,1
+2024-08-27,MI,Big Rapids,Campaign Visit,0,2024,-85.483656,43.698078,Vance,0,1,0,0
+2024-08-29,MI,Potterville,Speech & Town Hall,0,2024,-84.738874,42.629203,Trump,1,0,0,1
+2024-09-02,MI,Detroit,Campaign Event & Speech,0,2024,-83.0466403,42.3315509,Harris,0,0,0,1
+2024-09-12,MI,Grand Rapids,Rally,0,2024,-85.6678639,42.9632425,Walz,0,1,1,0
+2024-09-13,MI,Grand Rapids,Campaign Visits,0,2024,-85.6678639,42.9632425,Walz,0,1,0,0
+2024-09-17,MI,Flint,Town Hall,0,2024,-83.6900211,43.0161693,Trump,1,0,0,0
+2024-09-17,MI,Sparta,Rallies,0,2024,-85.710039,43.160858,Vance,0,1,0,0
+2024-09-19,MI,Oakland County,"Campaign Event: ""Unite for America Rally"" with Oprah Winfrey",0,2024,-83.29692793,42.4929212,Harris,0,0,1,0
+2024-09-25,MI,Traverse City,Speech,0,2024,-85.6165976,44.7606481,Vance,0,1,0,1
+2024-09-26,MI,Harbor Springs,Campaign Visit,0,2024,-84.991999,45.431676,Walz,0,1,0,0
+2024-09-27,MI,"Walker, Warren",Speech & Town Hall,0,2024,NA,NA,Trump,1,0,0,1
+2024-09-28,MI,Ann Arbor,Campaign Appearance,0,2024,-83.7484616,42.2813722,Walz,0,1,0,0
+2024-10-02,MI,"Auburn Hills, Marne",Speech,0,2024,NA,NA,Vance,0,1,0,1
+2024-10-03,MI,Saginaw,Rally,0,2024,-83.9490365,43.4200387,Trump,1,0,1,0
+2024-10-04,MI,"Redford, Flint",Campaign stop and Rally,0,2024,NA,NA,Harris,0,0,1,0
+2024-10-08,MI,Detroit,Campaign Visit,0,2024,-83.0466403,42.3315509,Vance,0,1,0,0
+2024-10-10,MI,Detroit,Speech,0,2024,-83.0466403,42.3315509,Trump,1,0,0,1
+2024-10-11,MI,Warren,Speech & Campaign Appearance,0,2024,-83.0062746,42.4932575,Walz,0,1,0,1
+2024-10-15,MI,Detroit,Campaign Visit,0,2024,-83.0466403,42.3315509,Harris,0,0,0,0
+2016-09-13,MN,Minneapolis,Fundraiser,0,2016,-93.2654692,44.9772995,Kaine,0,1,0,0
+2020-08-28,MN,Duluth,Rally/Speech,0,2020,-92.1251218,46.7729322,Pence,0,1,1,1
+2020-09-02,MN,NA,Roundtable,0,2020,NA,NA,Harris,0,0,0,0
+2020-09-18,MN,Bemidji,Rally/Speech,0,2020,-94.8907869,47.4785418,Trump,1,0,1,1
+2020-09-18,MN,Duluth,Speech,0,2020,-92.1251218,46.7729322,Biden,1,0,0,1
+2020-09-24,MN,Minneapolis,Roundtable,0,2020,-93.2654692,44.9772995,Pence,0,1,0,0
+2020-09-30,MN,Duluth,Rally/Speech,0,2020,-92.1251218,46.7729322,Trump,1,0,1,1
+2024-07-27,MN,St. Cloud,Speech & Rally,0,2024,-94.1642004,45.5616075,Trump,1,0,1,1
+2024-09-01,MN,Falcon Heights,Campaign Visit at Minnesota State Fair,0,2024,-93.1762507,44.9898128,Walz,0,1,0,0
+2024-10-11,MN,Mankato,Campaign Appearance,0,2024,-93.9993505,44.1634663,Walz,0,1,0,0
+2024-10-12,MN,Sleepy Eye,Campaign Appearance,0,2024,-94.724204,44.2971692,Walz,0,1,0,0
+2024-10-14,MN,Minneapolis,Campaign Visit,0,2024,-93.2654692,44.9772995,Vance,0,1,0,0
+2016-09-06,MO,Chesterfield,Rally/Speech,0,2016,-90.5643258,38.661953,Pence,0,1,1,1
+2016-09-06,MO,Springfield,Rally/Speech,0,2016,-93.2922715,37.2081729,Pence,0,1,1,1
+2016-09-08,MO,Kansas City,Speech to National Baptist Convention,0,2016,-94.5781416,39.100105,Clinton,1,0,0,1
+2016-10-09,MO,St. Louis,Second Presidential Debate,1,2016,-90.1910154,38.6280278,Clinton / Trump,1,0,0,0
+2016-08-24,MS,Jackson,Rally/Speech,0,2016,-90.1830408,32.2998686,Trump,1,0,1,1
+2020-09-14,MT,Belgrade,Rally *** see note,0,2020,-111.184535,45.773279,Pence,0,1,1,0
+2024-08-09,MT,Bozeman,Rally,0,2024,-111.044047,45.6794293,Trump,1,0,1,0
+2020-10-10,NA,Washington DC,Speech ** see note,0,2020,NA,NA,Trump,1,0,0,1
+2016-07-25,NC,Winston-Salem,Rally/Speech,0,2016,-80.2440518,36.0998131,Trump / Pence,1,1,1,1
+2016-08-03,NC,Greensboro,Rally/Speech,0,2016,-79.7919754,36.0726355,Kaine,0,1,1,1
+2016-08-03,NC,High Point,Rally/Speech,0,2016,-80.0053176,35.9556924,Kaine,0,1,1,1
+2016-08-09,NC,Fayetteville,Rally/Speech,0,2016,-78.878292,35.0525759,Trump,1,0,1,1
+2016-08-09,NC,Wilmington,Rally/Speech,0,2016,-77.9447107,34.2257282,Trump,1,0,1,1
+2016-08-15,NC,Asheville,Rally/Speech,0,2016,-82.5508407,35.595363,Kaine,0,1,1,1
+2016-08-16,NC,Fayetteville,Rally/Speech,0,2016,-78.878292,35.0525759,Kaine,0,1,1,1
+2016-08-18,NC,Charlotte,Rally/Speech,0,2016,-80.8430827,35.2272086,Trump,1,0,1,1
+2016-08-24,NC,Charlotte,Rally/Speech,0,2016,-80.8430827,35.2272086,Pence,0,1,1,1
+2016-08-24,NC,Wilmington,Rally/Speech,0,2016,-77.9447107,34.2257282,Pence,0,1,1,1
+2016-08-30,NC,Winston-Salem,Rally/Speech,0,2016,-80.2440518,36.0998131,Pence,0,1,1,1
+2016-09-06,NC,Greenville,Rally/Speech,0,2016,-77.3724593,35.613224,Trump,1,0,1,1
+2016-09-06,NC,Wilmington,Rally/Speech,0,2016,-77.9447107,34.2257282,Kaine,0,1,1,1
+2016-09-08,NC,Charlotte,Rally/Speech,0,2016,-80.8430827,35.2272086,Clinton,1,0,1,1
+2016-09-12,NC,Asheville,Rally/Speech,0,2016,-82.5508407,35.595363,Trump,1,0,1,1
+2016-09-15,NC,Greensboro,Rally/Speech,0,2016,-79.7919754,36.0726355,Clinton,1,0,1,1
+2016-09-20,NC,High Point,Rally/Speech,0,2016,-80.0053176,35.9556924,Trump,1,0,1,1
+2016-09-20,NC,Kenansville,Rally/Speech,0,2016,-77.9622069,34.9623883,Trump,1,0,1,1
+2016-09-24,NC,Black Mountain,Speech to Home School Legal Defense Assoc.,0,2016,-82.3205791,35.6176544,Pence,0,1,0,1
+2016-09-27,NC,Raleigh,Rally/Speech,0,2016,-78.6390989,35.7803977,Clinton,1,0,1,1
+2016-10-02,NC,Charlotte,Speech to Little Rock AME Zion Church,0,2016,-80.8430827,35.2272086,Clinton,1,0,0,1
+2016-10-10,NC,Charlotte,Town Hall,0,2016,-80.8430827,35.2272086,Pence,0,1,0,0
+2016-10-10,NC,Fletcher,Rally/Speech,0,2016,-82.5011239,35.4309336,Pence,0,1,1,1
+2016-10-12,NC,Davidson,Rally/Organizing Event,0,2016,-80.8485218,35.4992614,Kaine,0,1,1,0
+2016-10-12,NC,Raleigh,Rally/Speech,0,2016,-78.6390989,35.7803977,Pence,0,1,1,1
+2016-10-14,NC,Charlotte,Rally/Speech,0,2016,-80.8430827,35.2272086,Trump,1,0,1,1
+2016-10-14,NC,Greensboro,Rally/Speech,0,2016,-79.7919754,36.0726355,Trump,1,0,1,1
+2016-10-18,NC,Fayetteville,Rally/Speech,0,2016,-78.878292,35.0525759,Pence,0,1,1,1
+2016-10-18,NC,Wilmington,Rally/Speech,0,2016,-77.9447107,34.2257282,Pence,0,1,1,1
+2020-09-03,NC,Raleigh,Speech,0,2020,-78.6390989,35.7803977,Pence,0,1,0,1
+2020-09-04,NC,NA,Speech,0,2020,NA,NA,Trump,1,0,0,1
+2020-09-08,NC,Winston-Salem,Rally/Speech,0,2020,-80.2440518,36.0998131,Trump,1,0,1,1
+2020-09-18,NC,NA,Speech,0,2020,NA,NA,Harris,0,0,0,1
+2020-09-19,NC,Fayetteville,Rally/Speech,0,2020,-78.878292,35.0525759,Trump,1,0,1,1
+2020-09-23,NC,Raleigh,Speech,0,2020,-78.6390989,35.7803977,Biden,1,0,0,1
+2020-09-24,NC,Charlotte,Speech,0,2020,-80.8430827,35.2272086,Trump,1,0,0,1
+2020-09-28,NC,Raleigh,Roundtable,0,2020,-78.6390989,35.7803977,Harris,0,0,0,0
+2020-09-28,NC,NA,Speech,0,2020,NA,NA,Harris,0,0,0,1
+2024-07-24,NC,Charlotte,Rally,0,2024,-80.8430827,35.2272086,Trump,1,0,1,0
+2024-08-14,NC,Asheville,Rally,0,2024,-82.5508407,35.595363,Harris,0,0,1,0
+2024-08-16,NC,Raleigh,Speech,0,2024,-78.6390989,35.7803977,Harris,0,0,0,1
+2024-08-21,NC,Asheboro,Democratic National Convention,0,2024,-79.8136446,35.7079146,Harris,0,0,0,0
+2024-08-21,NC,Asheboro,Democratic National Convention & Speech,0,2024,-79.8136446,35.7079146,Walz,0,1,0,1
+2024-08-21,NC,Asheboro,Rally,0,2024,-79.8136446,35.7079146,Vance / Trump,1,1,1,0
+2024-08-29,NC,Raleigh,Bus Tour & Campaign Visit,0,2024,-78.6390989,35.7803977,Walz,0,1,0,0
+2024-09-06,NC,Charlotte,Speech,0,2024,-80.8430827,35.2272086,Trump,1,0,0,1
+2024-09-12,NC,"Charlotte, Greensboro",Rallies,0,2024,NA,NA,Harris,0,0,0,0
+2024-09-14,NC,Greenville,College football campaign visit,0,2024,-77.3724593,35.613224,Vance,0,1,0,0
+2024-09-17,NC,Asheville,Rally & Campaign Visit,0,2024,-82.5508407,35.595363,Walz,0,1,1,0
+2024-09-21,NC,Wilmington,Rally,0,2024,-77.9447107,34.2257282,Harris,0,0,1,0
+2024-09-23,NC,Charlotte,Rally,0,2024,-80.8430827,35.2272086,Vance,0,1,1,0
+2024-09-25,NC,Mint Hill,Rally,0,2024,-80.6570377,35.1735388,Trump,1,0,1,0
+2024-10-04,NC,Fayetteville,Town Hall,0,2024,-78.878292,35.0525759,Trump,1,0,0,0
+2024-10-05,NC,Charlotte,Public appearance,0,2024,-80.8430827,35.2272086,Harris,0,0,0,0
+2024-10-10,NC,Greensboro,Town Hall,0,2024,-79.7919754,36.0726355,Vance,0,1,0,0
+2024-10-12,NC,Raleigh,Campaign Visit,0,2024,-78.6390989,35.7803977,Harris,0,0,0,0
+2024-10-13,NC,Concord,Campaign Appearance,0,2024,-80.5800049,35.4094178,Vance,0,1,0,0
+2024-10-13,NC,Greenville,Rally,0,2024,-77.3724593,35.613224,Harris,0,0,1,0
+2016-08-01,NE,Omaha,Rally/Speech,0,2016,NA,NA,Clinton,1,0,1,1
+2024-08-17,NE,La Vista,Rally,0,2024,-96.0324044,41.1832679,Walz,0,1,1,0
+2016-08-06,NH,Windham,Rally/Speech,0,2016,-71.304229,42.8006441,Trump,1,0,1,1
+2016-08-13,NH,Manchester,Rally/Speech,0,2016,-71.4547891,42.9956397,Kaine,0,1,1,1
+2016-08-18,NH,Manchester,Rally/Speech,0,2016,-71.4547891,42.9956397,Pence,0,1,1,1
+2016-08-25,NH,Manchester,Rally/Speech,0,2016,-71.4547891,42.9956397,Trump,1,0,1,1
+2016-09-01,NH,Manchester,Round-table at Manchester Community College,0,2016,-71.4547891,42.9956397,Kaine,0,1,0,0
+2016-09-15,NH,Exeter,Rally/Speech,0,2016,-70.9478343,42.981477,Kaine,0,1,1,1
+2016-09-15,NH,Laconia,Rally/Speech,0,2016,-71.470351,43.5278546,Trump,1,0,1,1
+2016-09-15,NH,Portsmouth,Panel discussion,0,2016,-70.7573936,43.0764436,Kaine,0,1,0,0
+2016-09-26,NH,Milford,Rally/Speech,0,2016,-71.6495345,42.8355775,Pence,0,1,1,1
+2016-09-28,NH,Durham,Rally/Speech,0,2016,-70.927048,43.134564,Clinton,1,0,1,1
+2016-09-29,NH,Bedford,Rally/Speech,0,2016,-71.5159015,42.9464737,Trump,1,0,1,1
+2016-10-06,NH,Sandown,Town Hall,0,2016,-71.1870053,42.928698,Trump,1,0,0,0
+2016-10-15,NH,Portsmouth,Rally/Speech,0,2016,-70.7573936,43.0764436,Trump,1,0,1,1
+2020-08-28,NH,Londonderry,Rally/Speech,0,2020,-71.3615507,42.8467063,Trump,1,0,1,1
+2020-09-22,NH,Gilford,Rally/Speech,0,2020,-71.407013,43.54805,Pence,0,1,1,1
+2024-09-04,NH,"North Hampton, Portsmouth",Rally & Campaign Visit,0,2024,NA,NA,Harris,0,0,1,0
+2016-08-26,NJ,Secaucus,Morning Joe (MSNBC),1,2016,-74.0566735,40.7899291,Clinton,1,0,0,0
+2016-10-15,NJ,Edison,Speech at Republican Hindu Coalition event,0,2016,-74.4113926,40.518157,Trump,1,0,0,1
+2016-08-01,NV,Carson City,Rally/Speech,0,2016,-119.7575628,39.1698022,Pence,0,1,1,1
+2016-08-01,NV,Reno,Rally/Speech,0,2016,-119.8126581,39.5261206,Pence,0,1,1,1
+2016-08-04,NV,Las Vegas,Rally/Speech,0,2016,-115.148516,36.1672559,Clinton,1,0,1,1
+2016-08-17,NV,Las Vegas,Rally/Speech,0,2016,-115.148516,36.1672559,Pence,0,1,1,1
+2016-08-22,NV,Las Vegas,Rally/Speech,0,2016,-115.148516,36.1672559,Kaine,0,1,1,1
+2016-08-25,NV,Reno,Rally/Speech,0,2016,-119.8126581,39.5261206,Clinton,1,0,1,1
+2016-09-22,NV,Reno,Rally/Speech,0,2016,-119.8126581,39.5261206,Kaine,0,1,1,1
+2016-10-05,NV,Henderson,Rally/Speech,0,2016,-114.9822486,36.0319843,Trump,1,0,1,1
+2016-10-05,NV,Reno,Rally/Speech,0,2016,-119.8126581,39.5261206,Trump,1,0,1,1
+2016-10-06,NV,Las Vegas,Voter Registration Event,0,2016,-115.148516,36.1672559,Kaine,0,1,0,0
+2016-10-07,NV,Henderson,Speech at senior living center,0,2016,-114.9822486,36.0319843,Kaine,0,1,0,1
+2016-10-12,NV,Las Vegas,Rally/Speech,0,2016,-115.148516,36.1672559,Clinton,1,0,1,1
+2020-09-12,NV,Minden,Rally/Speech,0,2020,-119.7700488,38.9565145,Trump,1,0,1,1
+2020-09-13,NV,Las Vegas,Rally/Speech,0,2020,-115.148516,36.1672559,Trump,1,0,1,1
+2020-09-13,NV,Las Vegas,Roundtable,0,2020,-115.148516,36.1672559,Trump,1,0,0,0
+2020-09-15,NV,Las Vegas,Roundtable,0,2020,-115.148516,36.1672559,Harris,0,0,0,0
+2020-10-02,NV,Las Vegas,Speech,0,2020,-115.148516,36.1672559,Harris,0,0,0,1
+2020-10-08,NV,Boulder City,Rally/Speech,0,2020,-114.8377351,35.9776606,Pence,0,1,1,1
+2020-10-09,NV,Las Vegas,Speech,0,2020,-115.148516,36.1672559,Biden,1,0,0,1
+2024-08-10,NV,Las Vegas,Rally,0,2024,-115.148516,36.1672559,Walz / Harris,0,1,1,0
+2024-08-24,NV,Las Vegas,Campaign Visit,0,2024,-115.148516,36.1672559,Harris,0,0,0,0
+2024-09-09,NV,Reno,Campaign Visit,0,2024,-119.8126581,39.5261206,Walz,0,1,0,0
+2024-09-13,NV,Las Vegas,Rally,0,2024,-115.148516,36.1672559,Trump,1,0,1,0
+2024-09-29,NV,Las Vegas,Rally,0,2024,-115.148516,36.1672559,Harris,0,0,1,0
+2024-10-08,NV,Reno,Campaign Visit,0,2024,-119.8126581,39.5261206,Walz,0,1,0,0
+2024-10-11,NV,Reno,Rally,0,2024,-119.8126581,39.5261206,Trump,1,0,1,0
+2024-10-12,NV,Las Vegas,Roundtable with Latino voters,0,2024,-115.148516,36.1672559,Trump,1,0,0,0
+2016-08-25,NY,New York,Late Show with Stephen Colbert,1,2016,-74.0060152,40.7127281,Kaine,0,1,0,0
+2016-09-04,NY,New York,"ABC ""This Week"" Interview",1,2016,-74.0060152,40.7127281,Kaine,0,1,0,0
+2016-09-07,NY,New York,NBC Commander in Chief Forum,1,2016,-74.0060152,40.7127281,Clinton / Trump,1,0,0,0
+2016-09-08,NY,White Plains,Press Conference,0,2016,-73.7629097,41.0339862,Clinton,1,0,0,0
+2016-09-09,NY,New York,Press Conference,0,2016,-74.0060152,40.7127281,Clinton,1,0,0,0
+2016-09-15,NY,New York,Speeches to The Economic Club of NY,0,2016,-74.0060152,40.7127281,Trump / Pence,1,1,0,1
+2016-09-15,NY,New York,The Dr. Oz Show,1,2016,-74.0060152,40.7127281,Trump,1,0,0,0
+2016-09-15,NY,New York,Tonight Show with Jimmy Fallon,1,2016,-74.0060152,40.7127281,Trump,1,0,0,0
+2016-09-19,NY,New York,The O'Reilly Factor interview,1,2016,-74.0060152,40.7127281,Trump,1,0,0,0
+2016-09-19,NY,New York,Tonight Show with Jimmy Fallon,1,2016,-74.0060152,40.7127281,Clinton,1,0,0,0
+2016-09-19,NY,White Plains,Press Conference,0,2016,-73.7629097,41.0339862,Clinton,1,0,0,0
+2016-09-26,NY,Hempstead,First Presidential Debate,1,2016,-73.6190736,40.6736812,Clinton / Trump,1,0,0,0
+2016-09-28,NY,New York,The O'Reilly Factor interview,1,2016,-74.0060152,40.7127281,Trump,1,0,0,0
+2016-10-13,NY,New York,"""The View"" Interview",1,2016,-74.0060152,40.7127281,Kaine,0,1,0,0
+2024-09-18,NY,Uniondale,Rally,0,2024,-73.592341,40.7095827,Trump,1,0,1,0
+2024-09-23,NY,Brooklyn,Speech,0,2024,-73.9497211,40.6526006,Walz,0,1,0,1
+2024-10-01,NY,New York City,Debate,0,2024,-74.0060152,40.7127281,Walz / Vance,0,1,0,0
+2024-10-07,NY,Queens,Public appearance,0,2024,-73.79267536,40.6515585,Trump,1,0,0,0
+2016-07-27,OH,Toledo,Rally/Speech,0,2016,-83.5378173,41.6529143,Trump,1,0,1,1
+2016-07-29,OH,Lima,Rally/Speech,0,2016,-84.11565396,40.741735,Pence,0,1,1,1
+2016-07-30,OH,Youngstown,Rally/Speech,0,2016,-80.6520161,41.1035786,Clinton / Kaine,1,1,1,1
+2016-07-31,OH,Cleveland,Rally/Speech,0,2016,-81.6936772,41.4996574,Clinton / Kaine,1,1,1,1
+2016-07-31,OH,Columbus,Rally/Speech,0,2016,-83.0007065,39.9622601,Clinton / Kaine,1,1,1,1
+2016-08-01,OH,Columbus,Rally/Speech,0,2016,-83.0007065,39.9622601,Trump,1,0,1,1
+2016-08-10,OH,Cambridge,Rally/Speech,0,2016,-81.5884561,40.031183,Pence,0,1,1,1
+2016-08-10,OH,Dayton,Rally/Speech,0,2016,-84.1916069,39.7589478,Pence,0,1,1,1
+2016-08-15,OH,Youngstown,Rally/Speech,0,2016,-80.6520161,41.1035786,Trump / Pence,1,1,1,1
+2016-08-17,OH,Cleveland,Rally/Speech,0,2016,-81.6936772,41.4996574,Clinton,1,0,1,1
+2016-08-22,OH,Akron,Rally/Speech,0,2016,-81.518485,41.083064,Trump,1,0,1,1
+2016-08-31,OH,Cincinnati,American Legion National Convention,0,2016,-84.5124602,39.1014537,Clinton,1,0,0,0
+2016-09-01,OH,Cincinnati,American Legion National Convention,0,2016,-84.5124602,39.1014537,Trump,1,0,0,0
+2016-09-01,OH,Wilmington,Rally/Speech,0,2016,-83.8285375,39.4453393,Trump,1,0,1,1
+2016-09-05,OH,Canfield,Canfield County Fair / Speech,0,2016,-80.760912,41.025059,Trump / Pence,1,1,0,1
+2016-09-05,OH,Cleveland,Labor Day Festival/Speeches,0,2016,-81.6936772,41.4996574,Clinton / Kaine,1,1,0,1
+2016-09-05,OH,Cleveland,Round-table discussion,0,2016,-81.6936772,41.4996574,Trump / Pence,1,1,0,0
+2016-09-08,OH,Cleveland,Speech at charter school,0,2016,-81.6936772,41.4996574,Trump,1,0,0,1
+2016-09-12,OH,Dayton,Rally/Speech,0,2016,-84.1916069,39.7589478,Kaine,0,1,1,1
+2016-09-14,OH,Canton,Rally/Speech,0,2016,-81.3749508,40.7985464,Trump,1,0,1,1
+2016-09-21,OH,Cleveland Heights,Hannity Town Hall,1,2016,-81.556235,41.5200518,Trump,1,0,0,0
+2016-09-21,OH,Cleveland Heights,Speech to New Spirit Revival Church,0,2016,-81.556235,41.5200518,Trump / Pence,1,1,0,1
+2016-09-21,OH,Dayton,Small Business Roundtable,0,2016,-84.1916069,39.7589478,Trump,1,0,0,0
+2016-09-21,OH,Toledo,Rally/Speech,0,2016,-83.5378173,41.6529143,Trump / Pence,1,1,1,1
+2016-09-28,OH,Leetonia,Rally/Speech,0,2016,-80.7553556,40.8772816,Pence,0,1,1,1
+2016-10-03,OH,Akron,Voter Registration Event,0,2016,-81.518485,41.083064,Clinton,1,0,0,0
+2016-10-03,OH,Toledo,Rally/Speech,0,2016,-83.5378173,41.6529143,Clinton,1,0,1,1
+2016-10-07,OH,Rossford,Rally/Speech,0,2016,-83.5643782,41.6097726,Pence,0,1,1,1
+2016-10-07,OH,Strongsville,Rally/Speech,0,2016,-81.83511,41.3144733,Pence,0,1,1,1
+2016-10-10,OH,Columbus,Rally/Speech,0,2016,-83.0007065,39.9622601,Clinton,1,0,1,1
+2016-10-13,OH,Cincinnati,Rally/Speech,0,2016,-84.5124602,39.1014537,Trump,1,0,1,1
+2016-10-13,OH,Columbus,Rally/Speech,0,2016,-83.0007065,39.9622601,Trump,1,0,1,1
+2016-10-17,OH,Columbus,Rally/Speech,0,2016,-83.0007065,39.9622601,Pence,0,1,1,1
+2016-10-17,OH,Mason,Rally/Speech,0,2016,-84.309939,39.3600586,Pence,0,1,1,1
+2020-09-16,OH,Zanesville,Rally/Speech,0,2020,-82.005019,39.9401426,Pence,0,1,1,1
+2020-09-21,OH,Swanton,Rally/Speech,0,2020,-83.8931809,41.5906822,Trump,1,0,1,1
+2020-09-21,OH,Vandalia,Speech,0,2020,-84.1988308,39.8906122,Trump,1,0,0,1
+2020-09-30,OH,Alliance,Speech,0,2020,-81.1059309,40.9153362,Biden,1,0,0,1
+2020-09-30,OH,Cleveland,Speech,0,2020,-81.6936772,41.4996574,Biden,1,0,0,1
+2020-10-12,OH,Cincinnati,Speech,0,2020,-84.5124602,39.1014537,Biden,1,0,0,1
+2020-10-12,OH,Columbus,Rally/Speech,0,2020,-83.0007065,39.9622601,Pence,0,1,1,1
+2020-10-12,OH,Toledo,Speech,0,2020,-83.5378173,41.6529143,Biden,1,0,0,1
+2016-09-17,OK,Norman,Fundraiser,0,2016,-97.4394816,35.2225717,Trump,1,0,0,0
+2016-09-23,OK,Oklahoma City,Fundraiser,0,2016,-97.5170536,35.4729886,Kaine,0,1,0,0
+2016-07-27,PA,Scranton,Rally/Speech,0,2016,-75.6621294,41.4086874,Trump / Pence,1,1,1,1
+2016-07-29,PA,Harrisburgh,Rally/Speech,0,2016,NA,NA,Clinton / Kaine,1,1,1,1
+2016-07-29,PA,Hatfield,Rally/Speech,0,2016,-75.2995777,40.2796371,Clinton / Kaine,1,1,1,1
+2016-07-29,PA,Philadelphia,Rally/Speech,0,2016,-75.1635262,39.9527237,Clinton / Kaine,1,1,1,1
+2016-07-30,PA,Johnstown,Rally/Speech,0,2016,-78.9219698,40.3267407,Clinton / Kaine,1,1,1,1
+2016-07-30,PA,Pittsburgh,Rally/Speech,0,2016,-79.9900861,40.4416941,Clinton / Kaine,1,1,1,1
+2016-08-01,PA,Harrisburgh,Rally/Speech,0,2016,NA,NA,Trump,1,0,1,1
+2016-08-09,PA,Lancaster,Rally/Speech,0,2016,-76.3056686,40.03813,Pence,0,1,1,1
+2016-08-09,PA,Pittsburgh,Rally/Speech,0,2016,-79.9900861,40.4416941,Pence,0,1,1,1
+2016-08-12,PA,Altoona,Rally/Speech,0,2016,-78.394736,40.518681,Trump,1,0,1,1
+2016-08-12,PA,Erie,Rally/Speech,0,2016,-80.0852695,42.1294712,Trump,1,0,1,1
+2016-08-15,PA,Scranton,Rally/Speech,0,2016,-75.6621294,41.4086874,Clinton,1,0,1,1
+2016-08-16,PA,Philadelphia,Rally/voter registration event,0,2016,-75.1635262,39.9527237,Clinton,1,0,1,0
+2016-08-23,PA,King of Prussia,Facility Tour,0,2016,-75.3832484,40.0908111,Pence,0,1,0,0
+2016-08-23,PA,Pipersville,Rally/Speech,0,2016,-75.1390969,40.4260533,Pence,0,1,1,1
+2016-08-30,PA,Erie,Rally/Speech,0,2016,-80.0852695,42.1294712,Kaine,0,1,1,1
+2016-08-30,PA,Lancaster,Rally/Speech,0,2016,-76.3056686,40.03813,Kaine,0,1,1,1
+2016-08-31,PA,Bethlehem,Rally/Speech,0,2016,-75.3786521,40.6178915,Kaine,0,1,1,1
+2016-09-05,PA,Pittsburgh,Rally/Speech,0,2016,-79.9900861,40.4416941,Kaine,0,1,1,1
+2016-09-07,PA,Philadelphia,Speech to the Union League,0,2016,-75.1635262,39.9527237,Trump,1,0,0,1
+2016-09-13,PA,Aston,Speech,0,2016,1.6717942,42.7744772,Trump,1,0,0,1
+2016-09-14,PA,Scranton,Rally/Speech,0,2016,-75.6621294,41.4086874,Pence,0,1,1,1
+2016-09-19,PA,Philadelphia,Rally/Speech,0,2016,-75.1635262,39.9527237,Clinton,1,0,1,1
+2016-09-22,PA,Chester Township,Rally/Speech,0,2016,-75.40286684,39.8514464,Trump,1,0,1,1
+2016-09-22,PA,Pittsburgh,Speech to Shale Insight Conference,0,2016,-79.9900861,40.4416941,Trump,1,0,0,1
+2016-09-29,PA,York,Rally/Speech,0,2016,-76.7276989,39.962493,Pence,0,1,1,1
+2016-10-01,PA,Manheim,Rally/Speech,0,2016,-76.3952429,40.1637359,Trump,1,0,1,1
+2016-10-04,PA,Harrisburg,Organizing Event and Press Conference,0,2016,-76.8861122,40.2663107,Clinton,1,0,0,0
+2016-10-04,PA,Haverford,Town Hall,0,2016,-75.2943516,40.0131672,Clinton,1,0,0,0
+2016-10-05,PA,Grantville,Rally/Speech,0,2016,-76.6463566,40.377867,Pence,0,1,1,1
+2016-10-05,PA,Philadelphia,Rally/Speech,0,2016,-75.1635262,39.9527237,Kaine,0,1,1,1
+2016-10-06,PA,Gettysburg,Rally/Speech,0,2016,-77.231012,39.8308973,Pence,0,1,1,1
+2016-10-06,PA,Johnstown,Rally/Speech,0,2016,-78.9219698,40.3267407,Pence,0,1,1,1
+2016-10-06,PA,Pittsburgh,Rally/Speech,0,2016,-79.9900861,40.4416941,Kaine,0,1,1,1
+2016-10-10,PA,Ambridge,Rally/Speech,0,2016,-80.2273615,40.586438,Trump,1,0,1,1
+2016-10-10,PA,Wilkes-Barre,Rally/Speech,0,2016,-75.8817316,41.2464824,Trump,1,0,1,1
+2016-10-13,PA,Bethlehem,Speech to Northampton County Republican Dinner,0,2016,-75.3786521,40.6178915,Pence,0,1,0,1
+2016-10-13,PA,Orefield,Speech to RepublicanFest,0,2016,-75.5843529,40.6348182,Pence,0,1,0,1
+2016-10-13,PA,Reading,Fundraiser,0,2016,-75.9279495,40.335345,Pence,0,1,0,0
+2020-08-31,PA,Pittsburgh,Speech,0,2020,-79.9900861,40.4416941,Biden,1,0,0,1
+2020-09-01,PA,Exeter,Rally/Speech,0,2020,-75.8190835,41.3206358,Pence,0,1,1,1
+2020-09-03,PA,Latrobe,Rally/Speech,0,2020,-79.3840301,40.317287,Trump,1,0,1,1
+2020-09-07,PA,Harrisburg,Speech,0,2020,-76.8861122,40.2663107,Biden,1,0,0,1
+2020-09-07,PA,NA,Roundtable,0,2020,NA,NA,Biden,1,0,0,0
+2020-09-09,PA,Export,Roundtable,0,2020,-79.625599,40.4181235,Pence,0,1,0,0
+2020-09-09,PA,Freedom,Rally/Speech,0,2020,-80.2517277,40.6856221,Pence,0,1,1,1
+2020-09-17,PA,Philadelphia,Roundtable,0,2020,-75.1635262,39.9527237,Harris,0,0,0,0
+2020-09-17,PA,Scranton,Town Hall,0,2020,-75.6621294,41.4086874,Biden,1,0,0,0
+2020-09-22,PA,Moon Township,Rally/Speech,0,2020,-80.2082,40.5061,Trump,1,0,1,1
+2020-09-26,PA,Middletown,Rally/Speech,0,2020,-74.8851959,40.1701367,Trump,1,0,1,1
+2020-09-29,PA,Lititz,Rally/Speech,0,2020,-76.307162,40.1571324,Pence,0,1,1,1
+2020-09-30,PA,Greensburg,Speech,0,2020,-79.5389289,40.3014581,Biden,1,0,0,1
+2020-09-30,PA,Johnstown,Speech,0,2020,-78.9219698,40.3267407,Biden,1,0,0,1
+2020-09-30,PA,New Alexandria,Speech,0,2020,-79.42049485,40.3949675,Biden,1,0,0,1
+2020-09-30,PA,Pittsburgh,Speech,0,2020,-79.9900861,40.4416941,Biden,1,0,0,1
+2020-10-06,PA,Gettysburg,Speech,0,2020,-77.231012,39.8308973,Biden,1,0,0,1
+2020-10-10,PA,Erie,Speech,0,2020,-80.0852695,42.1294712,Biden,1,0,0,1
+2020-10-13,PA,Johnstown,Rally/Speech,0,2020,-78.9219698,40.3267407,Trump,1,0,1,1
+2024-07-31,PA,"Harrisburg, Philadelphia",Rally,0,2024,NA,NA,Trump,1,0,1,0
+2024-08-06,PA,Philadelphia,Campaign Visit,0,2024,-75.1635262,39.9527237,Vance,0,1,0,0
+2024-08-06,PA,Philadelphia,Rally,0,2024,-75.1635262,39.9527237,Harris / Walz,0,1,1,0
+2024-08-15,PA,Lower Burrell,Campaign Visit,0,2024,-79.7298187,40.5882821,Vance,0,1,0,0
+2024-08-17,PA,Wilkes Barre,Rally,0,2024,-75.8817316,41.2464824,Harris,0,0,1,0
+2024-08-18,PA,"Pittsburgh, Rochester",Bus Tour,0,2024,NA,NA,Harris / Walz,0,1,0,0
+2024-08-19,PA,Philadelphia,Democratic National Convention,0,2024,-75.1635262,39.9527237,Walz,0,1,0,0
+2024-08-19,PA,York,Democratic National Convention & Speech,0,2024,-76.7276989,39.962493,Harris,0,0,0,1
+2024-08-28,PA,Erie,Campaign Visit,0,2024,-80.0852695,42.1294712,Vance,0,1,0,0
+2024-08-30,PA,Johnstown,Rally,0,2024,-78.9219698,40.3267407,Trump,1,0,1,0
+2024-09-02,PA,Pittsburgh,Campaign Event & Speech,0,2024,-79.9900861,40.4416941,Harris,0,0,0,1
+2024-09-04,PA,Harrisburg,Town Hall,0,2024,-76.8861122,40.2663107,Trump,1,0,0,0
+2024-09-04,PA,"Pequea, Pittsburgh, Moon Township, Dawson",Campaign Visit,0,2024,NA,NA,Walz,0,1,0,0
+2024-09-05,PA,Erie,Rally,0,2024,-80.0852695,42.1294712,Walz,0,1,1,0
+2024-09-07,PA,Pittsburgh,Campaign Event,0,2024,-79.9900861,40.4416941,Harris,0,0,0,0
+2024-09-10,PA,Philadelphia,Debate,0,2024,-75.1635262,39.9527237,Harris / Trump,1,0,0,0
+2024-09-13,PA,"Wilkes-Barre, Johnstown",Rally & Campaign Visit,0,2024,NA,NA,Harris,0,0,1,0
+2024-09-17,PA,Philadelphia,Campaign Visit at Community College of Philadelphia,0,2024,-75.1635262,39.9527237,Harris,0,0,0,0
+2024-09-21,PA,Bethlehem,Rally,0,2024,-75.3786521,40.6178915,Walz,0,1,1,0
+2024-09-21,PA,Leesport,Rally,0,2024,-75.9663222,40.4470377,Vance / Trump,1,1,1,0
+2024-09-23,PA,"Kittanning, Smithon, Indiana","Campaign Visit, Roundtable & Rally",0,2024,NA,NA,Harris,0,0,1,0
+2024-09-23,PA,Smithon,Campaign Visit,0,2024,NA,NA,Trump,1,0,0,0
+2024-09-25,PA,Pittsburgh,Speech,0,2024,-79.9900861,40.4416941,Harris,0,0,0,1
+2024-09-28,PA,"Newtown, Monroeville",Rally and Campaign Visit,0,2024,NA,NA,Vance,0,1,1,0
+2024-09-29,PA,Erie,Rally,0,2024,-80.0852695,42.1294712,Trump,1,0,1,0
+2024-10-02,PA,York,Campaign Visit,0,2024,-76.7276989,39.962493,Walz,0,1,0,0
+2024-10-05,PA,Butler,Rally,0,2024,-79.895197,40.86108,Trump,1,0,1,0
+2024-10-09,PA,"Reading, Scranton",Rally & Speech,0,2024,NA,NA,Trump,1,0,1,1
+2024-10-12,PA,"Johnstown, Reading",Speech & Town Hall,0,2024,NA,NA,Vance,0,1,0,1
+2024-10-14,PA,Erie,Rally,0,2024,-80.0852695,42.1294712,Harris,0,0,1,0
+2024-10-14,PA,Oaks,Town Hall,0,2024,-75.4596319,40.1317722,Trump,1,0,0,0
+2024-10-15,PA,"Volant, Butler, Pittsburgh",Campaign Visit,0,2024,NA,NA,Walz,0,1,0,0
+2024-08-15,RI,Newport,Campaign Visit,0,2024,-71.3137707,41.4899827,Walz,0,1,0,0
+2024-07-27,TN,Nashville,Speech & Rally,0,2024,-86.7742984,36.1622767,Trump,1,0,1,1
+2016-08-09,TX,Austin,Speech to volunteers,0,2016,-97.7436995,30.2711286,Kaine,0,1,0,1
+2016-08-10,TX,Dallas/Fort Worth,Fundraiser,0,2016,-96.9357364,32.71274775,Kaine,0,1,0,0
+2016-08-23,TX,Austin,Rally/Speech,0,2016,-97.7436995,30.2711286,Trump,1,0,1,1
+2016-09-17,TX,Houston,Speech to Remembrance Project,0,2016,-95.3676974,29.7589382,Trump,1,0,0,1
+2016-09-23,TX,Austin,Speech to Supporters,0,2016,-97.7436995,30.2711286,Kaine,0,1,0,1
+2016-09-23,TX,Houston,Speech to Communications Workers of America Local 6222,0,2016,-95.3676974,29.7589382,Kaine,0,1,0,1
+2016-10-11,TX,Dallas,Fundraiser,0,2016,-96.7968559,32.7762719,Trump,1,0,0,0
+2016-10-11,TX,Dallas,The O'Reilly Factor interview,1,2016,-96.7968559,32.7762719,Trump,1,0,0,0
+2016-10-11,TX,San Antonio,Fundraiser,0,2016,-98.4951405,29.4246002,Trump,1,0,0,0
+2024-07-24,TX,Houston,Speech,0,2024,-95.3676974,29.7589382,Harris,0,0,0,1
+2024-08-10,TX,"San Antonio, Houston",Campaign Visit,0,2024,-98.43205583,29.4623452,Vance,0,1,0,0
+2016-09-01,UT,Salt Lake City,Fundraiser,0,2016,-111.886797,40.7596198,Pence,0,1,0,0
+2016-07-25,VA,Roanoke,Town Hall,0,2016,-79.9414313,37.270973,Trump / Pence,1,1,0,0
+2016-08-01,VA,Richmond,Rally/Speech,0,2016,-77.43428,37.5385087,Kaine,0,1,1,1
+2016-08-02,VA,Ashburn,Rally/Speech,0,2016,-77.46964647,39.0300191,Trump,1,0,1,1
+2016-08-04,VA,Norfolk,Rally/Speech,0,2016,-76.2899539,36.8493695,Pence,0,1,1,1
+2016-08-04,VA,Virginia Beach,Rally/Speech,0,2016,-75.9760751,36.8496579,Pence,0,1,1,1
+2016-08-10,VA,Abingdon,Rally/Speech,0,2016,-81.975249,36.7104018,Trump,1,0,1,1
+2016-08-20,VA,Fredericksburg,Rally/Speech,0,2016,-77.4605399,38.3031837,Trump,1,0,1,1
+2016-08-27,VA,Purcellville,Rally/Speech,0,2016,-77.7145945,39.1366223,Pence,0,1,1,1
+2016-09-06,VA,Virginia Beach,Rally/Speech,0,2016,-75.9760751,36.8496579,Trump,1,0,1,1
+2016-09-09,VA,Norfolk,Rally/Speech at ODU,0,2016,-76.2899539,36.8493695,Kaine,0,1,1,1
+2016-09-10,VA,Paris,Speech to Liberty Farm Festival,0,2016,-78.0015445,38.9839316,Pence,0,1,0,1
+2016-09-20,VA,Norfolk,Round-table discussion,0,2016,-76.2899539,36.8493695,Pence,0,1,0,0
+2016-09-20,VA,Williamsburg,Rally/Speech,0,2016,-76.7074042,37.2708788,Pence,0,1,1,1
+2016-09-24,VA,Providence Forge,Chickahominy Indian Tribe Fall Festival,0,2016,-77.0439583,37.4424264,Kaine,0,1,0,0
+2016-09-24,VA,Roanoke,Rally/Speech,0,2016,-79.9414313,37.270973,Trump,1,0,1,1
+2016-09-28,VA,Alexandria,Speech following John Warner endorsement,0,2016,-77.0470229,38.8051095,Kaine,0,1,0,1
+2016-10-03,VA,Ashland,Rally/Speech,0,2016,-77.4806603,37.7594012,Pence,0,1,1,1
+2016-10-03,VA,Herndon,Speech to Retired American Warriors PAC,0,2016,-77.3859479,38.9695316,Trump,1,0,0,1
+2016-10-04,VA,Farmville,Vice Presidential Debate,1,2016,-78.3923813,37.3024713,Kaine / Pence,0,1,0,0
+2016-10-05,VA,Harrisonburg,Rally/Speech,0,2016,-78.8688833,38.4493315,Pence,0,1,1,1
+2016-10-12,VA,Lynchburg,Speech at Liberty University Convocation,0,2016,-79.1422464,37.4137536,Pence,0,1,0,1
+2016-10-12,VA,Salem,The O'Reilly Factor interview,1,2016,-80.0556773,37.293198,Pence,0,1,0,0
+2016-10-12,VA,Salem,Town Hall,0,2016,-80.0556773,37.293198,Pence,0,1,0,0
+2016-10-16,VA,Leesburg,Fundraiser,0,2016,-77.5645607,39.1154506,Kaine,0,1,0,0
+2020-09-25,VA,* Newport News,Rally/Speech,0,2020,-76.42977,36.9775016,Trump,1,0,1,1
+2024-10-03,VA,Damascus,Public appearance,0,2024,-81.7837303,36.6337272,Vance,0,1,0,0
+2016-08-30,WA,Everett,Rally/Speech,0,2016,-122.2127011,47.9793437,Trump,1,0,1,1
+2016-10-14,WA,Seattle,Fundraiser,0,2016,-122.330062,47.6038321,Clinton,1,0,0,0
+2016-07-27,WI,Waukesha,Rally/Speech,0,2016,-88.2314813,43.0116784,Pence,0,1,1,1
+2016-08-05,WI,Green Bay,Rally/Speech,0,2016,-88.0125794,44.5126379,Trump / Pence,1,1,1,1
+2016-08-05,WI,Milwaukee,Rally/Speech,0,2016,-87.9090751,43.0386475,Kaine,0,1,1,1
+2016-08-07,WI,Milwaukee,Meet The Press Interview,1,2016,-87.9090751,43.0386475,Kaine,0,1,0,0
+2016-08-11,WI,La Crosse,Rally/Speech,0,2016,-91.2514355,43.8122836,Pence,0,1,1,1
+2016-08-11,WI,Milwaukee,Rally/Speech,0,2016,-87.9090751,43.0386475,Pence,0,1,1,1
+2016-08-16,WI,Milwaukee,Town Hall (Fox News),1,2016,-87.9090751,43.0386475,Trump,1,0,0,0
+2016-08-16,WI,West Bend,Rally/Speech,0,2016,-88.1834277,43.4252776,Trump,1,0,1,1
+2016-09-28,WI,Waukesha,Rally/Speech,0,2016,-88.2314813,43.0116784,Trump,1,0,1,1
+2016-10-17,WI,Green Bay,Rally/Speech,0,2016,-88.0125794,44.5126379,Trump,1,0,1,1
+2020-09-01,WI,Kenosha,Speech,0,2020,-87.8212263,42.5846773,Trump,1,0,0,1
+2020-09-03,WI,Kenosha,Speech,0,2020,-87.8212263,42.5846773,Biden,1,0,0,1
+2020-09-07,WI,La Crosse,Rally/Speech,0,2020,-91.2514355,43.8122836,Pence,0,1,1,1
+2020-09-07,WI,Milwaukee,Roundtable,0,2020,-87.9090751,43.0386475,Harris,0,0,0,0
+2020-09-07,WI,Milwaukee,Speech,0,2020,-87.9090751,43.0386475,Harris,0,0,0,1
+2020-09-14,WI,Janesville,Rally/Speech,0,2020,-89.0226793,42.6829765,Pence,0,1,1,1
+2020-09-17,WI,Mosinee,Rally/Speech,0,2020,-89.7035959,44.7927298,Trump,1,0,1,1
+2020-09-21,WI,Manitowoc,Speech,0,2020,-87.6575841,44.0886059,Biden,1,0,0,1
+2020-09-24,WI,Eau Claire,Rally/Speech,0,2020,-91.4984941,44.811349,Pence,0,1,1,1
+2020-10-13,WI,Waukesha,Rally/Speech,0,2020,-88.2314813,43.0116784,Pence,0,1,1,1
+2024-07-23,WI,West Allis,Rally,0,2024,-88.0070315,43.0166806,Harris,0,0,1,0
+2024-08-07,WI,Eau Claire,Rally,0,2024,-91.4984941,44.811349,Harris / Walz,0,1,1,0
+2024-08-07,WI,Eau Claire,Speech & Campaign Visit,0,2024,-91.4984941,44.811349,Vance,0,1,0,1
+2024-08-16,WI,Milwaukee,Campaign Visit,0,2024,-87.9090751,43.0386475,Vance,0,1,0,0
+2024-08-20,WI,Kenosha,Speech,0,2024,-87.8212263,42.5846773,Vance,0,1,0,1
+2024-08-20,WI,Milwaukee,Democratic National Convention & Rally,0,2024,-87.9090751,43.0386475,Walz / Harris,0,1,1,0
+2024-08-28,WI,De Pere,Campaign Visit,0,2024,-88.0599986,44.4493584,Vance,0,1,0,0
+2024-08-29,WI,La Crosse,Speech & Town Hall,0,2024,-91.2514355,43.8122836,Trump,1,0,0,1
+2024-09-02,WI,Milwaukee,Campaign Visit,0,2024,-87.9090751,43.0386475,Walz,0,1,0,0
+2024-09-07,WI,Mosinee,Rally,0,2024,-89.7035959,44.7927298,Trump,1,0,1,0
+2024-09-13,WI,Lansing,Campaign Visits,0,2024,-89.33164642,43.0974977,Walz,0,1,0,0
+2024-09-14,WI,Superior,Rally,0,2024,-92.1040796,46.7207737,Walz,0,1,1,0
+2024-09-17,WI,Eau Claire,Rallies,0,2024,-91.4984941,44.811349,Vance,0,1,0,0
+2024-09-20,WI,Madison,Speech & Rally,0,2024,-89.3837613,43.074761,Harris,0,0,1,1
+2024-09-28,WI,"Prairie du Chien, Tuscaloosa",Speech & Campaign Appearance,0,2024,NA,NA,Harris,0,0,0,1
+2024-10-01,WI,"Waunakee, Milwaukee",Speech,0,2024,NA,NA,Trump,1,0,0,1
+2024-10-03,WI,Ripon,Rally,0,2024,-88.8372972,43.8424502,Harris,0,0,1,0
+2024-10-06,WI,Juneau,Rally,0,2024,-88.7051037,43.4055504,Trump,1,0,1,0
+2024-10-14,WI,"Eau Claire, Green Bay",Campaign Visit,0,2024,NA,NA,Walz,0,1,0,0
