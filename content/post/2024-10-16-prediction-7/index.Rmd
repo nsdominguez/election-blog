@@ -40,7 +40,7 @@ setwd("~/Documents/GOV 1347/GOV 1347/content/post/2024-10-16-prediction-7")
 events <- read_csv("campaign_events_geocoded.csv")
 ```
 
-```{r}
+```{r, include = FALSE}
 
 
 events <- events %>%
@@ -320,7 +320,7 @@ g1 <- ggplot(data = map) +
                        breaks = c(20, 35, 50, 65, 80), 
                        limits = c(20, 80),
                        name = "Harris (D) Predicted Two-Party Vote Share*") +
-  labs(title = "2024 Presidential Forecast Model - Ground Game",
+  labs(title = "2024 Presidential Election Predction - Ground Game Model",
        caption = "* based on campaign events model") + 
   theme_void() +
   theme(legend.position = "none") + 
@@ -652,7 +652,7 @@ g3 <- ggplot(data = map2) +
                        breaks = c(20, 35, 50, 65, 80), 
                        limits = c(20, 80),
                        name = "Harris (D) Predicted Two-Party Vote Share*") +
-  labs(title = "2024 Presidential Election Predictions: Ground Game Ensemble Model") + 
+  labs(title = "2024 Presidential Election Predction - Ensemble Model") + 
   theme_void() +
   theme(legend.position = "none") + 
   theme(plot.title = element_text(face = "bold"))
@@ -683,7 +683,7 @@ g4 <- ggplot(final_combined_predictions, aes(x = final_prediction, y = reorder(s
                        limits = c(20, 80), name = "") +  
   labs(x = "Harris (D) Predicted Two-Party Vote Share",
        y = "State",
-       title = "Ground Game Ensemble Model Predictions") +
+       title = "Ensemble Model Predictions") +
   geom_vline(xintercept = 50, linetype = "dotted") +
   theme(panel.background = element_rect(fill = "white"),
         plot.title = element_text(hjust = 0, size = 14),
