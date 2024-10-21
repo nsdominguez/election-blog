@@ -232,9 +232,9 @@ summary(mod1)
 test$prediction_mod1 <- predict(mod1, newdata = test, interval = "prediction")
 ```
 
-## Prediction 7: Campaign Events and Preliminary Ensembling
+# Prediction 7: Campaign Events and Preliminary Ensembling
 
-# Campaign Ground Game 
+## Campaign Ground Game 
 
 **October 21, 2024** – We are now just a day over two weeks from Election Day 2024. At this point in the election cycle, the air waves aren’t the only space jam-packed with campaign messaging. If you live in some of the most contested “swing” states, such as Pennsylvania, Wisconsin, Michigan, Arizona, Georgia, Nevada, or North Carolina, you may have had some campaign volunteers or canvassers knock on your door. Perhaps Trump or Harris, or their respective running mates, have stopped in your town for a rally, speech, or visit to a local business. All of these activities, the in-person interactions with a candidate or their representative, constitute a campaign’s ground game. 
 
@@ -311,7 +311,7 @@ g1 <- ggplot(data = map) +
   geom_sf_text(aes(label = stateab,
                    text = paste(
                      google_name,
-                     '<br>Predicted 2-P Harris Vote:', prediction_mod1[,"fit"],'%',
+                     '<br>Predicted Harris 2-P Vote:', prediction_mod1[,"fit"],'%',
                      '<br>2020 2-P Biden Vote:', D_pv2p_lag1,'%',
                      '<br>Electoral Votes:', electors
                    )),
@@ -337,7 +337,7 @@ g2 <- ggplot(test_viz1, aes(x = prediction_mod1[,"fit"], y = reorder(state_full,
   geom_col(
     aes(text = paste(
              state_full,
-             '<br>Predicted 2-P Harris:', prediction_mod1[,"fit"],'%',
+             '<br>Predicted Harris 2-P Vote::', prediction_mod1[,"fit"],'%',
              '<br>Lower Bound:', prediction_mod1[,"lwr"],'%',
              '<br>Upper Bound:', prediction_mod1[,"upr"],'%'
            ))
@@ -608,7 +608,7 @@ final_combined_predictions <- final_combined_predictions %>%
   
 ```
 
-# Prediction by Ensembling
+## Prediction by Ensembling
 
 One flaw of using the number of campaign events to predict vote share is that the data does not account for the size of the events. One could hypothesize that having a small number of extremely large rallies has a different effect than many small stumping events. Additionally, what is the exact effect of these campaign events anyway? Do in-person events like rallies and speeches sway voters, considering that the people who most likely attend these events are ardent supporters? Considering campaign events are one small facet of a candidate’s path to victory, can they even make a good prediction? 
 
@@ -617,6 +617,7 @@ These questions are why we may not want to put all of our prediction eggs in one
 To create a more accurate prediction of the election based on campaign-related factors, I ensembled my ground game model predictions with three other models. The first two models are simple models based on polling data. One of the drawbacks of the spare campaign event data was that I had to construct a singular pooled model to predict all states. For the poll models, I constructed unpooled OLS regressions for each state based on FiveThirtyEight’s state polling averages 3 weeks before the election. In fitting these models, I added exponential weights by election year, for data from the 1976 to 2020 elections, to account for the fact that more recent elections will be more informative for 2024 predictions. The first polling average model includes a simple difference in polling average between the Democratic and Republican candidates to predict Democratic two-party vote share, while the second model includes these same variables plus year as a numeric variable to account for time trends. The first model resulted in a mean adjusted r-squared of 0.33 across states, while the second model had an adjusted r-squared of 0.52 across states. 
 
 The third additional model might be familiar, it is my pooled FEC contributions model from last week (see my “Money is Power: Campaign Finance” article for more information on how I created this OLS model). In short, this model has an adjusted r-squared of 0.93 and an out-of-sample k-fold cross validation RMSE of 5.77. 
+
 For the ensemble model, I estimated a prediction for each state by calculating the weighted average of the predictions from the four models. Because of polling’s historically good predictive power, I allotted 50% weight for both polling models. I divided this weight between each model based on the average RMSE across the two unpooled models. The simple polling average model had an average RMSE of 4.52, while the polling average and year model had an average RMSE of 5.43, which translated into a ~0.273 and ~ 0.227 weight respectively. As for the other 50% weight, the FEC contributions model received 0.3, and the ground game model received 0.2 weight, because the FEC contributions model simply is built on more data and is more suitable for accurate prediction. Additionally, the polling averages models could not make predictions for a majority of states, because statewide polling has not been conducted in every state in the 2024 election cycle yet. Therefore, for states without polling model predictions, their weighted average uses predictions from only the ground game and FEC contribution models. The results of this weighted average ensemble model is shown below. 
 
 
@@ -643,7 +644,7 @@ g3 <- ggplot(data = map2) +
   geom_sf_text(aes(label = iso3166_2,
                    text = paste(
                      google_name,
-                     '<br>Predicted 2-P Harris Vote:', final_prediction,'%',
+                     '<br>Predicted Harris 2-P Vote:', final_prediction,'%',
                      '<br>2020 2-P Biden Vote:', D_pv2p_lag1.y,'%',
                      '<br>Electoral Votes:', electors.y
                    )),
@@ -661,7 +662,7 @@ ggplotly(g3, tooltip = "text")
 
 ```
 
-This ensemble model predicts that Republican former president Donald Trump will win the 2024 election with **278** electoral votes, compared to Democrat Vice President Kamala Harris’ **260** electoral votes; an extremely close election. But, the prediction becomes even closer when you consider that the model predicts Harris will get 49.99456 percent of the two-party vote share! If my model is off by a fraction of a decimal point, then Harris could win the 2024 presidential election with exactly 270 electoral votes! It literally does not get any closer than this. In addition to Wisconsin, the model predicts that the six other swing states will also be extremely close calls, indicating that the election is still any candidate’s game. 
+This ensemble model predicts that Republican former president Donald Trump will win the 2024 election with **278** electoral votes, compared to Democrat Vice President Kamala Harris’ **260** electoral votes; an extremely close election. But, the prediction becomes even closer when you consider that the model predicts Harris will get 49.99456% of the two-party vote share! If my model is off by a fraction of a decimal point, then Harris could win the 2024 presidential election with exactly 270 electoral votes! It literally does not get any closer than this. In addition to Wisconsin, the model predicts that the six other swing states will also be extremely close calls, indicating that the election is still any candidate’s game. 
 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
@@ -671,7 +672,7 @@ g4 <- ggplot(final_combined_predictions, aes(x = final_prediction, y = reorder(s
   geom_col(
     aes(text = paste(
              state,
-             '<br>Predicted 2-P Harris:', final_prediction,'%',
+             '<br>Predicted Harris 2-P Vote:', final_prediction,'%',
              '<br>Lower Bound:', final_lower_bound,'%',
              '<br>Upper Bound:', final_upper_bound,'%'
            ))

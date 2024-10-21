@@ -5,7 +5,7 @@ date: '2024-10-13'
 slug: prediction-6
 ---
 
-## Prediction 6: FEC Contribution Filings
+# Prediction 6: FEC Contribution Filings
 
 There are now only 22 days until Election Day, when we will finally get some answers about the accuracy of my predictions. At this point in the election cycle, depending on your location, you might be seeing more campaign ads flooding the airwaves. Campaign ads, both promoting their candidates and attacking their opponents, can be found on TV channels, radio stations, and even social media feeds. These advertisements are effective methods to reach large audiences, but they come at a steep financial cost to campaigns. Therefore, one could infer that the more money a candidate or campaign raises and spends, the more ads they can buy, and the more likely they can win. 
 
