@@ -1,7 +1,7 @@
 ---
 title: "Penultimate Projections: Putting It All Together"
 author: "Nick Dominguez"
-date: '2024-10-28'
+date: '2024-10-24'
 slug: prediction-8
 ---
 
