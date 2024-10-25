@@ -521,7 +521,7 @@ test_polls <- test_polls %>%
 
 ```{r, include = FALSE}
 # import FEC contributions model
-FEC_predictions <- read_csv("FEC_predictions1.csv")
+FEC_predictions <- read_csv("results_blog6.csv")
 ```
 
 ```{r, include = FALSE}

@@ -256,7 +256,7 @@ mod1
 ```
 
 ```{r, include = FALSE, message = FALSE, warning = FALSE}
-test$output_D_pv2p <- predict(mod1, newdata = test)
+test$output_D_pv2p <- predict(mod1, newdata = test, interval = "prediction")
 
 test <- test %>%
   mutate(state_winner = ifelse(output_D_pv2p > 50, "D", "R"))
@@ -291,7 +291,7 @@ Applying my individual state model including these variables to 2024 data yields
 
 ```{r, echo = FALSE}
 ggplot(data = results_map, aes(x = long, y = lat, group = group)) +
-  geom_polygon(aes(fill = output_D_pv2p), color = "black") +  
+  geom_polygon(aes(fill = output_D_pv2p[,"fit"]), color = "black") +  
   coord_map("polyconic") + 
 scale_fill_gradient2(low = "red", mid = "white", high = "blue", midpoint = 50, 
                        breaks = c(20, 35, 50, 65, 80), 
