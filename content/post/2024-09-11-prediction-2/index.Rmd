@@ -229,7 +229,6 @@ full_data_statewide <- econ_ur_join %>%
 
 ```
 
-
 ```{r, include = FALSE}
 train <- full_data_statewide %>% filter(year != 2024)
 d_bea <- d_bea %>% mutate(year = as.character(year), quarter = as.character(quarter))
@@ -255,12 +254,15 @@ mod1
 
 ```
 
+
+
 ```{r, include = FALSE, message = FALSE, warning = FALSE}
 test$output_D_pv2p <- predict(mod1, newdata = test, interval = "prediction")
 
 test <- test %>%
   mutate(state_winner = ifelse(output_D_pv2p > 50, "D", "R"))
 ```
+
 
 ```{r, include = FALSE, message = FALSE, warning = FALSE}
 # predict electoral college with map

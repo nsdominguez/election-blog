@@ -78,6 +78,7 @@ test2024 <- test2024 %>%
 
 ```
 
+
 ```{r, include = FALSE}
 # weights
 
@@ -137,6 +138,7 @@ summary(mod2)
 
 test2024$mod2 <- predict(mod2, newdata = test2024, interval = "prediction")
 ```
+
 
 ```{r, include=FALSE}
 test2024 <- test2024 %>%

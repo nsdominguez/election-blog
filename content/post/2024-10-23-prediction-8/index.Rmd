@@ -172,9 +172,7 @@ full_data <- blog2 %>%
 # create averages
 
 full_data$avg_pred <- rowMeans(full_data[, c("pred.2", "pred.3", "pred.4", "pred.5", "pred.6", "pred.7")], na.rm = TRUE)
-
 full_data$avg_lwr <- rowMeans(full_data[, c("lwr.2", "lwr.3", "lwr.4", "lwr.5", "lwr.6", "lwr.7")], na.rm = TRUE)
-
 full_data$avg_upr <- rowMeans(full_data[, c("upr.2", "upr.3", "upr.4", "upr.5", "upr.6", "upr.7")], na.rm = TRUE)
 
 ```

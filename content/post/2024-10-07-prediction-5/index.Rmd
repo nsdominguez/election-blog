@@ -258,7 +258,6 @@ for (state in unique(state_full_recent$state)) {
 
 ```
 
-
 ```{r, include = FALSE}
 # construct prediction model
 rf_model <- randomForest(
@@ -274,6 +273,7 @@ rf_model <- randomForest(
   importance = TRUE
 )
 ```
+
 
 ```{r, include = FALSE}
 add_vote <- state_full_recent %>%

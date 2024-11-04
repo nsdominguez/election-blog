@@ -207,6 +207,20 @@ mod1 <- lm(D_pv2p ~
 summary(mod1)
 ```
 
+```{r}
+test_2020 <- train %>%
+  filter(year == 2020)
+
+test_2020$predict_2020 <- predict(mod1, newdata = test_2020)
+
+test_2020 <- test_2020 %>%
+  mutate(FEC_accuracy = D_pv2p - predict_2020) %>% 
+  select(state, FEC_accuracy)
+
+write.csv(test_2020, file = "FEC_accuracy.csv", row.names = FALSE)
+```
+
+
 ```{r, include = FALSE}
 # cross validation (help from Chat-GPT)
 
