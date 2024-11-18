@@ -9,14 +9,6 @@ slug: blog-10
 setwd("~/Documents/GOV 1347/GOV 1347/content/post/2024-11-13-blog-10")
 ```
 
-It should include the following elements:
-A recap of your model(s) and your predictions. 
-A description of the accuracy of the model(s), including any apparent patterns in the accuracy.  Graphics should be used here.
-Proposed hypotheses for why the model(s) were inaccurate in the estimates or locations where it was inaccurate.  These reasons should not simply be statements of about the quality of the components of the model, e.g., “the polls were not good” or “economic growth was not a good predictor” but should instead be grounded hypotheses on why components of the model may not have been predictive or may not have been predictive in certain cases.
-Proposed quantitative tests that could test these hypotheses, e.g., what data, if available, could allow you to test whether the reason proposed really did cause the inaccuracy in your model.  If there is no plausible test of the hypothesis, explain why.  You do not need to perform these tests or explain them in great detail (e.g., there is no need to write down an equation showing your exact test), just propose them.  
-A description of how you might change your model if you were to do it again.  
-
-
 ```{r, include = FALSE}
 library(blogdown)
 library(plotly)
@@ -176,7 +168,9 @@ ggplotly(g4, tooltip = "text")
 
 ```
 
+
 Examining these differences more closely reveals some exceptions to my Trump underestimation. As seen in the scatterplot above and the prediction vs. outcome map below, it seems like I most strongly overestimated Harris’ and underestimated Trump’s vote shares in Hawaii, California, Texas, Florida and especially New York. Meanwhile, the states where Harris overperformed my predictions were Nebraska, Iowa, Arkansas, North Carolina, District of Columbia, Massachusetts, and most significantly, Vermont, although these are smaller in magnitude than the states where the outcome was more Republican than predicted. 
+
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 # Read US hexgrid data. 
@@ -209,7 +203,9 @@ g3 <- ggplot(data = map2) +
 ggplotly(g3, tooltip = "text")
 ```
 
+
 Looking at the margin swing in two-party vote share from 2020 to 2024 reveals that some of my largest misses have something in common. From 2020 to 2024, many large, populous states had the largest swings rightward. Texas and Florida, both Republican-leaning states, both saw extreme rightward shifts, while big solidly blue states such as California, Illinois, Massachusetts, New York, and New Jersey, also saw their large Democratic margins cut, some by more than 10 percentage points. I hypothesize that many of these large rightward swings observed in the typically safe states can explain the decently large error of my model. As shown below, state 2020-2024 swing and state prediction error are positively correlated with an r-squared of 0.52. As the rightward swing decreases (gets closer to positive) my predictions become more accurate. The more a state swung towards Trump in 2024 than in 2020, the less accurate my prediction was.
+
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 
@@ -255,7 +251,8 @@ ggplotly(g2, tooltip = "text")
 cor(data.mini$swing, data.mini$residual)
 ```
 
-There are a few theories that can explain this trend in prediction misses. The first is that while included demographics in my model, it did not account for partisan shifts within demographic groups, such as further Democratic erosion among the white working class, as well as [Trump’s inroads with Hispanic and Latino voters] (https://www.reuters.com/world/us/trumps-return-power-fueled-by-hispanic-working-class-voter-support-2024-11-06/). In my model, I simulated demographic composition for each state, and used these compositions in a random forest to predict vote share, but this process does not account for partisan shifts, nor turnout differences between demographic groups properly. If I had to redo this again, I would use the voter file and poll crosstabs to predict outcomes not based on demographic composition, but by differences and changes in how (and how often) these demographic groups vote. However, these polling crosstabs might not be reliable for each state, due to small sample sizes, and 25 states didn’t even have polling data I could’ve used. Although they have mixed accuracy, I could use exit polls from past elections and the voter file to estimate the partisanship and partisan trends of demographic groups to better predict the composition of the electorate and how these groups will vote, then compare the accuracy of these predictions to my demographics model, especially in the states such as Texas, California, New York, New Jersey, and Florida that had both my highest prediction errors, the largest Hispanic and Latino population, and the largest shifts right. 
+
+There are a few theories that can explain this trend in prediction misses. The first is that while included demographics in my model, it did not account for partisan shifts within demographic groups, such as further Democratic erosion among the white working class, as well as [Trump’s inroads with Hispanic and Latino voters](https://www.reuters.com/world/us/trumps-return-power-fueled-by-hispanic-working-class-voter-support-2024-11-06/). In my model, I simulated demographic composition for each state, and used these compositions in a random forest to predict vote share, but this process does not account for partisan shifts, nor turnout differences between demographic groups properly. If I had to redo this again, I would use the voter file and poll crosstabs to predict outcomes not based on demographic composition, but by differences and changes in how (and how often) these demographic groups vote. However, these polling crosstabs might not be reliable for each state, due to small sample sizes, and 25 states didn’t even have polling data I could’ve used. Although they have mixed accuracy, I could use exit polls from past elections and the voter file to estimate the partisanship and partisan trends of demographic groups to better predict the composition of the electorate and how these groups will vote, then compare the accuracy of these predictions to my demographics model, especially in the states such as Texas, California, New York, New Jersey, and Florida that had both my highest prediction errors, the largest Hispanic and Latino population, and the largest shifts right. 
 
 Second, I perhaps did not emphasize economic fundamentals enough. It has become clear in the aftermath of the election that [the economy was top of mind for voters](https://apnews.com/article/ap-votecast-trump-harris-election-president-voters-86225516e8424431ab1d19e57a74f198) , but voters were more concerned about their personal finances than the macroeconomic strength of the country. Voters were concerned more about inflation and the price of gas and groceries, rather than GDP growth. While traditional measures of the economy were strong and while Harris was not the incumbent president, she represented the Biden Administration and voters directed their frustration with inflation, high prices, and their negative *perception* of the American economy. This could explain the nearly universal rightward anti-imcumbent shifts towards Trump across the country. Including more of these consumer-focused variables, along with incumbency factors  in my economic fundamental model, and giving more weight to this model in an ensemble model could have made my predictions more accurate. To test this, I could redo my economics model with more current economic data about salient increases in the price of goods and services, and see if that reduced prediction error. 
 
@@ -303,7 +300,7 @@ models <- mse_long %>%
 
 model_labels <- c(
   final_model = "Final Weighted Ensemble",
-  mod1 = "Polling Data*",
+  mod1 = "Polling Data",
   mod2 = "Economic Fundamentals",
   mod4 = "Incumbency Factors",
   mod5 = "Demographics",
@@ -318,7 +315,7 @@ models <- models %>%
 
 ```{r, include = FALSE}
 add <- data.frame(model_name = c("Final Weighted Ensemble",
-                                 "Polling Data*",
+                                 "Polling Data",
                                  "Economic Fundamentals",
                                  "Incumbency Factors",
                                  "Demographics",
@@ -366,6 +363,7 @@ incorrect <- data %>%
   select(state, final_pred, final_lwr, final_upr, actual, residual, outcome)
 ```
 
+
 It’s important to note that nearly every forecasting model had the 2024 election as a tossup between Harris and Trump, including reputable forecasts such as [FiveThirtyEight’s model](https://projects.fivethirtyeight.com/2024-election-forecast/). In my model, it was no different. Let’s take a look at the seven swing or battleground states. As previously stated, I predicted that all of these states with the exception of North Carolina would be won by Harris, but all 7 ended up going to Trump. As you can see below, while the point estimate for my model was above 50% for Harris in six of the states, all seven had prediction intervals straddling the 50% win line, indicating the possibility that either Harris or Trump could win any of these battlegrounds. The columns, representing the actual 2024 vote share, reveal that my prediction intervals did contain the vote outcomes we observed, and even though my exact numbers were off, I still predicted the vote share order of the swing states; with Michigan and Wisconsin being the closest, while Arizona and North Carolina being the best battlegrounds for Harris. In summary, my predictions for these states were appropriate, but because either candidate had nearly equivalent odds of winning each of these states, there was always a possibility that I would get the winners of these states wrong, while still predicting vote share correctly with a few points. In fact, calculating MSE and RMSE for battleground and non battleground states reveals that on average, my predictions for seven swing states were more accurate than my predictions for the other “safe” or “solid” states. 
 
 
@@ -389,6 +387,8 @@ g5 <- ggplot(incorrect, aes(x = actual, y = reorder(state, residual))) +
 
 ggplotly(g5, tooltip = "text") 
 ```
+
+
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 swing_summary <- data %>%
