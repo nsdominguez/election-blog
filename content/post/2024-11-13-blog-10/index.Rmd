@@ -38,7 +38,6 @@ library(knitr)
 library(kableExtra)
 ```
 
-
 ```{r, include = FALSE}
 votes <- read_csv("updatedvotes.csv")
 predictions <- read_csv("predictions.csv")
@@ -58,7 +57,6 @@ data <- predictions %>%
          final_upr = avg_upr_w) %>%
   mutate(actual = actual * 100)
 ```
-
 
 ```{r, include = FALSE}
 data <- data %>%
@@ -118,7 +116,6 @@ accuracy <- winners %>%
   
 ```
 
-
 ```{r, include = FALSE}
 data <- data %>%
   mutate(outcome = case_when(
@@ -141,10 +138,9 @@ data.mini <- data %>%
 
 # Model Analysis: Assessing My Predictions
 
-**November 18, 2024** – Here we are, almost two weeks since the 2024 Presidential Election. While some states are still counting votes (looking at you, California), the months of hard work of campaigning, polling, and predicting have come to a close, as we now discuss what happened on November 5th. Even though we do not have finalized counts, we do know that ultimately, my prediction was wrong. Democratic Vice President did not win the 2024 Presidential Election with 303 electoral votes by carrying six of the seven swing states (NV, AZ, WI, MI, PA, and GA) . Rather, Republican former President Donald Trump won the election with 312, carrying all seven swing states. So let’s discuss: what happened? 
+**November 18, 2024** – Here we are, almost two weeks since the 2024 Presidential Election. While some states are still counting votes (looking at you, California), the months of hard work of campaigning, polling, and predicting have come to a close, as we now discuss what happened on November 5th. Even though we do not have finalized counts, we do know that ultimately, my prediction was wrong. Democratic Vice President did not win the 2024 Presidential Election with 303 electoral votes by carrying six of the seven swing states (NV, AZ, WI, MI, PA, and GA) . Rather, Republican former President Donald Trump won the election with 312, carrying all seven swing states. So let’s discuss: what happened?
 
-If we just compare my predictions for each state to the actual outcome, we see that across the board, I overestimated Harris’ two-party vote share, especially in the states that particularly mattered: Wisconsin, Michigan, Pennsylvania, Georgia, Nevada, and Arizona. In these states, I predicted narrow Harris victories, but Trump ended up carrying all six of them. Other than these six states, I predicted the winner of the other 44 states and DC correctly. Seeing how most of the states fall below, it appears that my model was categorically a few points biased towards Harris. This is confirmed by the large **mean squared error (MSE) of 9.61** and **root mean squared error (RMSE) of 3.10** for my final prediction model. 
-
+If we just compare my predictions for each state to the actual outcome, we see that across the board, I overestimated Harris’ two-party vote share, especially in the states that particularly mattered: Wisconsin, Michigan, Pennsylvania, Georgia, Nevada, and Arizona. In these states, I predicted narrow Harris victories, but Trump ended up carrying all six of them. Other than these six states, I predicted the winner of the other 44 states and DC correctly. Seeing how most of the states fall below, it appears that my model was categorically a few points biased towards Harris. This is confirmed by the large **mean squared error (MSE) of 9.61** and **root mean squared error (RMSE) of 3.10** for my final prediction model.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 
@@ -168,9 +164,7 @@ ggplotly(g4, tooltip = "text")
 
 ```
 
-
-Examining these differences more closely reveals some exceptions to my Trump underestimation. As seen in the scatterplot above and the prediction vs. outcome map below, it seems like I most strongly overestimated Harris’ and underestimated Trump’s vote shares in Hawaii, California, Texas, Florida and especially New York. Meanwhile, the states where Harris overperformed my predictions were Nebraska, Iowa, Arkansas, North Carolina, District of Columbia, Massachusetts, and most significantly, Vermont, although these are smaller in magnitude than the states where the outcome was more Republican than predicted. 
-
+Examining these differences more closely reveals some exceptions to my Trump underestimation. As seen in the scatterplot above and the prediction vs. outcome map below, it seems like I most strongly overestimated Harris’ and underestimated Trump’s vote shares in Hawaii, California, Texas, Florida and especially New York. Meanwhile, the states where Harris overperformed my predictions were Nebraska, Iowa, Arkansas, North Carolina, District of Columbia, Massachusetts, and most significantly, Vermont, although these are smaller in magnitude than the states where the outcome was more Republican than predicted.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 # Read US hexgrid data. 
@@ -203,9 +197,7 @@ g3 <- ggplot(data = map2) +
 ggplotly(g3, tooltip = "text")
 ```
 
-
 Looking at the margin swing in two-party vote share from 2020 to 2024 reveals that some of my largest misses have something in common. From 2020 to 2024, many large, populous states had the largest swings rightward. Texas and Florida, both Republican-leaning states, both saw extreme rightward shifts, while big solidly blue states such as California, Illinois, Massachusetts, New York, and New Jersey, also saw their large Democratic margins cut, some by more than 10 percentage points. I hypothesize that many of these large rightward swings observed in the typically safe states can explain the decently large error of my model. As shown below, state 2020-2024 swing and state prediction error are positively correlated with an r-squared of 0.52. As the rightward swing decreases (gets closer to positive) my predictions become more accurate. The more a state swung towards Trump in 2024 than in 2020, the less accurate my prediction was.
-
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 
@@ -251,13 +243,11 @@ ggplotly(g2, tooltip = "text")
 cor(data.mini$swing, data.mini$residual)
 ```
 
+There are a few theories that can explain this trend in prediction misses. The first is that while included demographics in my model, it did not account for partisan shifts within demographic groups, such as further Democratic erosion among the white working class, as well as [Trump’s inroads with Hispanic and Latino voters](https://www.reuters.com/world/us/trumps-return-power-fueled-by-hispanic-working-class-voter-support-2024-11-06/). In my model, I simulated demographic composition for each state, and used these compositions in a random forest to predict vote share, but this process does not account for partisan shifts, nor turnout differences between demographic groups properly. If I had to redo this again, I would use the voter file and poll crosstabs to predict outcomes not based on demographic composition, but by differences and changes in how (and how often) these demographic groups vote. However, these polling crosstabs might not be reliable for each state, due to small sample sizes, and 25 states didn’t even have polling data I could’ve used. Although they have mixed accuracy, I could use exit polls from past elections and the voter file to estimate the partisanship and partisan trends of demographic groups to better predict the composition of the electorate and how these groups will vote, then compare the accuracy of these predictions to my demographics model, especially in the states such as Texas, California, New York, New Jersey, and Florida that had both my highest prediction errors, the largest Hispanic and Latino population, and the largest shifts right.
 
-There are a few theories that can explain this trend in prediction misses. The first is that while included demographics in my model, it did not account for partisan shifts within demographic groups, such as further Democratic erosion among the white working class, as well as [Trump’s inroads with Hispanic and Latino voters](https://www.reuters.com/world/us/trumps-return-power-fueled-by-hispanic-working-class-voter-support-2024-11-06/). In my model, I simulated demographic composition for each state, and used these compositions in a random forest to predict vote share, but this process does not account for partisan shifts, nor turnout differences between demographic groups properly. If I had to redo this again, I would use the voter file and poll crosstabs to predict outcomes not based on demographic composition, but by differences and changes in how (and how often) these demographic groups vote. However, these polling crosstabs might not be reliable for each state, due to small sample sizes, and 25 states didn’t even have polling data I could’ve used. Although they have mixed accuracy, I could use exit polls from past elections and the voter file to estimate the partisanship and partisan trends of demographic groups to better predict the composition of the electorate and how these groups will vote, then compare the accuracy of these predictions to my demographics model, especially in the states such as Texas, California, New York, New Jersey, and Florida that had both my highest prediction errors, the largest Hispanic and Latino population, and the largest shifts right. 
+Second, I perhaps did not emphasize economic fundamentals enough. It has become clear in the aftermath of the election that [the economy was top of mind for voters](https://apnews.com/article/ap-votecast-trump-harris-election-president-voters-86225516e8424431ab1d19e57a74f198) , but voters were more concerned about their personal finances than the macroeconomic strength of the country. Voters were concerned more about inflation and the price of gas and groceries, rather than GDP growth. While traditional measures of the economy were strong and while Harris was not the incumbent president, she represented the Biden Administration and voters directed their frustration with inflation, high prices, and their negative *perception* of the American economy. This election, we also saw a unique divergence in economic performance and [voters' sentiment about the economy](https://fortune.com/2024/10/15/gap-american-perception-us-economy-performance-reality-doubled-trump-harris-politics/). These observations could explain the nearly universal rightward anti-incumbent shifts towards Trump across the country. Including more of these consumer-focused variables (both objective and subjective), along with incumbency factors in my economic fundamental model, and giving more weight to this model in an ensemble model could have made my predictions more accurate. To test this, I could redo my economics model with more current economic data about the salient increases in the price of goods and services, and see if that reduced prediction error. I could also repeat this test using measures of economic sentiment (how voters view the economy) and see if those hold more predictive power than objective economic variables.
 
-Second, I perhaps did not emphasize economic fundamentals enough. It has become clear in the aftermath of the election that [the economy was top of mind for voters](https://apnews.com/article/ap-votecast-trump-harris-election-president-voters-86225516e8424431ab1d19e57a74f198) , but voters were more concerned about their personal finances than the macroeconomic strength of the country. Voters were concerned more about inflation and the price of gas and groceries, rather than GDP growth. While traditional measures of the economy were strong and while Harris was not the incumbent president, she represented the Biden Administration and voters directed their frustration with inflation, high prices, and their negative *perception* of the American economy. This could explain the nearly universal rightward anti-imcumbent shifts towards Trump across the country. Including more of these consumer-focused variables, along with incumbency factors  in my economic fundamental model, and giving more weight to this model in an ensemble model could have made my predictions more accurate. To test this, I could redo my economics model with more current economic data about salient increases in the price of goods and services, and see if that reduced prediction error. 
-
-A third factor that may explain my forecast errors is polling. Many forecasters blame the error of their forecasts on polling error, but I attribute my error to the lack of polls in 25 states, not the accuracy of polls in the other 26 states. I explain this theory in more detail in the next section. 
-
+A third factor that may explain my forecast errors is polling. Many forecasters blame the error of their forecasts on polling error, but I attribute my error to the lack of polls in 25 states, not the accuracy of polls in the other 26 states. I explain this theory in more detail in the next section.
 
 ```{r, include = FALSE}
 mse <- data %>%
@@ -286,7 +276,6 @@ rmse <- data %>%
     mod_avg = sqrt(mean(resid.avg^2))
   )
 ```
-
 
 ```{r, include = FALSE}
 mse_long <- mse %>%
@@ -334,8 +323,7 @@ models <- models %>%
 
 ## Comparing Models
 
-My final predictions were constructed with an ensemble model, or a weighted average of a set of individual models. I decided to calculate the MSE, RMSE, and amount of correctly predicted state wins for my final ensemble model, the individual component models, and an unweighted simple average ensemble model. To recap, my final ensemble model had an MSE of 9.61, an RMSE of 3.10, and predicted the correct winner in 45/51 (about 88%) of states + DC. But, compared to the other models, it performed worse. By far, my Economic Fundamentals model was the most accurate, with an MSE of 4.55, RMSE of 2.13, and predicting the winner of all but 2 states correctly. My final ensemble model contained weighted averages of model predictions, but the table below shows this was done in vain, as the same ensemble model unweighted performed better than my weighted version. This table shows that the conventional wisdom of forecasting from the  fundamentals: the economy and the polls, are the best predictors of election outcomes, which matches with the narrative of the 2024 election being a wave of anti-incumbency sentiment in response to high inflation. However, the unweighted ensemble and all-variable random forest (which included demographic variables, lagged vote share, and FEC contributions as the top predictors), were also among the best-performing models. This leads me to believe that these factors are important to include in models, but perhaps may be more suited to be included in a random forest than as their own individual models. 
-
+My final predictions were constructed with an ensemble model, or a weighted average of a set of individual models. I decided to calculate the MSE, RMSE, and amount of correctly predicted state wins for my final ensemble model, the individual component models, and an unweighted simple average ensemble model. To recap, my final ensemble model had an MSE of 9.61, an RMSE of 3.10, and predicted the correct winner in 45/51 (about 88%) of states + DC. But, compared to the other models, it performed worse. By far, my Economic Fundamentals model was the most accurate, with an MSE of 4.55, RMSE of 2.13, and predicting the winner of all but 2 states correctly. My final ensemble model contained weighted averages of model predictions, but the table below shows this was done in vain, as the same ensemble model unweighted performed better than my weighted version. This table shows that the conventional wisdom of forecasting from the fundamentals: the economy and the polls, are the best predictors of election outcomes, which matches with the narrative of the 2024 election being a wave of anti-incumbency sentiment in response to high inflation. However, the unweighted ensemble and all-variable random forest (which included demographic variables, lagged vote share, and FEC contributions as the top predictors), were also among the best-performing models. This leads me to believe that these factors are important to include in models, but perhaps may be more suited to be included in a random forest than as their own individual models.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 models <- models %>%
@@ -363,9 +351,7 @@ incorrect <- data %>%
   select(state, final_pred, final_lwr, final_upr, actual, residual, outcome)
 ```
 
-
-It’s important to note that nearly every forecasting model had the 2024 election as a tossup between Harris and Trump, including reputable forecasts such as [FiveThirtyEight’s model](https://projects.fivethirtyeight.com/2024-election-forecast/). In my model, it was no different. Let’s take a look at the seven swing or battleground states. As previously stated, I predicted that all of these states with the exception of North Carolina would be won by Harris, but all 7 ended up going to Trump. As you can see below, while the point estimate for my model was above 50% for Harris in six of the states, all seven had prediction intervals straddling the 50% win line, indicating the possibility that either Harris or Trump could win any of these battlegrounds. The columns, representing the actual 2024 vote share, reveal that my prediction intervals did contain the vote outcomes we observed, and even though my exact numbers were off, I still predicted the vote share order of the swing states; with Michigan and Wisconsin being the closest, while Arizona and North Carolina being the best battlegrounds for Harris. In summary, my predictions for these states were appropriate, but because either candidate had nearly equivalent odds of winning each of these states, there was always a possibility that I would get the winners of these states wrong, while still predicting vote share correctly with a few points. In fact, calculating MSE and RMSE for battleground and non battleground states reveals that on average, my predictions for seven swing states were more accurate than my predictions for the other “safe” or “solid” states. 
-
+It’s important to note that nearly every forecasting model had the 2024 election as a tossup between Harris and Trump, including reputable forecasts such as [FiveThirtyEight’s model](https://projects.fivethirtyeight.com/2024-election-forecast/). In my model, it was no different. Let’s take a look at the seven swing or battleground states. As previously stated, I predicted that all of these states with the exception of North Carolina would be won by Harris, but all 7 ended up going to Trump. As you can see below, while the point estimate for my model was above 50% for Harris in six of the states, all seven had prediction intervals straddling the 50% win line, indicating the possibility that either Harris or Trump could win any of these battlegrounds. The columns, representing the actual 2024 vote share, reveal that my prediction intervals did contain the vote outcomes we observed, and even though my exact numbers were off, I still predicted the vote share order of the swing states; with Michigan and Wisconsin being the closest, while Arizona and North Carolina being the best battlegrounds for Harris. In summary, my predictions for these states were appropriate, but because either candidate had nearly equivalent odds of winning each of these states, there was always a possibility that I would get the winners of these states wrong, while still predicting vote share correctly with a few points. In fact, calculating MSE and RMSE for battleground and non battleground states reveals that on average, my predictions for seven swing states were more accurate than my predictions for the other “safe” or “solid” states.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 g5 <- ggplot(incorrect, aes(x = actual, y = reorder(state, residual))) + 
@@ -388,8 +374,6 @@ g5 <- ggplot(incorrect, aes(x = actual, y = reorder(state, residual))) +
 ggplotly(g5, tooltip = "text") 
 ```
 
-
-
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 swing_summary <- data %>%
   group_by(swing_state) %>%
@@ -399,7 +383,6 @@ kable(swing_summary, col.names = c("State Type", "MSE", "RMSE"))
 ```
 
 My hunch as to why my swing state predictions tended to be more accurate is because I had access to an abundance of high quality polling for these states to use for my model. Because many knew the election would be determined by these battlegrounds and would be won by very narrow margins, pollsters surveyed heavily in these states. In fact, on average, my predictions were more accurate for the 26 states that had 2024 polling data, as shown in the table below. Perhaps this is why my model had large errors in the less competitive states. It is possible that because these states weren’t viewed as competitive, pollsters did not bother to poll these states and therefore we had no prior knowledge of these rightward trends in the solid states that did not have polling data such as Hawaii, Illinois, Mississippi, or New Jersey: leading to my large forecasting miss for the solid states. If I wanted to see how much more accurate polling data made my predictions, I could rerun my ensemble model excluding the polling model predictions for states that had polling data, and see if it made my predictions more or less accurate.
-
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 poll_summary <- data %>%
@@ -418,7 +401,6 @@ nodata <- predictions %>%
 
 ## Lessons Learned
 
-Even though my predictions were fairly inaccurate, I still have interest in election forecasting and hope to continue it for future election cycles. If anything, this analysis of my predictions is a learning experience on how I can hopefully make better models going forward. To start, I think future models would be refined, yet diverse. My model this election perhaps contained too many superfluous variables that added noise. I still think that economic fundamentals, demographics, voter enthusiasm, polls, and incumbent approval matter, but I should do a better job of only including the variables that have the most predictive power, while reducing noisy other variables. In particular, I would also focus more on economic fundamentals in future models, as this submodel was the most accurate out of all components of my ensemble model. While I think that unique factors, especially the media and public perception, made inflation an especially important economic predictor, I think that future economic modeling should focus more on factors that have more of a direct impact on individuals’ circumstances such as inflation and unemployment, rather than GDP growth. Furthermore, I would also include better demographic modeling that accounts for swings within demographic groups, such as Hispanic and Latino voters, using the voter file and poll crosstabs. Finally, if I decide to do ensemble modeling again, I would weight my models by out-of-sample prediction error instead of a pseudo-scientific approach to weighting.
+Even though my predictions were fairly inaccurate, I still have interest in election forecasting and hope to continue it for future election cycles. If anything, this analysis of my predictions is a learning experience on how I can hopefully make better models going forward. To start, I think future models would be refined, yet diverse. My model this election perhaps contained too many superfluous variables that added noise. I still think that economic fundamentals, demographics, voter enthusiasm, polls, and incumbent approval matter, but I should do a better job of only including the variables that have the most predictive power, while reducing noisy other variables. In particular, I would also focus more on economic fundamentals in future models, as this submodel was the most accurate out of all components of my ensemble model. While I think that unique factors, especially the media and public perception, made inflation an especially important economic predictor, I think that future economic modeling should focus more on factors that have more of a direct impact on individuals’ circumstances such as inflation and unemployment, rather than GDP growth. In addition to object economic measures, I would include variables capturing economic sentiment, as we observe a divergence in perceptions about the economy and object economic performance. Furthermore, I would also include better demographic modeling that accounts for swings within demographic groups, such as Hispanic and Latino voters, using the voter file and poll crosstabs. Finally, if I decide to do ensemble modeling again, I would weight my models by out-of-sample prediction error instead of a pseudo-scientific approach to weighting.
 
-Forecasting the 2024 presidential election has been an interesting, challenging, and enriching experience. In the 2026 midterms, the 2028 presidential election, and beyond, I hope to integrate what I’ve learned in my modeling and continue my pursuit of understanding and predicting election outcomes. 
-
+Forecasting the 2024 presidential election has been an interesting, challenging, and enriching experience. In the 2026 midterms, the 2028 presidential election, and beyond, I hope to integrate what I’ve learned in my modeling and continue my pursuit of understanding and predicting election outcomes.
