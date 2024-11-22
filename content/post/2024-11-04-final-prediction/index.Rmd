@@ -230,12 +230,6 @@ all_pred$avg_upr_w <- rowSums(all_pred[, c("upr.2", "upr.1", "upr.4", "upr.5", "
 
 ```
 
-```{r}
-write.csv(all_pred, "predictions.csv", row.names = FALSE)
-
-```
-
-
 ```{r, include = FALSE}
 # calculate winner
 ec <- read_csv("corrected_ec_1948_2024.csv")
