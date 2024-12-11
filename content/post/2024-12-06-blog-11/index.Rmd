@@ -239,7 +239,7 @@ g5 <- ggplot(result, aes(y = margin, x = type)) +
   coord_cartesian(ylim = c(0, 50)) + 
   theme_bw() + theme(legend.position = "none") + 
   labs(x = " ", y = "Harris 2 Party D-R Margin",
-       title = "Prediction vs. Actual Election Results") + 
+       title = "2024 Prediction vs. Actual Election Results") + 
   theme(plot.title = element_text(face = "bold"))
 
 ggplotly(g5, tooltip = "text") 
@@ -251,7 +251,7 @@ While Democrats fared better in California congressional races this year, what e
 
 One of the main stories in the aftermath of the 2024 election is the broad and [uniform rightward shift](https://www.nytimes.com/interactive/2024/11/06/us/politics/presidential-election-2024-red-shift.html) of nearly every county in the United States, and California was no exception. As seen below, every single county in California shifted right compared to 2020, with the exception of small Alpine County. In fact, Trump flipped 10 counties that Biden won in 2020: Butte, Fresno, Imperial, Inyo, Lake, Merced, Riverside, San Bernardino, San Joaquin, and Stanislaus.
 
-```{r, echo = FALSE, message = FALSE, warning = FALSE}
+```{r, include = FALSE}
 library(sf)
 library(tigris)
 library(viridis)
@@ -289,8 +289,6 @@ g10 <- ggplot(data = ca_counties_sf) +
         axis.title = element_blank(),
         plot.title = element_text(face = "bold"))
 
-print(g10)
-
 g11 <- ggplot(data = ca_counties_sf) +
   geom_sf(aes(text = paste(NAMELSAD,
                            '<br> 2020: Biden', D_pv2p_20,'%, Trump', R_pv2p_20,'%',
@@ -306,6 +304,7 @@ g11 <- ggplot(data = ca_counties_sf) +
 ```
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
+g10
 ggplotly(g11, tooltip = "text")
 ```
 
@@ -383,8 +382,16 @@ ggplotly(g2, tooltip = "text")
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 mod <- lm(swing ~ hispanic_pct + aapi_pct, data = counties)
 
-library(stargazer)
-stargazer(mod, type = "text")
+library(gt)
+library(broom)
+library(kableExtra)
+lmtable <- tidy(mod)
+lmtable %>%
+  gt() %>%
+  tab_header(
+    title = "County Demographics and 2020-2024 Swing"
+  )
+
 ```
 
 ## Democratic Turnout Decline
