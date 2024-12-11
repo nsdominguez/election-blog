@@ -1,0 +1,411 @@
+---
+title: "What Happened in California: State Campaign Breakdown"
+author: Nick Dominguez
+date: '2024-12-10'
+slug: blog-11
+---
+
+```{r, include = FALSE}
+setwd("~/Documents/GOV 1347/GOV 1347/content/post/2024-12-06-blog-11")
+```
+
+```{r, include = FALSE}
+library(tidyverse)
+library(blogdown)
+library(plotly)
+```
+
+```{r, include = FALSE}
+# load data
+countyvotes <- read_csv("countyvotes.csv")
+demos <- read_csv("demos.csv")
+statevotes <- read_csv("statevotes.csv")
+aapi <- read_csv("aapi.csv")
+hispanic <- read_csv("hispanic.csv")
+```
+
+```{r, include = FALSE}
+statevotes <- statevotes %>%
+  mutate(
+    total = Dvote + Rvote,
+    D_pv2p = 100*(Dvote/total),
+    R_pv2p = 100*(Rvote/total),
+    margin = D_pv2p - R_pv2p
+  )
+
+statevotes <- statevotes %>%
+  arrange(year) %>% 
+  mutate(swing = margin - lag(margin))
+```
+
+```{r, include = FALSE}
+statevotes <- statevotes %>%
+  mutate(across(where(is.numeric), round, digits = 2))
+```
+
+```{r, include = FALSE}
+countyvotes <- countyvotes %>%
+  mutate(total24 = D24 + R24,
+         D_pv2p_24 = 100*(D24/total24),
+         R_pv2p_24 = 100*(R24/total24),
+         margin24 = D_pv2p_24 - R_pv2p_24,
+         total20 = D20 + R20,
+         D_pv2p_20 = 100*(D20/total20),
+         R_pv2p_20 = 100*(R20/total20),
+         margin20 = D_pv2p_20 - R_pv2p_20,
+         swing = margin24 - margin20,
+         relative24 = margin24 - 20.80,
+         relative20 = margin20 - 29.82,
+         trend = relative24 - relative20)
+```
+
+```{r, include = FALSE}
+countyvotes <- countyvotes %>%
+  mutate(across(where(is.numeric), round, digits = 2))
+```
+
+```{r, include = FALSE}
+counties <- countyvotes %>%
+  left_join(aapi, by = c("county" = "county")) %>%
+  left_join(hispanic, by = c("county" = "county"))
+```
+
+```{r, include = FALSE}
+# demographics bar plots (race, education, income, age)
+race <- demos %>%
+  filter(type == "race")
+
+age <- demos %>%
+  filter(type == "age")
+
+edu <- demos %>%
+  filter(type == "edu")
+  
+```
+
+# Campaign Narratives: A Closer Look at California
+
+**December 10, 2024** – It has now been over a month past the 2024 Presidential Election. As nearly every vote has been counted, we can begin to examine the election with a microscopic lens. Today, for my final post, let’s examine the campaign and election in my home state of California.
+
+## State Overview
+
+California is the most populated state in the union, with nearly 40 million people and 54 electoral votes. Almost one quarter of its population lives in Los Angeles County, with millions of others residing in the other population centers of San Diego, Orange County, the Inland Empire, and the San Francisco Bay Area. California is one of the only majority-minority states in the country, with a 40% plurality of Hispanic and Latino residents, followed by 33% non-hispanic white, according to the US Census and American Communities Survey. California’s Latino population consists primarily of Mexican-American individuals, who are concentrated in Southern California, the San Francisco Bay Area, and the Central Valley. White residents of California mostly reside in the northern Bay Area, exurbs, and counties in the Sierra Nevada, while the Asian American 15% of California’s population are concentrated in the Bay Area (San Francisco, Santa Clara, San Mateo, and Alameda counties), Sacramento, and Orange County.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+race$category <- reorder(race$category, race$pct)
+
+g7 <- ggplot(data = race, mapping = aes(x = " ", y = pct, fill = category,
+                                        text = paste(category,
+                                                     '<br>', pct, '%'))) +
+  geom_bar(stat = "identity", width = 0.6) +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
+  labs(x = NULL, y = "Percentage", title = "Racial Demographics of California", fill = "Category") +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(), 
+    panel.grid.major.x = element_blank(), 
+    legend.position = "right" 
+  ) + coord_flip() + theme(plot.title = element_text(face = "bold"))
+
+ggplotly(g7, tooltip = "text")
+```
+
+California is also a fairly educated state, with around 36% of adults 25 and older earning a Bachelor’s degree or higher, slightly above the US average. It is also the most urban state, with over [94% of Californians living in an urban area](https://www.census.gov/newsroom/press-releases/2022/urban-rural-populations.html#:~:text=Of%20the%2050%20states%2C%20California,population%20residing%20within%20urban%20areas.)
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+edu$category <- factor(edu$category, levels = c(
+  "Less than high school",
+  "Some high school", 
+  "High school graduate", 
+  "Some college", 
+  "Associate Degree", 
+  "Bachelor's Degree",
+  "Master's Degree",
+  "Professional Degree",
+  "Doctorate Degree"
+))
+
+g8 <- ggplot(data = edu, mapping = aes(x = " ", y = pct, fill = category,
+                                        text = paste(category,
+                                                     '<br>', pct, '%'))) +
+  geom_bar(stat = "identity", width = 0.6) +  
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
+  labs(x = NULL, y = "Percentage", title = "Educational Attainment (25+) in California", fill = "Level") +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(), 
+    panel.grid.major.x = element_blank(), 
+    legend.position = "right"
+  ) + coord_flip() + theme(plot.title = element_text(face = "bold")) + 
+  scale_fill_manual(values = c(
+    "Less than high school" = "#191919", 
+    "Some high school" = "#4C4C4C",
+    "High school graduate" = "#7F7F7F",
+    "Some college" = "#B2B2B2",
+    "Associate Degree" = "#E5E5E5",
+    "Bachelor's Degree" = "#006400", 
+    "Master's Degree" = "#004d00",
+    "Professional Degree" = "#003300",
+    "Doctorate Degree" = "#001a00"
+  ))
+
+ggplotly(g8, tooltip = "text")
+```
+
+```{r, include = FALSE}
+statevotes <- statevotes %>%
+  mutate(
+    Democrat = case_when(
+      year == 2000 ~ "Gore",
+      year == 2004 ~ "Kerry",
+      year %in% c(2008, 2012) ~ "Obama",
+      year == 2016 ~ "Clinton",
+      year == 2020 ~ "Biden",
+      year == 2024 ~ "Harris"
+    ),
+    Republican = case_when(
+      year == 2000 ~ "Bush",
+      year == 2004 ~ "Bush",
+      year == 2008 ~ "McCain",
+      year == 2012 ~ "Romney",
+      year >= 2016 ~ "Trump"
+    )
+  )
+```
+
+Given California’s highly urbanized, educated, and racially diverse population, it is no surprise that California is one of the most Democratic states in the country. California has voted for every Democratic presidential nominee since 1992, [Democrats hold a large majority of the state’s congressional seats, its two Senate seats, supermajorities in the state legislature, and every statewide elected office](https://en.wikipedia.org/wiki/Political_party_strength_in_California). As shown below, since 2000, the Democratic presidential nominee has consistently won the state by double digit margins. Therefore, 2024 was expected to be no different. My forecast predicted that Democrat Vice President Kamala Harris would carry the state with 65.71% of the two-party vote. [538](https://projects.fivethirtyeight.com/2024-election-forecast/california/) predicted Harris would win 62.7% of the California vote, [Sabato’s Crystal Ball](https://centerforpolitics.org/crystalball/2024-president/) ranked California as “Safe D”, and [Cook Political Report](https://www.cookpolitical.com/ratings/presidential-race-ratings) rated the state as “Safe D”. In the end, although Harris still won California by a comfortable margin, it was by less than expected. Harris won 60.4% of the two-party vote, the lowest for Democratic presidential nominee since John Kerry in 2004. As shown below, this margin of victory of 20.8 points within my prediction interval, but means that Harris underperformed my prediction by almost 11 points, one of my largest state prediction errors.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+# recent election margins in CA (bar plot)
+
+g6 <- ggplot(data = statevotes, mapping = aes(x = year, y = D_pv2p)) + 
+  geom_line(color = "navyblue") + geom_line(aes(x = year, y = R_pv2p), color = "red") + 
+  theme_bw() + 
+  scale_x_continuous(breaks = seq(2000, 2024, 4)) + 
+  geom_point(aes(x = year, y = R_pv2p, text = paste(Republican, '(R):', R_pv2p, '%')), color = "red") + 
+  geom_point(aes(x = year, y = D_pv2p, text = paste(Democrat, '(D):', D_pv2p, '%')), color = "navyblue") + 
+  labs(x = "Election Year", y = "Two Party Vote Share", 
+       title = "Presidential Election Results in California (2000-2024)") + theme(plot.title = element_text(face = "bold"))
+
+ggplotly(g6, tooltip = "text")
+```
+
+```{r, include = FALSE}
+# bar plot with prediction vs. actual margin
+predictions <- read_csv("~/Documents/GOV 1347/GOV 1347/content/post/2024-11-13-blog-10/predictions.csv")
+prediction <- predictions %>%
+  filter(state == "California") %>%
+  select(state, avg_pred_w, avg_lwr_w, avg_upr_w) %>%
+  mutate(D_pv2p = avg_pred_w,
+         R_pv2p = 100-D_pv2p,
+         margin = D_pv2p-R_pv2p, 
+         type = "Predicted") %>%
+  select(-c(avg_pred_w, state))
+  
+```
+
+```{r, include = FALSE}
+state2024 <- statevotes %>%
+  filter(year == 2024) %>%
+  mutate(type = "Actual",
+         avg_upr_w = 0, 
+         avg_lwr_w = 0) %>%
+  select(type, D_pv2p, R_pv2p, margin, avg_upr_w, avg_lwr_w)
+```
+
+```{r, include = FALSE}
+result <- rbind(prediction, state2024)
+result <- result %>% mutate(across(where(is.numeric), round, digits = 2))
+```
+
+```{r, include = FALSE}
+result <- result %>%
+  mutate(upr_margin = avg_upr_w - (100-avg_upr_w),
+         lwr_margin = avg_lwr_w - (100-avg_lwr_w))
+```
+
+California elects its state government offices in midterm years, so the only other statewide constituency elections were the concurrent open [general](https://ballotpedia.org/United_States_Senate_election_in_California,_2024) and [special](https://ballotpedia.org/United_States_Senate_special_election_in_California,_2024) Senate elections, in which Democrat Adam Schiff defeated Republican Steve Garvey, by 19.6 and 18.6 points respectively, a slight underperformance compared to Harris, and a lower margin of victory compared to statewide Democrats in 2020 and 2022.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+g5 <- ggplot(result, aes(y = margin, x = type)) + 
+  geom_col(aes(text = paste(
+             type,
+             '<br>Harris 2-P Vote Share:', D_pv2p,'%'), fill = type)) + 
+    scale_fill_manual(values = c("darkblue", "blue")) +
+  geom_errorbar(aes(ymin = lwr_margin, ymax = upr_margin), 
+                width = 0.2, color = "black") + 
+  coord_cartesian(ylim = c(0, 50)) + 
+  theme_bw() + theme(legend.position = "none") + 
+  labs(x = " ", y = "Harris 2 Party D-R Margin",
+       title = "Prediction vs. Actual Election Results") + 
+  theme(plot.title = element_text(face = "bold"))
+
+ggplotly(g5, tooltip = "text") 
+```
+
+While Democrats fared better in California congressional races this year, what explains the underperformance at the top of the ticket? Why did Harris lose ground in her home state? Why did I, and many others, overestimate Harris’ victory in California? In this blog post, I will attempt to answer these questions, with respect to decisions by the Harris and Trump campaigns.
+
+## Anti-Incumbency Sentiment
+
+One of the main stories in the aftermath of the 2024 election is the broad and [uniform rightward shift](https://www.nytimes.com/interactive/2024/11/06/us/politics/presidential-election-2024-red-shift.html) of nearly every county in the United States, and California was no exception. As seen below, every single county in California shifted right compared to 2020, with the exception of small Alpine County. In fact, Trump flipped 10 counties that Biden won in 2020: Butte, Fresno, Imperial, Inyo, Lake, Merced, Riverside, San Bernardino, San Joaquin, and Stanislaus.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+library(sf)
+library(tigris)
+library(viridis)
+
+ca_counties <- counties(state = "CA", cb = TRUE)
+
+county_data <- countyvotes %>%
+  mutate(swing1 = swing * -1)
+
+ca_counties_sf <- st_as_sf(ca_counties) %>%
+  left_join(county_data, by = c("NAMELSAD" = "county"))
+
+ca_counties_sf <- ca_counties_sf %>%
+  mutate(centroid = st_centroid(geometry))
+
+ca_counties_sf <- ca_counties_sf %>%
+  mutate(lon = st_coordinates(centroid)[,1],
+         lat = st_coordinates(centroid)[,2])
+
+g10 <- ggplot(data = ca_counties_sf) +
+  geom_sf(aes(text = paste(NAMELSAD,
+                           '<br> 2020: Biden', D_pv2p_20,'%, Trump', R_pv2p_20,'%',
+                           '<br> 2024: Harris', D_pv2p_24,'%, Trump', R_pv2p_24,'%',
+                           '<br> Shift:', swing)), 
+          fill = "lightgray", color = "white", size = 0.1) +
+  geom_segment(data = ca_counties_sf, 
+               aes(x = lon, y = lat, 
+                   xend = lon + sign(swing1) * abs(swing1) * 0.15, 
+                   yend = lat), 
+               arrow = arrow(length = unit(0.1, "cm"), type = "closed"),
+               color = ifelse(ca_counties_sf$swing1 < 0, "darkblue", "red")) +  
+  theme_void() +
+  labs(title = "County Level Swing, 2020-2024") +
+  theme(axis.text = element_blank(),
+        axis.title = element_blank(),
+        plot.title = element_text(face = "bold"))
+
+print(g10)
+
+g11 <- ggplot(data = ca_counties_sf) +
+  geom_sf(aes(text = paste(NAMELSAD,
+                           '<br> 2020: Biden', D_pv2p_20,'%, Trump', R_pv2p_20,'%',
+                           '<br> 2024: Harris', D_pv2p_24,'%, Trump', R_pv2p_24,'%',
+                           '<br> Shift:', swing), fill = swing), color = "black", size = 0.1) +
+  scale_fill_gradient2(low = "red", mid = "white", high = "navyblue", midpoint = 0, 
+                       limits = c(-26, 26)) + 
+  theme_void() +
+  labs(title = "County Level Swing, 2020-2024", fill = "Swing") +
+  theme(axis.text = element_blank(),
+        axis.title = element_blank(),
+        plot.title = element_text(face = "bold"))
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+ggplotly(g11, tooltip = "text")
+```
+
+Trump’s county flips and increased margins in California and the broad rightward swings across the country might be able to be explained by the same reason: anti-incumbent sentiment. On Election Day, incumbent President Joe Biden had a [38.4% approval rating and a 56.5% disapproval rating](https://projects.fivethirtyeight.com/biden-approval-rating/). As his Vice President, Kamala Harris was inexplicably attached to the Biden Administration. Nonetheless, in her campaigning, she [did not make an effort to distance herself from Biden](https://www.cnn.com/politics/harris-2024-campaign-biden/index.html). Incumbents, if extremely unpopular, tend to lose reelection. Voters could have treated Harris as the de facto incumbent president, and revolted against the unpopular incumbent. In my model, I included June presidential approval, but I did not treat Harris as the incumbent president, and as a result the effects of Biden’s disapproval on her forecasted vote share were blunted. Hence, her forecasted vote share might have been lower and more accurate if my model regarded her as the incumbent as voters seemed to do.
+
+```{r, include = FALSE}
+# raw vote change
+
+counties <- counties %>%
+  mutate(totalvotechange = ((total24 - total20) / total20) * 100,
+        D_votechange = ((D24 - D20) / D20) * 100,
+        R_votechange = ((R24 - R20) / R20) * 100,
+        votechangediff = D_votechange - R_votechange) %>%
+  mutate(across(where(is.numeric), round, digits = 2))
+        
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+g3 <- ggplot(data = counties, mapping = aes(x = D_votechange, y = R_votechange)) + 
+  geom_point(aes(text = paste(county,
+                              '<br>', D_votechange, 'difference in Dem. votes',
+                              '<br>', R_votechange, 'difference in Rep. votes'
+  ))) + 
+  theme_bw() + 
+  labs(y = "% Change in Republican Votes", 
+       x = "% Change in Democrat Votes", 
+       title = "Raw Vote Departures 2020-2024") + 
+  theme(plot.title = element_text(face = "bold")) + 
+  geom_abline(intercept = 0, slope = 1, linetype = "dotted") + 
+  geom_hline(yintercept = 0, linetype = "dashed", color = "grey") + 
+  geom_vline(xintercept = 0, linetype = "dashed", color = "grey") + 
+  geom_abline(intercept = 0, slope = -1, linetype = "dotted", color = "red")
+```
+
+## Trump’s Inroads with Nonwhite Voters
+
+However, as we can see, not every county had the same magnitude of rightward swing. Southern California counties, like Imperial, Los Angeles, and Riverside counties, and Central Valley counties, such as Tulare, Merced, and San Joaquin, saw much larger rightward swings, compared to Northern and Sierra Nevada counties such as Placer, Plumas, or Del Norte.
+
+Why do we observe such a difference? It’s the voters in these counties. The California counties that swung the most towards Trump are also the least white counties in the state, while the ones that swung the least are the whitest counties. One of the other big stories of the 2024 election is Trump’s gains with nonwhite votes: with [Latino](https://www.reuters.com/world/us/trumps-return-power-fueled-by-hispanic-working-class-voter-support-2024-11-06/) and [Asian](https://www.nbcnews.com/news/asian-america/asian-americans-exit-poll-harris-trump-rcna179005) voters in particular. Many speculate this is because Trump focused on issues especially salient to these groups: [inflation, the economy](https://apnews.com/article/young-black-latino-men-trump-economy-jobs-9184ca85b1651f06fd555ab2df7982b5), and [immigration](https://www.dailykos.com/stories/2024/12/8/2290241/-Immigrants-resentment-over-new-arrivals-helped-boost-Trump-s-popularity-with-Latino-voters). In an analysis of TV ads in the final weeks of the campaign, [Politico](https://www.politico.com/harris-trump-ads-messaging-economy) revealed Trump’s ads overwhelmingly emphasized inflation, immigration, and the connection between the two, with specific ads in Southern border states attacking Harris for her involvement in Biden Administration immigration policies and criticizing her record prosecuting immigrants and criminals during her time California law enforcement. [Studies have shown](https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_proquest_miscellaneous_59786011&context=PC&vid=HVD2&search_scope=everything&tab=everything&lang=en_US) that television ads do have persuasive power. Hence, it is possible that these targeted ads were well received by Latino audiences, particularly those in California and other states bordering Mexico, and these traditionally Democratic voters gravitated towards Trump, the candidate they felt spoke more about the issues they cared about.
+
+As seen below, there is a strong negative linear correlation between how Hispanic a county is and its 2020-2024 rightward shift, with a correlation coefficient of -0.84. The more Hispanic a county is, the more it swung right between the 2020 and 2024 elections. Similarly, there is a slightly negative linear correlation between how Asian a county is and its swing right, though this is less strong with a correlation coefficient of -0.15. To assess the strength of these relationships, I fit an OLS linear regression using counties’ percentage of Hispanic and Asian residents to predict 2020-2024 vote shift. The model finds that as the percentage of Asian and Hispanic/Latino in a county increases, the more the county shifted right between 2020 and 2024, with both of these predictors being statistically significant. Trump’s inroads with Latino and Asian voters seems to be largely responsible for Harris’ underperformance in California. These two factors explain over 73% of the variation in the vote shift in California counties, which is a substantial amount of predictive power. But, this means there’s around 27% of the variation in the 2020-2024 shift left to decipher.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+ g1 <- ggplot(data = counties, mapping = aes(x = hispanic_pct, y = swing)) + 
+  geom_point(aes(text = paste(county,
+                              '<br>', hispanic_pct, '% Hispanic',
+                              '<br>2020-2024 Swing:', swing
+  ))) + 
+  theme_bw() + 
+  labs(y = "2020-2024 2 Party Swing", 
+       x = "Percent Hispanic/Latino", 
+       title = "Percent Hispanic and County Swing") + 
+  theme(plot.title = element_text(face = "bold")) + 
+  geom_vline(xintercept = 40.31, linetype = "dashed", color = "gray") + 
+  geom_hline(yintercept = -9.02, linetype = "dashed", color = "gray")
+
+ggplotly(g1, tooltip = "text")
+
+ g2 <- ggplot(data = counties, mapping = aes(x = aapi_pct, y = swing)) + 
+  geom_point(aes(text = paste(county,
+                              '<br>', aapi_pct, '% AAPI',
+                              '<br>2020-2024 Swing:', swing
+  ))) + 
+  theme_bw() + 
+  labs(y = "2020-2024 2 Party Swing", 
+       x = "Percent Asian & Pacific Islander", 
+       title = "Percent Asian and County Swing") + 
+  theme(plot.title = element_text(face = "bold")) + 
+  geom_vline(xintercept = 15.62, linetype = "dashed", color = "gray") + 
+  geom_hline(yintercept = -9.02, linetype = "dashed", color = "gray")
+
+ggplotly(g2, tooltip = "text")
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+mod <- lm(swing ~ hispanic_pct + aapi_pct, data = counties)
+
+library(stargazer)
+stargazer(mod, type = "text")
+```
+
+## Democratic Turnout Decline
+
+The shrink in Democratic margins in California cannot be solely due to Trump’s persuasion to Latino and Asian voters. Voter turnout declined compared to 2020 in California, with the state casting just shy of 2 million fewer votes in 2024 than 2020. But, a closer look reveals that this turnout decline is uneven. As shown below, every county except Alpine County cast fewer votes for the Democratic presidential candidate in 2024 compared to 2020, but this is not true on the Republican side: only around half of California’s counties cast less votes for the Republican candidate in 2024 compared to 2020.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+ggplotly(g3, tooltip = "text")
+
+```
+
+In summary, more Democrats abstained from voting than Republicans did California. If Trump won on persuasion alone, we should see these points fall on (or at least parallel to) the red line, where Republican vote gain is directly proportional to Democratic vote loss. But, these points are scattered in between this red line and the black dotted line, which represents equal vote change between Democrats and Republicans. Therefore, in the vast majority of California counties, a combination of asymmetric turnout declines and modest Trump persuasion and mobilization narrowed Harris’ predicted margin.
+
+Because California has been considered a guaranteed win for the Democratic nominee for the past few decades, candidates seldom campaign in the state and write it off as an automatic cache of electoral votes for the Democrat, and instead only visit the state to [fundraise](https://www.latimes.com/politics/story/2024-09-29/harris-holds-final-california-fundraisers-before-the-november-election). Therefore, the insights we can draw from analyzing the campaign strategies in California are limited. However, using this lens may be particularly useful for analyzing the 2024 results. Harris made [zero campaign stops](https://projects.votehub.com/pages/campaign-tracker) in the state, while Democratic Vice Presidential candidate Tim Walz made a single speech at an event in Los Angeles. However, Trump made a media splash when he held a [rally](https://www.cnn.com/2024/10/12/politics/trump-coachella-rally/index.html) in California’s Coachella Valley in October, where like his rally in Democratic New York City, he used the opportunity to criticize the failures of blue state governance. [Trump appealed to California Republicans’ and independents’ dissatisfaction with their state government](https://calmatters.org/commentary/2024/10/harris-vs-trump-contest-californias-image/), attributing the state’s condition to Harris, who served as California’s Attorney General and then United States Senator. It is possible that Trump’s gambit, while ridiculed, might’ve paid off, as California, and specifically Riverside County (where his rally was held) had significant rightward shifts, as did New York, where Trump held rallies in the Bronx, Long Island, and Manhattan. His visit to California could’ve energized Republican voters, and thus brought more of them out to vote in 2024 compared to 2020.
+
+Once again, there is not much we can speak to about the issues Harris (or Trump) campaigned on in California, since neither directed much campaigning or messaging in the state. But, seemingly due to the electoral structure of the presidential election, and California’s status as a safely Democratic state, Harris was not incentivized to campaign in the state. But, this hyperfocus on swing voters, such as white suburbanites might have had a perverse effect on the nonwhite voters at the core of the Democratic coalition. Harris staffers were reportedly frustrated that the Harris campaign had [neglected outreach to Black and Latino voters](https://www.nytimes.com/2024/12/07/us/politics/harris-philadelphia-black-latino-voters.html?smid=nytcore-ios-share&referringSource=articleShare) in Philadelphia. Perhaps the Latino voters in California felt the same sense of neglect by the Harris campaign. [Enos and Fowler (2016)](https://www.cambridge.org/core/journals/political-science-research-and-methods/article/abs/aggregate-effects-of-largescale-campaigns-on-voter-turnout/20C500B0DE62227873FD24CB3555F779) find that candidates’ ground campaigns significantly increase turnout in the states they heavily target. Similarly, [Darr and Levendusky (2013)](https://journals.sagepub.com/doi/10.1177/1532673X13500520) argue that campaigns should, and usually, concentrate ground game efforts on core areas of strength, to mobilize and turn out their base. Harris, seeing California as a guaranteed 54 electoral votes on her path to 270, could’ve made no efforts to campaign to the Democratic base in the state, while those who faced more competitive elections, did. This could be why Harris (and Adam Schiff) underperformed in California at the same time Democrats [flipped 3 congressional seats in the state](https://ballotpedia.org/United_States_House_of_Representatives_elections_in_California,_2024). Due to lack of core voter canvassing, Latino turnout and support for Harris in California and other states eroded.
+
+## Final Thoughts
+
+In summary, numerous forecasts, including my own overestimated Vice President Harris’ vote share in the state of California, while underestimating former President Donald Trump’s performance in the state. I discussed three areas of why the election outcome in California deviated from the predictions. First, anti-incumbent and economic fundamentals mattered more than previously believed, hence the incumbent Vice President Harris broadly underperformed across California and the country as a whole. Second, Trump gained more ground with Latino, and to a lesser extent, Asian voters. As a result, the swing toward Trump was exacerbated in California, as a state with one of the highest proportions of Latino and Asian voters. Finally, potentially due to hyperfixation on swing voters, the Harris campaign failed to mobilize the core voters of the Democratic coalition, and thus Democrats did not turn out to vote for Harris in the solidly blue state of California, causing an asymmetric decline in voter turnout that further decreased Harris’ margin of victory in California. It is my contention that these are the main three reasons why Harris won California by a margin of 11 points less than what myself and other forecasters predicted.
+
+For the past three months, I have used this blog as a psephological exercise: to explore and better understand what factors influence elections, and how we can use these insights to predict voter behavior. I hope that these efforts, and my writing about them, can be considered more than just political hobbyism. While it is fun to analyze elections and predict results, important principles lie beneath this amusement. Voting is a fundamental right. We get the pleasure of forecasting elections because we have the privilege of being part of a democracy, where we don’t know the outcome of an election until all votes are cast and counted. Elections impact peoples’ lives; and we can change attitudes and shape our own future by understanding the mechanisms of campaigns that we’ve analyzed. In essence, election analytics is much more consequential to our society than it first appears to be.
+
+It is my hope that this semester-long class assignment is not the end, but the beginning of my work in election analytics.Thank you for following along with me, and I hope you’ll join me again next election!

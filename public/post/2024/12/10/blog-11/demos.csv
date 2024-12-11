@@ -1,0 +1,31 @@
+type,category,pct
+race,White,33.72
+race,Black,5.19
+race,Native American & Alaska Native,0.26
+race,Asian,15.27
+race,Pacific Islander,0.35
+race,Other Race,0.64
+race,Multiracial,4.26
+race,Hispanic or Latino,40.31
+age,0-4,5.3
+age,5-9,5.57
+age,10-14,6.18
+age,15-17,3.92
+age,18-20,4.29
+age,21-24,5.38
+age,25-34,14.13
+age,35-44,13.88
+age,45-54,12.42
+age,55-64,12.19
+age,65-74,9.79
+age,75-84,5.09
+age,85 and older,1.85
+edu,Less than high school,8.84
+edu,Some high school,6.89
+edu,High school graduate,20.69
+edu,Some college,20.01
+edu,Associate Degree,7.9
+edu,Bachelor's Degree,21.96
+edu,Master's Degree,9.34
+edu,Professional Degree,2.54
+edu,Doctorate Degree,1.83
